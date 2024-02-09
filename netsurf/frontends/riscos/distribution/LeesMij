@@ -1,0 +1,61 @@
+NetSurf
+=======
+
+Dit is een ontwikkelversie van NetSurf, een webbrowser met open
+broncode.
+
+De nieuwste versie van NetSurf is verkrijgbaar via:
+
+   https://www.netsurf-browser.org/
+
+
+Installatie
+-----------
+
+De installatie gaat in drie stappen:
+
+   1. Gebruik de samenvoegfaciliteit van !Boot (te openen via de
+      besturingssysteeminstellingen -> !Boot) om de meegeleverde
+      !Boot-map samen te voegen met die van het systeem.
+
+      Als het besturingssysteem geen !Boot-samenvoegfaciliteit
+      ondersteund, sleep dan de meegeleverde !Boot-map in de map
+      waarin de bestaande !Boot-structuur staat.
+
+   2. Gebruik de samenvoegfaciliteit van !System (te openen via de
+      besturingssysteeminstellingen -> !System) om de meegeleverde
+      !System-map samen te voegen met die van het systeem.
+
+   3. Sleep de !NetSurf-programmamap naar de gewenste map op de
+      harde schijf.
+
+Dubbelklik op het programma !NetSurf in de gekozen locatie om de
+NetSurf-browser te starten.
+
+
+Opmerking   NetSurf vereist de WindowManager-module 3.80 of een
+            recentere versie. Deze is standaard aanwezig in RISC OS 4
+            of een recentere versie. Voor RISC OS 3-gebruikers zijn
+            er twee mogelijkheden om NetSurf te kunnen gebruiken:
+
+            - De 'Universal !Boot Sequence' van Acorn:
+                http://www.riscos.com/ftp_space/generic/uniboot/
+            - HardDisc4-schijfstructuur van RISC OS Open:
+                https://www.riscosopen.org/content/downloads/common/
+
+
+Opmerking   RISC OS 3.1 of oudere versies worden niet ondersteund.
+
+
+Licenties
+---------
+
+NetSurf wordt geleverd onder de GPL, evenals verschillende andere
+licenties voor de verschillende componenten die het programma
+gebruikt. Bezoek in de NetSurf-browser het URL-adres 'about:licence'
+voor meer informatie.
+
+
+De meegeleverde !Boot- en !System-mappen bevatten items die door
+derden zijn geproduceerd. De bijbehorende licenties zijn meegeleverd
+in de map '3rdParty'.

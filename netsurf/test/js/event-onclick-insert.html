@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="add_paragraph()">Click me!</button>
+
+<script>
+function add_paragraph() {
+	var paragraph = document.createElement("P");
+	var textnode = document.createTextNode("New paragraph!");
+	paragraph.appendChild(textnode);
+	document.body.appendChild(paragraph);
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,397 @@
+; Installation script for NetSurf
+
+(procedure p_append #filename #text
+	(set #file-path (tackon "ENVARC:launch-handler/URL" #protocol))
+	(set #def-file-path (tackon "ENVARC:launch-handler/URL/defaults" #protocol))
+
+	(if (exists #file-path)
+		(
+			(set #inc #file-path)
+		)
+		;else
+		(
+			(set #inc #def-file-path)
+		)
+	)
+
+	(textfile
+		(dest #file-path)
+		(include #inc)
+		(append #text)
+	)
+)
+
+(procedure p_chk_launch-handler #protocol
+	(if (exists (tackon "ENVARC:launch-handler/URL" #protocol))
+		(
+			(run "C:Search >T:NS_Install.tmp " (tackon "ENVARC:launch-handler/URL" #protocol) " NetSurf" (safe))
+		)
+		;else
+		(
+			(run "C:Search >T:NS_Install.tmp " (tackon "ENVARC:launch-handler/URL/defaults" #protocol) " NetSurf" (safe))
+		)
+	)
+
+	(set #has_entry (getsize "T:NS_Install.tmp"))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Script execution starts here ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(set osver (getversion "libs:version.library"))
+(set osver (/ osver 65536))
+
+(if (= @app-name "NetSurfAutoInstall") (set #AutoInstall 1))
+(set @app-name "NetSurf")
+
+(set #netsurf-readme "NetSurf.readme")
+(if (= (exists #netsurf-readme) 0)
+	(
+		(set #netsurf-readme "NetSurf_os3.readme")
+		(if (OR (>= osver 50) (< osver 44))
+			(abort "This archive is for AmigaOS 3.5 or 3.9 ONLY.")
+		)
+	)
+	;else
+	(
+		(if (< osver 50)
+			(abort "This archive is for AmigaOS 4.0 and higher ONLY.")
+		)
+	)
+)
+
+(if (<> #AutoInstall 1) (welcome))
+
+; (hopefully temporary) workaround for a bug in Installer:
+(if (= @language "dutch") (set @askdir-help ""))
+
+(complete 0)
+
+(set @default-dest (getenv "AppPaths/NetSurf"))
+
+; If env-var did not exist, this is a first time install.
+; For novice users we must take care to put the files somewhere sensible.
+(if (= @default-dest "")
+	(
+		; Workaround for Installer bug picking TEXTCLIP: as a sensible location
+		(if (= @default-dest "TextClip:") (set @default-dest "SYS:Internet"))
+
+		(if (= @user-level 0)
+			(
+				(makedir (tackon @default-dest "NetSurf") (infos))
+				(set @default-dest (tackon @default-dest "NetSurf"))
+			)
+		)
+	)
+)
+
+(set @default-dest
+	(askdir
+		(prompt "Where would you like to install NetSurf?\n"
+				"(a drawer WILL NOT be created)")
+		(help @askdir-help)
+		(default @default-dest)
+	)
+)
+
+(complete 5)
+
+(working "Checking existing installation...")
+(set #icon-exists (exists (tackon @default-dest "NetSurf.info")))
+
+(complete 10)
+
+(set #user (getenv "user"))
+(if (= #user "") (set #user "Default"))
+
+(set #user-dir (tackon (tackon @default-dest "Users") #user))
+(set #user-options (tackon #user-dir "Choices"))
+(set #options-exist (exists #user-options))
+(set #searchengines-exist (exists (tackon @default-dest "Resources/SearchEngines")))
+(set #user-hotlist (tackon #user-dir "Hotlist"))
+(set #hotlist-exist (exists #user-hotlist))
+(set #old-hotlist (tackon @default-dest "Resources/Hotlist"))
+(set #old-hotlist-exist (exists #old-hotlist))
+(set #aiss-theme "")
+
+(if (= #options-exist 0)
+	(
+		(if (exists "TBimages:" (noreq))
+			(set #aiss-theme "AISS")
+		)
+
+		(set #themename
+   			(askchoice
+  				(prompt "Please select theme")
+ 	      		(help "AISS theme requires AISS (and def_pointers for 32-bit "
+						"pointers), and will only be shown as an option if "
+						"AISS is installed.\n\n"
+						@askchoice-help)
+				(choices "Default" #aiss-theme)
+       			(default 0)
+   			)
+		)
+
+		(select #themename
+			(set #themeshort "Default")
+			(set #themeshort "AISS")
+		)
+
+		(set #theme (tackon "PROGDIR:Resources/Themes/" #themeshort))
+	)
+)
+
+(complete 15)
+
+(if (>= osver 53)
+	(
+		(if (= #AutoInstall 1)
+			(
+				(set #addlaunchhandler 0)
+			)
+			;else
+			(
+				(set #addlaunchhandler
+					(askbool
+						(prompt "Add NetSurf to launch-handler? (recommended)")
+						(help "launch-handler is part of OS4.1 which opens URLs "
+							" by launching a web browser.\n\n"
+							"The installation will update the configuration of "
+							"OS4.1 to allow URLs to be opened by NetSurf.")
+						(default 1)
+					)
+				)
+			)
+		)
+	)
+	;else
+	(
+		(set #addlaunchhandler 0)
+	)
+)
+
+(complete 20)
+
+(set #runfixfonts
+	(askbool
+		(prompt "Installer will run FixFonts after NetSurf is installed.  "
+			"Unless you have a *very* good reason you should not skip this step.")
+		(help "FixFonts corrects inconsistencies in the Amiga FONTS: structure. "
+			"Running it will prevent NetSurf hitting problems when the fonts are scanned.")
+		(default 1)
+		(choices "Run FixFonts" "Skip")
+	)
+)
+
+(complete 25)
+
+(working "Installing NetSurf")
+
+(if (= #AutoInstall 0)
+	(
+		(copyfiles
+			(prompt "Copying NetSurf...")
+			(help @copyfiles-help)
+			(source "NetSurf")
+			(dest @default-dest)
+			(newname "NetSurf")
+			(optional "askuser" "force" "oknodelete")
+			(confirm "expert")
+		)
+	)
+;else
+	(
+		(run "CopyStore NetSurf" @default-dest)
+	)
+)
+
+(complete 40)
+
+(if #searchengines-exist
+	(rename (tackon @default-dest "Resources/SearchEngines") (tackon @default-dest "Resources/SearchEngines.backup"))
+)
+
+(run "c:filenote Rexx/CloseTabs.nsrx \"Close other tabs\"")
+(run "c:filenote Rexx/ViewSource.nsrx \"View source\"")
+
+(complete 50)
+
+(copyfiles
+	(prompt "Copying files")
+	(source "")
+	(choices "Resources" "Rexx" "NetSurf.guide" #netsurf-readme)
+	(help @copyfiles-help)
+	(dest @default-dest)
+	(infos)
+	(optional "nofail")
+;	(all)
+)
+
+(complete 65)
+
+(copyfiles
+	(prompt "Copying additional documentation")
+	(source "")
+	(pattern "(COPYING|ChangeLog)")
+	(help @copyfiles-help)
+	(dest @default-dest)
+	(infos)
+	(optional "nofail")
+)
+
+(complete 70)
+
+(if #themeshort
+	(
+		(set #theme-icon
+			(tackon "Resources/Themes"
+				(tackon #themeshort "NetSurf.info")
+			)
+		)
+
+		(if (exists #theme-icon)
+			(
+				(copyfiles
+					(prompt "Copying theme icon")
+					(help @copyfiles-help)
+					(source #theme-icon)
+					(dest @default-dest)
+				)
+			)
+		)
+
+		(makedir #user-dir)
+
+		(textfile
+			(prompt "Setting default options")
+			(help @textfile-help)
+			(dest #user-options)
+			(append "theme:" #theme "\n")
+			(append "pubscreen_name:Workbench\n")
+		)
+
+		(if (= #hotlist-exist 0)
+			(if (= #old-hotlist-exist 1)
+				(
+					(copyfiles
+						(prompt "Migrating NetSurf 2.x Hotlist")
+						(help @copyfiles-help)
+						(source #old-hotlist)
+						(dest #user-dir)
+						(optional "askuser" "force" "oknodelete")
+					)
+				)
+			)
+		)
+	)
+)
+
+(complete 75)
+
+(if (= (exists "ENVARC:Sys/def_css.info") 0)
+	(copyfiles
+		(prompt "Copying default CSS icon")
+		(source "Resources/default.css.info")
+		(newname "def_css.info")
+		(help @copyfiles-help)
+		(dest "ENVARC:Sys")
+		(optional "nofail")
+	)
+)
+
+(complete 80)
+
+(if (>= osver 53)
+	(if (= (exists "Rexx:NetSurf") 0)
+		(
+			(textfile
+				(prompt "Creating NetSurf launch helper")
+				(help @textfile-help)
+				(dest "Rexx:NetSurf")
+				(append "/*\n"
+" * Copyright 2013, 2016 Chris Young <chris@unsatisfactorysoftware.co.uk>\n"
+" *\n"
+" * This file is part of NetSurf, http://www.netsurf-browser.org/\n"
+" *\n"
+" * NetSurf is free software; you can redistribute it and/or modify\n"
+" * it under the terms of the GNU General Public License as published by\n"
+" * the Free Software Foundation; version 2 of the License.\n"
+" *\n"
+" * NetSurf is distributed in the hope that it will be useful,\n"
+" * but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+" * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+" * GNU General Public License for more details.\n"
+" *\n"
+" * You should have received a copy of the GNU General Public License\n"
+" * along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+" */\n"
+"\n"
+"/* This is a convenience script for launching NetSurf from the Shell.\n"
+" * If NetSurf is already running it will open the supplied URL in a new tab.\n"
+" * This can be used in URL Prefs in place of directly calling APPDIR:NetSurf.\n"
+" */\n"
+"\n"
+"options results\n"
+"parse arg url\n"
+"\n"
+"if show('P', 'NETSURF') then do\n"
+" address NETSURF 'OPEN' url 'NEWTAB ACTIVE'\n"
+" address NETSURF 'TOFRONT'\n"
+"end\n"
+"else do\n"
+" address command 'APPDIR:NetSurf URL' url\n"
+"end\n")
+			)
+			(protect "Rexx:NetSurf" "+se")
+		)
+	)
+)
+
+(complete 85)
+
+(if (= #addlaunchhandler 1)
+	(
+		(working "Adding NetSurf to launch-handler config")
+		(if (= (p_chk_launch-handler "FILE.LH") 0)
+			(p_append "FILE.LH" "ClientName=\"NETSURF\"   ClientPath=\"Rexx:NetSurf\"   CMDFORMAT=\"*\"file:///%s*\"\"")
+		)
+
+		(if (= (p_chk_launch-handler "HTTP.LH") 0)
+			(p_append "HTTP.LH" "ClientName=\"NETSURF\"   ClientPath=\"Rexx:NetSurf\"   CMDFORMAT=\"*\"http://%s*\"\"")
+		)
+
+		(if (= (p_chk_launch-handler "HTTPS.LH") 0)
+			(p_append "HTTPS.LH" "ClientName=\"NETSURF\"   ClientPath=\"Rexx:NetSurf\"   CMDFORMAT=\"*\"https://%s*\"\"")
+		)
+
+		(if (= (p_chk_launch-handler "WWW.LH") 0)
+			(p_append "WWW.LH" "ClientName=\"NETSURF\"   ClientPath=\"Rexx:NetSurf\"   CMDFORMAT=\"*\"http://www.%s*\"\"")
+		)
+
+;		(if (= (p_chk_launch-handler "FTP.LH") 0)
+;			(p_append "FTP.LH" "ClientName=\"NETSURF\"   ClientPath=\"Rexx:NetSurf\"   CMDFORMAT=\"*\"ftp://%s*\"\"")
+;		)
+	)
+)
+
+(complete 90)
+
+(working "Running FixFonts")
+
+(if #runfixfonts
+	(
+		(run "SYS:System/FixFonts")
+	)
+)
+
+(complete 100)
+
+(if (= #AutoInstall 1)
+	(
+		(exit (quiet))
+	)
+	(
+		(exit)
+	)
+)

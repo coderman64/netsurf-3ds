@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>setTimeout and setInterval</title>
+    <script>
+      var counter = 0;
+      var interval_handle = setInterval(function() {
+          console.log("Called back ", counter, " times");
+          counter = counter + 1;
+      }, 100);
+      setTimeout(function() {clearInterval(interval_handle);}, 10000);
+    </script>
+  </head>
+  <body>
+    Check the log, it should be printing a callback indicator for ten
+    seconds and then stop.
+  </body>
+</html>

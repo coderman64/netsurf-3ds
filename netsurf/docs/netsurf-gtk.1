@@ -1,0 +1,271 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" Copyright 2014 Vincent Sanders
+.\"
+.\" Permission is hereby granted, free of charge, to any person obtaining a copy of this man page (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.\"
+.\"The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+.\"
+.\"THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+.Dd December 26, 2014
+.Dt NETSURF 1 CON
+.Os
+.Sh NAME
+.Nm netsurf
+.Nd a small fast web browser
+.Sh SYNOPSIS
+.Nm netsurf-gtk
+.Op Ar options
+.Op Ar url
+.Sh DESCRIPTION
+.Nm
+is a lightweight, fast, standards-compliant web browser.
+This man page only describes how to run the browser.
+.Pp
+The command line parameters override any options loaded from the user's
+.Pa Choices
+file.
+.Pp
+In addition to these parameters the standard GTK+ options may be passed.
+.Pp
+The options are as follows:
+.Bl -tag -width Ds
+.It Fl v
+Enable verbose logging.
+.It Fl -http_proxy
+Boolean indicating if the http proxy is being used.
+.It Fl -http_proxy_host
+The http proxy host.
+.It Fl -http_proxy_port
+The http proxy port.
+.It Fl -http_proxy_auth
+The authentication scheme for the http proxy.
+.It Fl -http_proxy_auth_user
+The authentication schemes user.
+.It Fl -http_proxy_auth_pass
+The authentication schemes password.
+.It Fl -font_size
+The default font size to use.
+.It Fl -font_min_size
+The minimum font size to use.
+.It Fl -font_sans
+Family name of the sans serif font.
+.It Fl -font_serif
+Family name of the serif font.
+.It Fl -font_mono
+Family name of the monospace font.
+.It Fl -font_cursive
+Family name of the cursive font.
+.It Fl -font_fantasy
+Family name of the fantasy font.
+.It Fl -accept_language
+Languages to accept.
+.It Fl -accept_charset
+Character set to accept
+.It Fl -memory_cache_size
+Maximum memory cache size.
+.It Fl -disc_cache_age
+Maximum disc cache size.
+.It Fl -block_advertisements
+Boolean to enable ad blocking.
+.It Fl -send_referer
+Boolean controlling whether referrer data should be sent
+.It Fl -animate_images
+Boolean controlling whether images should be animated.
+.It Fl -expire_url
+expire url
+.It Fl -font_default
+Default font.
+.It Fl -ca_bundle
+Certificate authority bundle path.
+.It Fl -ca_path
+Certificate authority path
+.It Fl -cookie_file
+cookie file
+.It Fl -cookie_jar
+cookie jar
+.It Fl -homepage_url
+homepage url
+.It Fl -search_url_bar
+search url bar
+.It Fl -search_provider
+search provider
+.It Fl -url_suggestion
+url suggestion
+.It Fl -window_x
+The X co-ordinate of the initial window.
+.It Fl -window_y
+The Y co-ordinate of the initial window.
+.It Fl -window_width
+The width of the initial window.
+.It Fl -window_height
+The height of the initial window.
+.It Fl -toolbar_status_size
+toolbar status size
+.It Fl -scale
+Initial scale factor.
+.It Fl -incremental_reflow
+Boolean controlling whether incremental reflow is performed.
+.It Fl -min_reflow_period
+Minimum time between incremental reflows
+.It Fl -core_select_menu
+core select menu
+.It Fl -max_fetchers
+max fetchers
+.It Fl -max_fetchers_per_host
+max fetchers per host
+.It Fl -max_cached_fetch_handles
+max cached fetch handles
+.It Fl -suppress_curl_debug
+suppress curl debug
+.It Fl -target_blank
+target blank
+.It Fl -button_2_tab
+button 2 tab
+.It Fl -margin_top
+margin top
+.It Fl -margin_bottom
+margin bottom
+.It Fl -margin_left
+margin left
+.It Fl -margin_right
+margin right
+.It Fl -export_scale
+export scale
+.It Fl -suppress_images
+suppress images
+.It Fl -remove_backgrounds
+remove backgrounds
+.It Fl -enable_loosening
+enable loosening
+.It Fl -enable_PDF_compression
+enable PDF compression
+.It Fl -enable_PDF_password
+enable_PDF_password
+.It Fl -gui_colour_bg_1
+gui colour bg_1
+.It Fl -gui_colour_fg_1
+gui colour fg_1
+.It Fl -gui_colour_fg_2
+gui colour fg_2
+.It Fl -sys_colour_ActiveBorder
+Override CSS sys_colour_ActiveBorder colour.
+.It Fl -sys_colour_ActiveCaption
+Override CSS sys_colour_ActiveCaption colour.
+.It Fl -sys_colour_AppWorkspace
+Override CSS sys_colour_AppWorkspace colour.
+.It Fl -sys_colour_Background
+Override CSS sys_colour_Background colour.
+.It Fl -sys_colour_ButtonFace
+Override CSS sys_colour_ButtonFace colour.
+.It Fl -sys_colour_ButtonHighlight
+Override CSS sys_colour_ButtonHighlight colour.
+.It Fl -sys_colour_ButtonShadow
+Override CSS sys_colour_ButtonShadow colour.
+.It Fl -sys_colour_ButtonText
+Override CSS sys_colour_ButtonText colour.
+.It Fl -sys_colour_CaptionText
+Override CSS sys_colour_CaptionText colour.
+.It Fl -sys_colour_GrayText
+Override CSS sys_colour_GrayText colour.
+.It Fl -sys_colour_Highlight
+Override CSS sys_colour_Highlight colour.
+.It Fl -sys_colour_HighlightText
+Override CSS sys_colour_HighlightText colour.
+.It Fl -sys_colour_InactiveBorder
+Override CSS sys_colour_InactiveBorder colour.
+.It Fl -sys_colour_InactiveCaption
+Override CSS sys_colour_InactiveCaption colour.
+.It Fl -sys_colour_InactiveCaptionText
+Override CSS sys_colour_InactiveCaptionText colour.
+.It Fl -sys_colour_InfoBackground
+Override CSS sys_colour_InfoBackground colour.
+.It Fl -sys_colour_InfoText
+Override CSS sys_colour_InfoText colour.
+.It Fl -sys_colour_Menu
+Override CSS sys_colour_Menu colour.
+.It Fl -sys_colour_MenuText
+Override CSS sys_colour_MenuText colour.
+.It Fl -sys_colour_Scrollbar
+Override CSS sys_colour_Scrollbar colour.
+.It Fl -sys_colour_ThreeDDarkShadow
+Override CSS sys_colour_ThreeDDarkShadow colour.
+.It Fl -sys_colour_ThreeDFace
+Override CSS sys_colour_ThreeDFace colour.
+.It Fl -sys_colour_ThreeDHighlight
+Override CSS sys_colour_ThreeDHighlight colour.
+.It Fl -sys_colour_ThreeDLightShadow
+Override CSS sys_colour_ThreeDLightShadow colour.
+.It Fl -sys_colour_ThreeDShadow
+Override CSS sys_colour_ThreeDShadow colour.
+.It Fl -sys_colour_Window
+Override CSS sys_colour_Window colour.
+.It Fl -sys_colour_WindowFrame
+Override CSS sys_colour_WindowFrame colour.
+.It Fl -sys_colour_WindowText
+Override CSS sys_colour_WindowText colour.
+.It Fl -downloads_clear
+downloads clear
+.It Fl -request_overwrite
+request overwrite
+.It Fl -downloads_directory
+downloads directory
+.It Fl -url_file
+url file
+.It Fl -show_single_tab
+Force tabs to always be show.
+.It Fl -button_type
+button type
+.It Fl -disable_popups
+disable popups
+.It Fl -history_age
+history age
+.It Fl -hover_urls
+hover urls
+.It Fl -focus_new
+focus new
+.It Fl -new_blank
+new blank
+.It Fl -hotlist_path
+hotlist path
+.It Fl -source_tab
+source tab
+.It Fl -current_theme
+current theme
+.Sh FILES
+.Bl -item -width HOMEconfignetsurfChoicesxxxx
+.It
+.Pa $HOME/.config/netsurf/Choices
+.It
+.Pa $HOME/.config/netsurf/Hotlist
+.El
+.Sh SEE ALSO
+.Xr gtk-options 7
+.Sh STANDARDS
+.Rs
+.%D December 3, 2014
+.%I Web Hypertext Application Technology Working Group
+.%T HTML Living Standard
+.%U https://html.spec.whatwg.org/multipage/
+.Re
+.Pp
+.Rs
+.%D June 7, 2011
+.%I World Wide Web Consortium
+.%T Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification
+.%U http://www.w3.org/TR/CSS21/
+.Re
+.Pp
+.Rs
+.%D December 17, 2014
+.%I Web Hypertext Application Technology Working Group
+.%T Document Object Model Living Standard
+.%U https://dom.spec.whatwg.org/
+.Re
+.Sh AUTHORS
+Authorship information for
+.Nm
+is available at the project homepage,
+.Lk http://www.netsurf-browser.org/
+.Pp
+This manual page was written by
+.An Vincent Sanders Aq Mt vince@netsurf-browser.org

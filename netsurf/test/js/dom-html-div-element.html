@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>dom html div element</title>
+<link rel="stylesheet" type="text/css" href="tst.css">
+</head>
+<body>
+<h1>HTMLDivElement test</h1>
+
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+    var e = document.createElement("Div");
+    var t = document.createTextNode("This text should be aligned right.");
+    e.appendChild(t);
+    e.setAttribute("id", "test");
+    e.align = "right";
+    document.body.appendChild(e);
+    var test = document.getElementById("test");
+    document.write("The align attribute for the above text is set to: ", test.align, ".");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+#data
+@media not
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media and
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media or
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media only
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media only not
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media only only
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media not not
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media not only
+#errors
+#expected
+| @media not 3ff
+#reset
+
+#data
+@media screen
+#errors
+#expected
+| @media 040
+#reset
+
+#data
+@media unknown
+#errors
+#expected
+| @media 000
+#reset
+
+#data
+@media not unknown
+#errors
+#expected
+| @media not 000
+#reset
+
+#data
+@media (color)
+#errors
+#expected
+| @media 3ff
+#reset

@@ -1,0 +1,33 @@
+title: Test the SSL certificate error functionality
+group: real-world
+steps:
+- action: launch
+  language: en
+- action: window-new
+  tag: win1
+- action: navigate
+  window: win1
+  url: https://badssl.com/
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: plot-check
+  window: win1
+  checks:
+  - text-contains: "badssl.com"
+- action: navigate
+  window: win1
+  url: https://expired.badssl.com/
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: plot-check
+  window: win1
+  checks:
+  - text-not-contains: "expired. badssl.com"
+- action: window-close
+  window: win1
+- action: quit
+

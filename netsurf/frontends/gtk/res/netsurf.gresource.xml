@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/netsurf">
+    <file preprocess="to-pixdata">favicon.png</file>
+    <file preprocess="to-pixdata">netsurf.xpm</file>
+    <file preprocess="to-pixdata">menu_cursor.png</file>
+    <file preprocess="to-pixdata">throbber/throbber0.png</file>
+    <file preprocess="to-pixdata">throbber/throbber1.png</file>
+    <file preprocess="to-pixdata">throbber/throbber2.png</file>
+    <file preprocess="to-pixdata">throbber/throbber3.png</file>
+    <file preprocess="to-pixdata">throbber/throbber4.png</file>
+    <file preprocess="to-pixdata">throbber/throbber5.png</file>
+    <file preprocess="to-pixdata">throbber/throbber6.png</file>
+    <file preprocess="to-pixdata">throbber/throbber7.png</file>
+    <file preprocess="to-pixdata">throbber/throbber8.png</file>
+    <file>credits.html</file>
+    <file>it/credits.html</file>
+    <file>nl/credits.html</file>
+    <file>zh_CN/credits.html</file>
+    <file>licence.html</file>
+    <file>it/licence.html</file>
+    <file>nl/licence.html</file>
+    <file>zh_CN/licence.html</file>
+    <file>welcome.html</file>
+    <file>de/welcome.html</file>
+    <file>it/welcome.html</file>
+    <file>ja/welcome.html</file>
+    <file>nl/welcome.html</file>
+    <file>zh_CN/welcome.html</file>
+    <file>adblock.css</file>
+    <file>default.css</file>
+    <file>internal.css</file>
+    <file>quirks.css</file>
+    <file>netsurf.png</file>
+    <file>default.ico</file>
+    <file>icons/show-cookie.png</file>
+    <file>icons/local-history.png</file>
+    <file>icons/arrow-l.png</file>
+    <file>icons/content.png</file>
+    <file>icons/directory2.png</file>
+    <file>icons/directory.png</file>
+    <file>icons/hotlist-add.png</file>
+    <file>icons/hotlist-rmv.png</file>
+    <file>icons/search.png</file>
+    <file>icons/24x24/actions/page-info-insecure.png</file>
+    <file>icons/24x24/actions/page-info-internal.png</file>
+    <file>icons/24x24/actions/page-info-local.png</file>
+    <file>icons/24x24/actions/page-info-secure.png</file>
+    <file>icons/24x24/actions/page-info-warning.png</file>
+    <file>icons/48x48/actions/page-info-insecure.png</file>
+    <file>icons/48x48/actions/page-info-internal.png</file>
+    <file>icons/48x48/actions/page-info-local.png</file>
+    <file>icons/48x48/actions/page-info-secure.png</file>
+    <file>icons/48x48/actions/page-info-warning.png</file>
+    <file>languages</file>
+    <file>accelerators</file>
+  </gresource>
+</gresources>

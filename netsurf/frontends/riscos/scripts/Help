@@ -1,0 +1,12 @@
+| Help file for NetSurf. ( $Revision$ )
+
+| Set system variables and application sprites
+Set NetSurf$ForceVars 1
+/<Obey$Dir>.!Boot
+UnSet NetSurf$ForceVars
+
+| Resource Locations
+SetMacro NetSurf$Path        Choices:WWW.NetSurf.,<NetSurf$Dir>.
+
+WimpSlot -min 8k -max 8k
+Run <NetSurf$Dir>.OpenHelp

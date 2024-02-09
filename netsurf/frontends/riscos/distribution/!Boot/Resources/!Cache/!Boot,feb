@@ -1,0 +1,17 @@
+If (("<Cache$AppDir>" = "") OR ("<Cache$ForceVars>" = "1")) Then Set Cache$AppDir <Obey$Dir>
+
+IconSprites <Cache$AppDir>.!Sprites
+
+| Find and set up resource paths
+WimpSlot -min 64k -max 64k
+Run <Cache$AppDir>.Resources.ResFind CacheApp
+If (("<Cache$Meta>" = "") OR ("<Cache$ForceVars>" = "1")) Then Set Cache$Meta CacheAppRes:!Meta
+
+| Work out where the cache directory should be -- use Choices$User if set or Default, otherwise.
+Set Cache$Suffix "<Choices$User>"
+If "<Cache$Suffix>" = "" Then Set Cache$Suffix "Default"
+If (("<Cache$Dir>" = "") OR ("<Cache$ForceVars>" = "1")) Then Set Cache$Dir "<Cache$AppDir>.Caches.<Cache$Suffix>"
+Unset Cache$Suffix
+
+| Ensure cache directory exists (sadly, unavoidable)
+CDir <Cache$Dir>

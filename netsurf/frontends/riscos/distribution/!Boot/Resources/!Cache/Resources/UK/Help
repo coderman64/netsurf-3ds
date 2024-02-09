@@ -1,0 +1,60 @@
+Cache
+-----
+
+Cache provides a shared location for cached data. This location can be
+used by application authors to store semi-permanent data. Cache can be
+placed anywhere on your computer where it will be "seen" by the Filer
+during start up. (For instance, the "Resources" directory inside !Boot.)
+
+Once "seen" it will set up a cache location, which can be shown by
+double-clicking on !Cache.
+
+
+Application Authors
+----------- -------
+
+Use Cache in a similar way to using Scrap. You *must not* assume that
+Cache is present on the user's system however, as Cache is not an
+official part of the system (like Scrap).
+
+To use Cache you should:
+ * Check for the presence of "<Cache$Dir>" before proceeding
+ * Read from and write data to "<Cache$Dir>.APPNAME" where APPNAME has
+   been allocated to you by the allocations service. See:
+   http://www.riscosopen.com/content/allocate
+ * If the APPNAME directory does not exist, you should create it.
+
+This version of Cache is published by Adam Richardson who can be
+contacted at riscos@snowstone.org.uk.
+
+The website for Cache is: http://www.snowstone.org.uk/riscos/
+
+
+Credits
+-------
+
+Cache is (c) Adam Richardson, 2007.
+Thanks to Rob Kendrick for the initial idea and input.
+
+
+License
+-------
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

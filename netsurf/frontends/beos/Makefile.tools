@@ -1,0 +1,14 @@
+# -*- mode: makefile-gmake -*-
+##
+## BeOS target tool setup
+##
+
+# Building for BeOS/Haiku
+#ifeq ($(HOST),beos)
+  # Build for BeOS on BeOS
+  GCCSDK_INSTALL_ENV := /boot/develop
+  CC := gcc
+  CXX := g++
+  EXEEXT :=
+  PKG_CONFIG := pkg-config
+#endif

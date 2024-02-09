@@ -1,0 +1,41 @@
+<?l?>
+<!--0-->
+<svg xmlns:s="0" xmlns="00000000000000000000000000"
+d="0" width="0" height="0">
+0<defs>
+0<filter id="0" x="0" y="0" th="0" ht="0">
+0<feGaussianBlur on="0" id="0"/>
+0</filter>0
+0<clipPath id="0">
+0<le cx="0" cy="0" r="0" th="0" ht="0"/>
+0</clipPath>0
+0<clipPath id="0">
+0<rt x="0" y="0" th="0" ht="0"/>
+0</clipPath>0
+0</defs>0
+0<g id="0">0
+0<!--0-->
+0<rect id="0" style="stroke:black;fill:"
+x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" style="fill:red;"
+x="0" y="0" width="0" height="0"/>0
+0<!--0-->
+0<rect id="0" style="stroke:black;fill:none"
+x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" style="fill:red" x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" style="fill:" x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" style="fill:red;" l-h="0"
+x="0" y="0" width="0" height="0"/>0
+0<!--0-->
+0<rect id="0" style="stroke:black;fill:none"
+x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" p-th="0" x="0" y="0" width="0" height="0"/>
+0<!--0-->
+0<rect id="0" style="fill:red;" p-th="0"
+x="0" y="0" width="0" height="0"/>0
+0</g>0</svg>

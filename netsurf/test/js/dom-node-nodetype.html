@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head><title>DOM Node::nodeType</title></head>
+<body>
+<h1>Node::nodeType</h1>
+<h2>These should all resolve to true.</h2>
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+document.write("<p>document is Node.DOCUMENT_NODE: ",
+               document.nodeType === Node.DOCUMENT_NODE, "</p>");
+document.write("<p>document.body is Node.ELEMENT_NODE: ",
+               document.body.nodeType === Node.ELEMENT_NODE, "</p>");
+document.write("<p>document.body.firstChild is Node.TEXT_NODE: ",
+               document.body.firstChild.nodeType === Node.TEXT_NODE, "</p>");
+document.write("<p>document.body.firstChild.nextSibling is Node.ELEMENT_NODE: ",
+               document.body.firstChild.nextSibling.nodeType === Node.ELEMENT_NODE, "</p>");
+document.write("<p>document.body.firstChild.nextSibling.firstChild is Node.TEXT_NODE: ",
+               document.body.firstChild.nextSibling.firstChild.nodeType === Node.TEXT_NODE, "</p>");
+</script>
+<h2>These should all resolve to false.</h2>
+<script>
+document.write("<p>document is Node.ELEMENT_NODE: ",
+               document.nodeType === Node.ELEMENT_NODE, "</p>");
+document.write("<p>document.body is Node.TEXT_NODE: ",
+               document.body.nodeType === Node.TEXT_NODE, "</p>");
+document.write("<p>document.body.firstChild is Node.ELEMENT_NODE: ",
+               document.body.firstChild.nodeType === Node.ELEMENT_NODE, "</p>");
+document.write("<p>document.body.firstChild.nextSibling is Node.DOCUMENT_NODE: ",
+               document.body.firstChild.nextSibling.nodeType === Node.DOCUMENT_NODE, "</p>");
+document.write("<p>document.body.firstChild.nextSibling.firstChild is Node.ELEMENT_NODE: ",
+               document.body.firstChild.nextSibling.firstChild.nodeType === Node.ELEMENT_NODE, "</p>");
+</script>
+</body>
+</html>

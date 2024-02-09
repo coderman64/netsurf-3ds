@@ -1,0 +1,6 @@
+title: start and stop browser
+group: basic
+steps:
+- action: launch
+- action: quit
+

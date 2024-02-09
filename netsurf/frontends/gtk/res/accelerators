@@ -1,0 +1,40 @@
+# GTK accelerator keys for menu entries
+# The keys must match those in the menus to be applied
+#
+# These are passed to gtk_accelerator_parse and must not be translated
+# The key names are the same as those in the gdk/gdkkeysyms.h header file
+#   but without the leading “GDK_KEY_”.
+
+gtkNextTab:<Control>Page_Down
+gtkPrevTab:<Control>Page_Up
+gtkCloseTab:<Control>w
+gtkNewTab:<Control>t
+gtkNewWindow:<Control>n
+gtkOpenFile:<Control>o
+gtkCloseWindow:<Control><shift>w
+gtkSavePage:<Control>s
+gtkPrintPreview:<Control><shift>p
+gtkPrint:<Control>p
+gtkQuitMenu:<Control>q
+gtkCut:<Control>x
+gtkCopy:<Control>c
+gtkPaste:<Control>v
+gtkSelectAll:<Control>a
+gtkFind:<Control>f
+gtkStop:Escape
+gtkReload:F5
+gtkZoomPlus:<Control>plus
+gtkZoomMinus:<Control>minus
+gtkZoomNormal:<Control>0
+gtkFullScreen:F11
+gtkPageSource:<Control>U
+gtkDownloads:<Control>j
+gtkBack:<alt>Left
+gtkForward:<alt>Right
+gtkHome:<alt>Down
+gtkLocalHistory:<Control>h
+gtkGlobalHistory:<Control><shift>h
+gtkAddBookMarks:<Control>d
+gtkShowBookMarks:F6
+gtkShowCookies:F9
+gtkOpenLocation:<Control>l

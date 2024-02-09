@@ -1,0 +1,8 @@
+# Messages for Cache
+
+multiuser:Multi-user system present.
+singleuser:No multi-user system present.
+location:Cache directory set to: 
+opendir:Opening cache location...
+fatalerror:Cache has suffered a fatal error and has quit. 
+

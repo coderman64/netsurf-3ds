@@ -1,0 +1,6 @@
+# Index file for automated parser tests
+#
+# Test			Description
+
+tests1.dat		Basic tests
+defaulting.dat		Explicit defaulting tests

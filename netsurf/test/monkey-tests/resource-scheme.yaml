@@ -1,0 +1,34 @@
+title: resource scheme
+group: basic
+steps:
+- action: launch
+  language: en
+- action: window-new
+  tag: win1
+- action: navigate
+  window: win1
+  url: resource:does-not-exist
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: plot-check
+  window: win1
+  checks:
+  - text-contains: Not found
+  - text-contains: Error 404
+- action: navigate
+  window: win1
+  url: resource:netsurf.png
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: plot-check
+  window: win1
+  checks:
+  - bitmap-count: 1
+- action: window-close
+  window: win1
+- action: quit
+

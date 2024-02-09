@@ -1,0 +1,10 @@
+prefix=PREFIX
+exec_prefix=${prefix}
+libdir=${exec_prefix}/LIBDIR
+includedir=${prefix}/INCLUDEDIR
+
+Name: libnspsl
+Description: NetSurf Public Suffix List
+Version: VERSION
+Libs: -L${libdir} LIBRARIES
+Cflags: -I${includedir}

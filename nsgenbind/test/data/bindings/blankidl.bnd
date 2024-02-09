@@ -1,0 +1,7 @@
+/*
+ * Test with IDL file full of whitespace
+ */
+
+binding duk_libdom {
+	webidl "blank.idl";
+};

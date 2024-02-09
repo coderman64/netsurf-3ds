@@ -1,0 +1,17 @@
+<svg v0='0' x1='0' id='tgrad' gradientUnits='0'>
+0<linearGradient y1='0' x1='0' id='0'>
+0<stop stop-color='0' offset='0'/>
+0<stop stop-color='0' offset='0'/>
+0</linearGradient>
+0<path st-lin='0' k0='0' d='00' fill='none' s0='0'/>0
+0
+0<linearGradient y1='0' x1='0' id='0' gradientUnits='0'>
+0<linearGradient y1='0' x1='0' id='0'>
+0<stop stop-color='0' offset='0'/>
+0<stop stop-color='0' offset='0'/>
+0</linearGradient>
+0<path st-lin='0' k0='0' d='0' fill='0' s0='0'/>0
+0<stop stop-color='0' offset='0'/>
+0
+0</linearGradient>
+0<path st-lin='0' stroke='url(#tgrad)' d='M00,00c000,0-00,0-00-00M00,00h0(' fill='none' stroke-width='6'/>0</svg>

@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>DOM element reflection reference</title>
+<link rel="stylesheet" type="text/css" href="tst.css">
+</head>
+<body>
+<h1 id="header" class="normal">DOM firstElementChild reference (#header .normal)</h1>
+<noscript><p>Javascript is disabled</p></noscript>
+<p><b>body.firstElementChild.id:</b> <script>document.write(document.body.firstElementChild.id);</script></p>
+<p><b>body.firstElementChild.className:</b> <script>document.write(document.body.firstElementChild.className);</script></p>
+
+<script>
+  document.body.firstElementChild.id = "replacedid"
+  document.body.firstElementChild.className = "replacedclass"
+</script>
+
+<h1>DOM firstElementChild reference (#replacedid .replacedclass)</h1>
+<p><b>body.firstElementChild.id:</b> <script>document.write(document.body.firstElementChild.id);</script></p>
+<p><b>body.firstElementChild.className:</b> <script>document.write(document.body.firstElementChild.className);</script></p>
+
+</body>
+</html>

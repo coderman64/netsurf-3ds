@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Class List (and other token lists?)</title>
+    <style>
+        .bad { background-color: red; }
+        .ok { background-color: green; }
+    </style>
+    </head>
+    <body>
+        <h1>This is a set of demonstrators for the token list Element.classList</h1>
+        <h2>This first is taken from the MDN for DOMTokenList</h2>
+        <span id="demo1" class="    d   d e f bad"></span>
+        <script>
+            var span = document.getElementById("demo1");
+            var classes = span.classList;
+            classes.add("x", "d", "g");
+            classes.remove("e", "g");
+            classes.toggle("d"); // Toggles d off
+            classes.toggle("q", false); // Forces q off (won't be present)
+            classes.toggle("d"); // Toggles d on
+            classes.toggle("d", true); // Forces d on (won't toggle it off again)
+            if (classes.contains("d")) {
+                classes.add("ok")
+                classes.remove("bad")
+                span.textContent = "span classList is \"" + classes + '"';
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+Short:        Fast CSS capable web browser
+Uploader:     chris@unsatisfactorysoftware.co.uk (Chris Young)
+Author:       NetSurf contributors (OS4 port by Chris Young)
+Type:         comm/www
+Version:      3.11
+Requires:     dev/misc/guigfxlib.lha
+Architecture: ppc-amigaos >= 4.0.0
+
+This is NetSurf 3.11 for AmigaOS 4 (native frontend).
+For the latest version, visit http://www.netsurf-browser.org
+
+    *******************************************
+    * Please report bugs on the bugtracker at *
+    *     http://bugs.netsurf-browser.org     *
+    *******************************************
+
+See http://www.netsurf-browser.org for more information about
+NetSurf.
+
+This software is licensed under the GPL, and the sources are
+available from http://www.netsurf-browser.org.  A copy can
+also be obtained directly from the maintainer of this port,
+chris@unsatisfactorysoftware.co.uk, in the event that the
+website is unavailable.
+

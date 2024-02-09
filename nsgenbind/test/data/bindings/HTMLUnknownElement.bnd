@@ -1,0 +1,19 @@
+class HTMLUnknownElement {
+	preface %{
+/* class pre */
+		%};
+
+	prologue %{
+/* class pro  */
+		%};
+
+	epilogue %{
+/* class epi */
+		%};
+
+	postface %{
+/* class post */
+		%};	
+};
+
+init HTMLUnknownElement(struct dom_html_element *html_unknown_element::html_element);

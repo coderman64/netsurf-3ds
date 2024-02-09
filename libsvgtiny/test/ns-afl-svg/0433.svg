@@ -1,0 +1,62 @@
+<?l?>
+<!DOCTYPE s PUBLIC "0" "0">
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<!--0-->
+<svg xmlns="00000000000000000000000000" xmlns:xlink="0" id="0" viewBox="0 0 8 6" width="%" height="1%" ion="0" baseProfile="0">
+0<SVGTestCase xmlns="0">
+0<OperatorScript ver="0" testname="0">
+0<Paragraph>
+0
+0
+0</Paragraph>
+0<Paragraph>
+0
+0
+0
+
+0
+0
+0
+0
+0</Paragraph>
+0<Paragraph>
+0
+0
+0</Paragraph>
+0</OperatorScript>
+0</SVGTestCase>
+0<title id="0">0</title>
+0<desc id="0">0</desc>
+0<!--0-->
+0<!--0-->
+0<!--0-->
+0<g id="0">
+0<!--0-->
+0<!--0-->
+0<!--0-->
+0<pattern id="Pat0a" x="0" y="0" h="0" t="0" pits="0">
+0<rect x="0" y="0" w="0" e="0" fill="0"/>
+0<rect x="0" y="0" width="0" height="0" fill="0"/>
+0<rect x="0" y="0" w="0" e="0" fill="0"/>
+0<rect x="0" y="0" width="0" height="0" fill="0"/>
+0</pattern>
+0<pattern id="Pat0b" xlink:href="0" w="0" e="0"/>
+0<rect x="0" y="0" width="!" height="%" fill="url(#Pat0a)"/>
+0<text font-family="0" e="0" x="0" y="0">0</text>
+0<rect x="0" y="0" width="0" height="0" fill="url(#Pat0b)"/>
+0<text ily="0" font-size="0" x="0" y="0">0</text>
+0</g>
+0<text d="0" x="0" y="0" font-size="0" stroke="0" fill="0">0</text>0
+0<rect x="0" y="0" width="!" height="%" fill="url(#Pat0a)"/>
+0<text font-family="0" e="0" x="0" y="0">0</text>
+0<rect x="0" y="0" width="0"/>0</svg>

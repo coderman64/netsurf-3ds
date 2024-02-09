@@ -1,0 +1,37 @@
+<?l?>
+<!DOCTYPE g PUBLIC "0" "0"[ <!ENTITY Smile "0
+<rect x='0' y='0' width='0' height='0' fill='a0a' stroke='red'/>0<g transform='translate(0 0)'>0<circle cx='0' cy='0' r='1' fill='y0l00w'/>0<circle cx='0' cy='0' r='1' fill='black'/>0<circle cx='0' cy='0' r='5' fill='black'/>0<path d='M0 0A0 0 0 0 0 0 0' stroke='b0b00' stroke-width='2'/>0</g>0">
+<!ENTITY t "">
+<!ENTITY Viewport2 "<rect x='0' y='0' width='0' height='0'
+fill='none' stroke='blue'/>">
+]>
+<svg width="px" height="30px" i="0" xmlns="000000000000000000">
+0<desc>0</desc>
+0<rect x="0" y="0" width="0" ht="0"
+fill="none" stroke="blue"/>
+0<g f="0">
+0<text x="0" y="0">0</text>
+0<g transform="translate(0,0)">&Smile;</g>
+0<text x="0" y="0">0</text>
+0<g transform="translate(0,0)">&V;</g>
+0<text x="0" y="0">0</text>
+0<g transform="translate(0,0)">&Viewport2;</g>
+0<g id="0" transform="translate(0,0)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&p;
+0<svg t="0" viewBox="0 0 1 4"
+th="" height="0">&Smile;</svg></g>
+0<g transform="translate(0,0)"><text y="0">0</text>&Viewport2;
+0<svg o="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0</g>
+0<g id="0" transform="translate(0,0)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&V;
+0<svg io="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(0,0)"><text y="0">0</text>&V;
+0</g>
+0<g transform="translate(0,0)"><text y="0">0</text>&t0;
+0<svg presatio="0" viewBox="0 0 3 4"
+th="0" height="0">&Smile;</svg></g>
+0</g>0
+0</g>0</svg>

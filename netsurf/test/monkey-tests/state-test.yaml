@@ -1,0 +1,69 @@
+title: Page state info test
+group: basic
+steps:
+- action: launch
+  language: en
+- action: window-new
+  tag: win1
+- action: navigate
+  window: win1
+  url: about:config
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: INTERNAL
+- action: navigate
+  window: win1
+  url: file:///
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: LOCAL
+- action: navigate
+  window: win1
+  url: http://test.netsurf-browser.org/html/trivial-document.html
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: INSECURE
+- action: navigate
+  window: win1
+  url: https://test.netsurf-browser.org/html/trivial-document.html
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: SECURE
+- action: navigate
+  window: win1
+  url: https://test.netsurf-browser.org/html/trivial-document-with-png.html
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: SECURE
+- action: navigate
+  window: win1
+  url: https://test.netsurf-browser.org/html/trivial-document-with-http-png.html
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: page-info-state
+  window: win1
+  match: SECURE_ISSUES
+- action: quit
+

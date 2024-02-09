@@ -1,0 +1,41 @@
+<html>
+  <head><title>Verify instanceof checking</title></head>
+  <body>
+    <h1>Check instanceof behaviour</h1>
+    <table cellpadding=2 border=1>
+      <tr><th>A</th><th>instanceof</th><th>B</th><th>?</th><th>Correct?</th></tr>
+      <noscript><p>Javascript is disabled</p></noscript>
+      <script>
+var checks = [
+  [ "window", "Window", true ],
+  [ "document", "HTMLDocument", true ],
+  [ "document.head", "Node", true ],
+  [ "document.getElementsByTagName(\"body\")", "HTMLCollection", true ],
+  [ "document.body", "Window", false ],
+  [ "EventListener", "Object", undefined ],
+];
+
+for (var _check in checks) {
+  var check = checks[_check];
+  document.write("<tr>");
+  document.write("<td>" + check[0] + "</td><td>instanceof</td><td>" + check[1] + "</td>");
+  try {
+    var A = eval(check[0]);
+    var B = eval(check[1]);
+    var C = check[2];
+    var V = A instanceof B;
+    var OK = V == C;
+    document.write("<td>" + V + "</td><td>" + (OK ? "YES" : "<b style=\"color: red\">NO</b>") + "</td>");
+  } catch (e) {
+    if (check[2] == undefined) {
+      document.write("<td>" + e + "</td><td>YES</td>");
+    } else {
+      document.write("<td colspan=2><b style=\"color: red\">" + e + "</b></td>");
+    }
+  }
+  document.write("</tr>");
+}
+      </script>
+    </table>
+  </body>
+</html>

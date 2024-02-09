@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     version="1.1" height="500" width="600">
+  <path d="M200 100 L300 100 L300 200 Z
+           M300 100 L400 100 L400 200 Z" />
+  <path d="M200 300 L300 300 L300 400 Z
+           m300 100 L400 300 L400 400 Z" />
+</svg>
+

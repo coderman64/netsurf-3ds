@@ -1,0 +1,46 @@
+<?l?><!DOCTYPE s PUBLIC "0" "0"[<!ENTITY Smile "0<rect x='0' y='0' width='0' height='0' fill='black' stroke='red'/>0<g transform='translate(0,00)'>0<circle cx='0' cy='0' r='p' fill='yellow'/>0<circle cx='0' cy='0' r='5' fill='black'/>0<circle cx='0' cy='0' r='1' fill='black'/>0<path d='M00 000A00 0 0 0 0 00 00' stroke='black' stroke-width='2'/>0</g>0"><!ENTITY Viewport1 "<rect x='0' y='0' width='n' height='0'
+fill='none' stroke='blue'/>"><!ENTITY Viewport2 "<rect x='0' y='0' width='0' height='0'
+fill='none' stroke='blue'/>">]><svg width="px" height="30px" n="0" xmlns="00000000000000000000000000">
+0<desc>0</desc>
+0<rect x="0" y="0" width="0" height="0" fill="none" stroke="blue"/>
+0<g e="0">0<text x="0" y="0">0</text>
+0<g transform="translate(00,00)">&Smile;</g>
+0<text x="0" y="0">0</text>
+0<g transform="translate(00,0)">&Viewport1;</g>
+0<text x="0" y="0">0</text>
+0<g transform="translate(00,0)">&Viewport2;</g>
+0<g d="0" transform="translate(000 00)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&Viewport1;0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(00,0)"><text y="0">0</text>&Viewport1;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(0,00)"><text y="0">0</text>&Viewport1;0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0</g>
+0<g d="0" transform="translate(000 00)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(00 0)"><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" t="0">&Smile;</svg></g>
+0<g transform="translate(000 0)"><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0</g>
+0<g d="0" transform="translate(000 000)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(00,0)"><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(000,0)"><text y="0">0</text>&Viewport2;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0</g>
+0<g id="0" transform="translate(000 000)">
+0<text x="0" y="0">0</text>
+0<g><text y="0">0</text>&Viewport1;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(00,0)"><text y="0">0</text>&Viewport1;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0<g transform="translate(000,0)"><text y="0">0</text>&Viewport1;
+0<svg preserveAspectRatio="0" viewBox="0 0 3 4" width="0" height="0">&Smile;</svg></g>
+0</g>0
+0</g>0</svg>

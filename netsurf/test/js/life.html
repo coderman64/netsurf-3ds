@@ -1,0 +1,175 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Conway's Game of Life</title>
+    <link rel="stylesheet" type="text/css" href="resource:internal.css" />
+    <style>
+      canvas#surface {
+        width: 50vmin;
+        height: 50vmin;
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body class="ns-even-bg ns-even-fg ns-border">
+    <h1 class="ns-border">Conway's Game of Life</h1>
+    <div style="margin: 1em;">
+      <div>
+        Run: <input id="running" type="checkbox" checked/><br />
+        Set Size: <input id="width" type="text" size="4" value="50" /> x
+        <input id="height" type="text" size="4" value="50" />
+        <button id="commitsize">Commit</button><br />
+      </div>
+      <div>
+        <canvas id="surface" width="50" height="50">
+          Sorry, you can't play Game of Life if JavaScript is turned off
+        </canvas>
+      </div>
+      <div>
+        <button id="random">Randomise</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    (function () {
+      const running = document.getElementById("running");
+      const iwidth = document.getElementById("width");
+      const iheight = document.getElementById("height");
+      const surface = document.getElementById("surface");
+      const context = surface.getContext("2d");
+      var width = surface.width - 10;
+      var height = surface.height - 10;
+      var frame = context.createImageData(width, height);
+      var drawto = context.createImageData(width, height);
+      var greyto = context.createImageData(width, height);
+      const greylevel = 31;
+
+      function getOffset(x, y) {
+        if (x < 0) {
+          x = width + x;
+        }
+        if (y < 0) {
+          y = height + y;
+        }
+        if (x >= width) {
+          x = x - width;
+        }
+        if (y >= height) {
+          y = y - height;
+        }
+        return (y * width + x) * 4;
+      }
+      function getCell(x, y) {
+        const offset = getOffset(x, y);
+        return frame.data[offset + 3] != 0;
+      }
+      function setCell(x, y) {
+        const offset = getOffset(x, y);
+        drawto.data[offset + 3] = 255;
+        greyto.data[offset + 3] = greylevel;
+      }
+      function clearCell(x, y) {
+        const offset = getOffset(x, y);
+        drawto.data[offset + 3] = 0;
+        greyto.data[offset + 3] = 0;
+      }
+      function countNeighbours(x, y) {
+        return (
+          getCell(x - 1, y - 1) +
+          getCell(x, y - 1) +
+          getCell(x + 1, y - 1) +
+          getCell(x - 1, y) +
+          getCell(x + 1, y) +
+          getCell(x - 1, y + 1) +
+          getCell(x, y + 1) +
+          getCell(x + 1, y + 1)
+        );
+      }
+      function flip() {
+        var temp = frame;
+        context.putImageData(drawto, 5, 5);
+        context.putImageData(greyto, 5 - width, 5 - height); /* top left */
+        context.putImageData(greyto, 5 - width, 5); /* left */
+        context.putImageData(greyto, 5, 5 - height); /* top */
+        context.putImageData(greyto, 5 + width, 5 + height); /* bottom right */
+        context.putImageData(greyto, 5 + width, 5); /* right */
+        context.putImageData(greyto, 5, 5 + height); /* bottom */
+        context.putImageData(greyto, 5 + width, 5 - height); /* top right */
+        context.putImageData(greyto, 5 - width, 5 + height); /* bottom left */
+        frame = drawto;
+        drawto = temp;
+      }
+      /* Game of life is run on a timer */
+      setInterval(function () {
+        if (!running.checked) {
+          return;
+        }
+        console.log("Frame");
+        /* To do a frame of GoL we compute by consuming frame and writing to drawto */
+        for (var y = 0; y < height; y++) {
+          for (var x = 0; x < width; x++) {
+            const neighbours = countNeighbours(x, y);
+            if (getCell(x, y)) {
+              if (neighbours == 2 || neighbours == 3) {
+                setCell(x, y); // live, 2/3 neigh => stay alive
+              } else {
+                clearCell(x, y); // live, <2/>3 neigh => dies
+              }
+            } else {
+              if (neighbours == 3) {
+                setCell(x, y); // dead, 3 neigh => born
+              } else {
+                clearCell(x, y); // dead, !3 neigh => stay dead
+              }
+            }
+          }
+        }
+        flip();
+      }, 100);
+      const randomise = function () {
+        var ofs = 3;
+        for (var y = 0; y < height; y++) {
+          for (var x = 0; x < width; x++) {
+            if (Math.random() < 0.5) {
+              drawto.data[ofs] = 0;
+            } else {
+              drawto.data[ofs] = 255;
+              greyto.data[ofs] = greylevel;
+            }
+            ofs += 4;
+          }
+        }
+        flip();
+      };
+      document.getElementById("random").addEventListener("click", randomise);
+      document
+        .getElementById("commitsize")
+        .addEventListener("click", function () {
+          const iwval = parseInt(iwidth.value, 10);
+          const ihval = parseInt(iheight.value, 10);
+          console.log(width, height, "->", iwval, ihval);
+          if (
+            (iwval != width || ihval != height) &&
+            iwval >= 10 &&
+            iwval <= 200 &&
+            ihval >= 10 &&
+            ihval <= 200
+          ) {
+            console.log("yes");
+            surface.height = ihval + 10;
+            context.height = ihval + 10;
+            height = ihval;
+            surface.width = iwval + 10;
+            context.width = iwval + 10;
+            width = iwval;
+            frame = context.createImageData(width, height);
+            drawto = context.createImageData(width, height);
+            greyto = context.createImageData(width, height);
+            resetGrey();
+            randomise();
+          }
+        });
+      randomise();
+    })();
+  </script>
+</html>

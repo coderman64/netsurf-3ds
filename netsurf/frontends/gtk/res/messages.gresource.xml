@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/netsurf">
+    <file>Messages</file>
+    <file>nl/Messages</file>
+    <file>de/Messages</file>
+    <file>fr/Messages</file>
+    <file>it/Messages</file>
+    <file>zh_CN/Messages</file>
+  </gresource>
+</gresources>

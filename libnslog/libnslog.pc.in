@@ -1,0 +1,10 @@
+prefix=PREFIX
+exec_prefix=${prefix}
+libdir=${exec_prefix}/LIBDIR
+includedir=${prefix}/INCLUDEDIR
+
+Name: libnslog
+Description: NetSurf Logging sublayer
+Version: VERSION
+Libs: -L${libdir} LIBRARIES
+Cflags: -I${includedir}

@@ -1,0 +1,2 @@
+If "<CacheAppRes$Path>" = "" Then Run <Cache$AppDir>.Resources.ResFind CacheApp
+Filer_Run CacheAppRes:Help

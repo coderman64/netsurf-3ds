@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>DOM Node::nodeType</title></head>
+<body>
+<h1>Node::ParentNode</h1>
+<h2>These should all resolve to nodes of some kind.</h2>
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+document.write("<p>document is: ",
+               document, "</p>");
+document.write("<p>document.body is: ",
+               document.body, "</p>");
+document.write("<p>document.body.parentNode: ",
+               document.body.parentNode, "</p>");
+</script>
+<h2>These should all resolve to null.</h2>
+<script>
+document.write("<p>document.parentNode is: ",
+               document.parentNode, "</p>");
+document.write("<p>document.createElement('foo').parentNode is: ",
+               document.createElement('foo').parentNode, "</p>");
+</script>
+</body>
+</html>

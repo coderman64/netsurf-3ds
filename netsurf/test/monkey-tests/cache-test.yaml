@@ -1,0 +1,35 @@
+title: cache test
+group: performance
+steps:
+- action: launch
+  language: en
+- action: timer-start
+  timer: timer1
+- action: window-new
+  tag: win1
+- action: navigate
+  window: win1
+  url: http://www.bbc.co.uk/news
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: timer-stop
+  timer: timer1
+- action: timer-start
+  timer: timer2
+- action: window-new
+  tag: win2
+- action: navigate
+  window: win2
+  url: http://www.bbc.co.uk/news
+- action: block
+  conditions:
+  - window: win2
+    status: complete
+- action: timer-stop
+  timer: timer2
+- action: timer-check
+  condition: timer2 < timer1
+- action: quit
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>How many bit-reversed primes are prime?</title>
+</head>
+<body>
+<pre>
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+var start = new Date().getTime();
+
+// Add the lpad method to Strings, for adding left padding
+String.prototype.lpad = function(padString, length) {
+    var str = this;
+    while (str.length < length)
+        str = padString + str;
+    return str;
+}
+
+// Naive prime checker
+function is_prime(n)
+{
+    for (var i = 2; i <= n/2; i++) {
+        if (n % i === 0) {
+            return false;
+        }
+    }
+    if (n === 1) {
+        return false;
+    }
+    return true;
+}
+
+// Bit reversal
+function bit_reverse(num)
+{
+    var rev = 0;
+    while (num > 0) {
+        rev <<= 1;
+        rev |= (num & 1);
+        num >>= 1;
+    }
+    return rev;
+}
+
+for (var num = 1; num < 10000; num++) {
+    var rev = bit_reverse(num);
+    var num_prime = is_prime(num);
+    var rev_prime = is_prime(rev);
+
+    document.write(num.toString().lpad(" ", 7) + " ");
+    document.write(num_prime ? "Prime" : "     ");
+    document.write("  ");
+
+    document.write(rev.toString().lpad(" ", 7) + " ");
+    document.write(rev_prime ? "Prime" : "     ");
+    document.write("  ");
+
+    document.write(num_prime && rev_prime ? "(both)" : "");
+    document.write("\n");
+}
+
+var end = new Date().getTime();
+var time = end - start;
+document.write('Execution time: ' + time + '\n');
+
+</script>
+</pre>
+</body>
+</html>

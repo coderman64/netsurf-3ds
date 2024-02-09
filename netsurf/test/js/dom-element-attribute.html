@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>element set remove attribute</title>
+<link rel="stylesheet" type="text/css" href="tst.css">
+</head>
+<body>
+<h1>HTMLElement test of attribute set/remove</h1>
+
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+    var e = document.createElement("Div");
+    var t = document.createTextNode("Some text in a div.");
+    e.appendChild(t);
+    e.setAttribute("id", "test");
+    document.body.appendChild(e);
+</script>
+<script>
+    var test = document.getElementById("test");
+    document.write("<p>The div has id: ''", test.id, "''.</p>");
+    document.write("<p>Removing ID attribute...");
+    test.removeAttribute("ID");
+    document.write("<p>The div has id: ''", test.id, "''.</p>");
+</script>
+
+</body>
+</html>

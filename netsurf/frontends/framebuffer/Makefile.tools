@@ -1,0 +1,19 @@
+# -*- mode: makefile-gmake -*-
+##
+## tool setup for the framebuffer target
+##
+
+ifeq ($(origin GCCSDK_INSTALL_ENV),undefined)
+  PKG_CONFIG := PKG_CONFIG_LIBDIR="$(DEVKITPRO)/portlibs/3ds/lib/pkgconfig" pkg-config
+else
+  PKG_CONFIG := PKG_CONFIG_LIBDIR="$(GCCSDK_INSTALL_ENV)/lib/pkgconfig" pkg-config                
+endif
+
+$(info SDK ENV $(GCCSDK_INSTALL_ENV))
+
+## ifneq ($(origin GCCSDK_INSTALL_CROSSBIN),undefined)
+##   CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+##   CXX := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
+## endif
+
+CC := $(DEVKITARM)/bin/arm-none-eabi-gcc 

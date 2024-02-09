@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create paragraph and inspect its proto</title>
+<link rel="stylesheet" type="text/css" href="tst.css">
+</head>
+<body>
+<h1>HTMLElement test of attribute set/remove</h1>
+
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+    var e = document.createElement("p");
+    var t = document.createTextNode("Some text in a paragraph.");
+    e.appendChild(t);
+    e.setAttribute("id", "test");
+    document.body.appendChild(e);
+</script>
+<script>
+    var test = document.getElementById("test");
+    document.write("<p>Paragraph element proto: ", test, ".</p>");
+</script>
+
+</body>
+</html>

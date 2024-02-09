@@ -1,0 +1,249 @@
+# -*- mode: makefile-gmake -*-
+##
+## Netsurf library and feature macros
+##
+
+# A macro that conditionaly adds flags to the build when a feature is enabled.
+#
+# 1: Feature name (ie, NETSURF_USE_BMP -> BMP)
+# 2: Parameters to add to CFLAGS
+# 3: Parameters to add to LDFLAGS
+# 4: Human-readable name for the feature
+define feature_enabled
+  ifeq ($$(NETSURF_USE_$(1)),YES)
+    CFLAGS += $(2)
+    CXXFLAGS += $(2)
+    LDFLAGS += $(3)
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(4)	enabled       (NETSURF_USE_$(1) := YES))
+    endif
+  else ifeq ($$(NETSURF_USE_$(1)),NO)
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(4)	disabled      (NETSURF_USE_$(1) := NO))
+    endif
+  else
+    $$(info M.CONFIG: $(4)	error         (NETSURF_USE_$(1) := $$(NETSURF_USE_$(1))))
+    $$(error NETSURF_USE_$(1) must be YES or NO)
+  endif
+endef
+
+
+# A macro that conditionaly adds flags to the build with a uniform display.
+#
+# 1: Feature name (ie, NETSURF_USE_BMP -> BMP)
+# 2: Human-readable name for the feature
+# 3: Parameters to add to CFLAGS when enabled
+# 4: Parameters to add to LDFLAGS when enabled
+# 5: Parameters to add to CFLAGS when disabled
+# 6: Parameters to add to LDFLAGS when disabled
+define feature_switch
+  ifeq ($$(NETSURF_USE_$(1)),YES)
+    CFLAGS += $(3)
+    CXXFLAGS += $(3)
+    LDFLAGS += $(4)
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(2)	enabled       (NETSURF_USE_$(1) := YES))
+    endif
+  else ifeq ($$(NETSURF_USE_$(1)),NO)
+    CFLAGS += $(5)
+    CXXFLAGS += $(5)
+    LDFLAGS += $(6)
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(2)	disabled      (NETSURF_USE_$(1) := NO))
+    endif
+  else
+    $$(info M.CONFIG: $(4)	error         (NETSURF_USE_$(1) := $$(NETSURF_USE_$(1))))
+    $$(error NETSURF_USE_$(1) must be YES or NO)
+  endif
+endef
+
+
+# Extend flags with appropriate values from pkg-config for enabled features
+#
+# 1: pkg-config required modules for feature
+# 2: Human-readable name for the feature
+define pkg_config_find_and_add
+  ifeq ($$(PKG_CONFIG),)
+    $$(error pkg-config is required to auto-detect feature availability)
+  endif
+
+  PKG_CONFIG_$(1)_EXISTS := $$(shell $$(PKG_CONFIG) --exists $(1) && echo yes)
+
+  ifeq ($$(PKG_CONFIG_$(1)_EXISTS),yes)
+      CFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(1))
+      CXXFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(1))
+      LDFLAGS += $$(shell $$(PKG_CONFIG) --libs $(1))
+      ifneq ($(MAKECMDGOALS),clean)
+        $$(info PKG.CNFG: $(2) ($(1))	enabled)
+      endif
+  else
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info PKG.CNFG: $(2) ($(1))	failed)
+      $$(error Unable to find library for: $(2) ($(1)))
+    endif
+  endif
+endef
+
+
+# Extend flags with appropriate values from pkg-config for enabled features
+#
+# 1: Feature name (ie, NETSURF_USE_RSVG -> RSVG)
+# 2: pkg-config required modules for feature
+# 3: Human-readable name for the feature
+define pkg_config_find_and_add_enabled
+  ifeq ($$(PKG_CONFIG),)
+    $$(error pkg-config is required to auto-detect feature availability)
+  endif
+
+  NETSURF_FEATURE_$(1)_AVAILABLE := $$(shell $$(PKG_CONFIG) --exists $(2) && echo yes)
+  NETSURF_FEATURE_$(1)_CFLAGS ?= -DWITH_$(1)
+
+  ifeq ($$(NETSURF_USE_$(1)),YES)
+    ifeq ($$(NETSURF_FEATURE_$(1)_AVAILABLE),yes)
+      CFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(2)) $$(NETSURF_FEATURE_$(1)_CFLAGS)
+      CXXFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(2)) $$(NETSURF_FEATURE_$(1)_CFLAGS)
+      LDFLAGS += $$(shell $$(PKG_CONFIG) --libs $(2)) $$(NETSURF_FEATURE_$(1)_LDFLAGS)
+      ifneq ($(MAKECMDGOALS),clean)
+        $$(info M.CONFIG: $(3) ($(2))	enabled       (NETSURF_USE_$(1) := YES))
+      endif
+    else
+      ifneq ($(MAKECMDGOALS),clean)
+        $$(info M.CONFIG: $(3) ($(2))	failed        (NETSURF_USE_$(1) := YES))
+        $$(error Unable to find library for: $(3) ($(2)))
+      endif
+    endif
+  else ifeq ($$(NETSURF_USE_$(1)),AUTO)
+    ifeq ($$(NETSURF_FEATURE_$(1)_AVAILABLE),yes)
+      CFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(2)) $$(NETSURF_FEATURE_$(1)_CFLAGS)
+      CXXFLAGS += $$(shell $$(PKG_CONFIG) --cflags $(2)) $$(NETSURF_FEATURE_$(1)_CFLAGS)
+      LDFLAGS += $$(shell $$(PKG_CONFIG) --libs $(2)) $$(NETSURF_FEATURE_$(1)_LDFLAGS)
+      ifneq ($(MAKECMDGOALS),clean)
+        $$(info M.CONFIG: $(3) ($(2))	auto-enabled  (NETSURF_USE_$(1) := AUTO))
+	NETSURF_USE_$(1) := YES
+      endif
+    else
+      ifneq ($(MAKECMDGOALS),clean)
+        $$(info M.CONFIG: $(3) ($(2))	auto-disabled (NETSURF_USE_$(1) := AUTO))
+	NETSURF_USE_$(1) := NO
+      endif
+    endif
+  else ifeq ($$(NETSURF_USE_$(1)),NO)
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(3) ($(2))	disabled      (NETSURF_USE_$(1) := NO))
+    endif
+  else
+    ifneq ($(MAKECMDGOALS),clean)
+      $$(info M.CONFIG: $(3) ($(2))	error         (NETSURF_USE_$(1) := $$(NETSURF_USE_$(1))))
+      $$(error NETSURF_USE_$(1) must be YES, NO, or AUTO)
+    endif
+  endif
+endef
+
+
+# Message splitting rule generation macro
+#
+# 1 = Language
+define split_messages
+
+$$(MESSAGES_TARGET)/$(1)/Messages: resources/FatMessages $$(TOOLROOT)/split-messages
+	$$(VQ)echo "MSGSPLIT: Language: $(1) Filter: $$(MESSAGES_FILTER)"
+	$$(Q)$$(MKDIR) -p $$(MESSAGES_TARGET)/$(1)
+	$$(Q)$$(RM) $$@
+	$$(Q)$$(TOOLROOT)/split-messages -l $(1) -p $$(MESSAGES_FILTER) -f messages -o $$@ -z $$<
+
+CLEAN_MESSAGES += $$(MESSAGES_TARGET)/$(1)/Messages
+MESSAGES += $$(MESSAGES_TARGET)/$(1)/Messages
+
+endef
+
+
+# Now some macros which build the make system
+
+# Extend dependancy files for c source files
+#
+# 1 = Source file
+# 2 = dep filename, no prefix
+# 3 = obj filename, no prefix
+define dependency_generate_c
+DEPFILES += $(2)
+
+endef
+
+
+# Extend dependancy files for s source files
+#
+# 1 = Source file
+# 2 = dep filename, no prefix
+# 3 = obj filename, no prefix
+define dependency_generate_s
+DEPFILES += $(2)
+
+endef
+
+
+# Rule generator to compile c files
+#
+# 1 = Source file
+# 2 = obj filename, no prefix
+# 3 = dep filename, no prefix
+ifeq ($(CC_MAJOR),2)
+# simpler deps tracking for gcc2...
+define compile_target_c
+$$(OBJROOT)/$(2): $(1) $$(OBJROOT)/created $$(DEPROOT)/created
+	$$(VQ)echo "     DEP: $(1)"
+	$$(Q)$$(RM) $$(DEPROOT)/$(3)
+	$$(Q)$$(CC) $$(IFLAGS) $$(CFLAGS) -MM  \
+		    $(1) | sed 's,^.*:,$$(DEPROOT)/$(3) $$(OBJROOT)/$(2):,' \
+		    > $$(DEPROOT)/$(3)
+	$$(VQ)echo " COMPILE: $(1)"
+	$$(Q)$$(RM) $$(OBJROOT)/$(2)
+	$$(Q)$$(CC) $$(COMMON_WARNFLAGS) $$(CWARNFLAGS) $$(IFLAGS) $$(CFLAGS) $(CFLAGS_ENV) -o $$(OBJROOT)/$(2) -c $(1)
+
+endef
+else
+define compile_target_c
+$$(OBJROOT)/$(2): $(1) $$(OBJROOT)/created $$(DEPROOT)/created
+	$$(VQ)echo " COMPILE: $(1)"
+	$$(Q)$$(RM) $$(DEPROOT)/$(3)
+	$$(Q)$$(RM) $$(OBJROOT)/$(2)
+	$$(Q)$$(CC) $$(COMMON_WARNFLAGS) $$(CWARNFLAGS) $$(IFLAGS) $$(CFLAGS) $(CFLAGS_ENV) \
+		    -MMD -MP -MT '$$(DEPROOT)/$(3) $$(OBJROOT)/$(2)' \
+		    -MF $$(DEPROOT)/$(3) -o $$(OBJROOT)/$(2) -c $(1)
+
+endef
+endif
+
+
+# Rule generator to compile cpp files
+#
+# 1 = Source file
+# 2 = obj filename, no prefix
+# 3 = dep filename, no prefix
+define compile_target_cpp
+$$(OBJROOT)/$(2): $(1) $$(OBJROOT)/created $$(DEPROOT)/created
+	$$(VQ)echo "     DEP: $(1)"
+	$$(Q)$$(RM) $$(DEPROOT)/$(3)
+	$$(Q)$$(CC) $$(IFLAGS) $$(CXXFLAGS) $$(COMMON_WARNFLAGS) $$(CXXWARNFLAGS) -MM  \
+		    $(1) | sed 's,^.*:,$$(DEPROOT)/$(3) $$(OBJROOT)/$(2):,' \
+		    > $$(DEPROOT)/$(3)
+	$$(VQ)echo " COMPILE: $(1)"
+	$$(Q)$$(RM) $$(OBJROOT)/$(2)
+	$$(Q)$$(CXX) $$(COMMON_WARNFLAGS) $$(CXXWARNFLAGS) $$(IFLAGS) $$(CXXFLAGS) $(CXXFLAGS_ENV) -o $$(OBJROOT)/$(2) -c $(1)
+
+endef
+
+
+# Rule generator to compile s files
+#
+# 1 = Source file
+# 2 = obj filename, no prefix
+# 3 = dep filename, no prefix
+define compile_target_s
+$$(OBJROOT)/$(2): $(1) $$(OBJROOT)/created $$(DEPROOT)/created
+	$$(VQ)echo "ASSEMBLE: $(1)"
+	$$(Q)$$(RM) $$(DEPROOT)/$(3)
+	$$(Q)$$(RM) $$(OBJROOT)/$(2)
+	$$(Q)$$(CC) $$(ASFLAGS) -MMD -MT '$$(DEPROOT)/$(3) $$(OBJROOT)/$(2)' \
+		    -MF $$(DEPROOT)/$(3) -o $$(OBJROOT)/$(2) -c $(1)
+
+endef

@@ -1,0 +1,347 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH NETSURF 1 "December 24, 2014"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+netsurf \- A small fast web browser
+.SH SYNOPSIS
+.B netsurf-fb
+.RI [ options ] 
+.RI [ url ]
+.SH DESCRIPTION
+This manual page documents briefly the
+.B netsurf
+browser.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fBnetsurf\fP is a small fast web browser. This man page only describes how to run the browser.
+.SH OPTIONS
+This programs follow the usual GNU command line syntax, with long
+options starting with two dashes (`-').
+.PP
+The command line parameters override any options loaded from the users Choices file.
+.PP
+A summary of options is included below.
+.TP
+.B \-v
+Enable verbose logging.
+.TP
+.B \-\-http_proxy
+Bboolean indicating if the http proxy is being used.
+.TP
+.B \-\-http_proxy_host
+The http proxy host.
+.TP
+.B \-\-http_proxy_port
+The http proxy port.
+.TP
+.B \-\-http_proxy_auth
+The authentication scheme for the http proxy.
+.TP
+.B \-\-http_proxy_auth_user
+The authentication schemes user.
+.TP
+.B \-\-http_proxy_auth_pass
+The authentication schemes password.
+.TP
+.B \-\-font_size
+The default font size to use.
+.TP
+.B \-\-font_min_size
+The minimum font size to use.
+.TP
+.B \-\-font_sans
+Family name of the sans serif font.
+.TP
+.B \-\-font_serif
+Family name of the serif font.
+.TP
+.B \-\-font_mono
+Family name of the monospace font.
+.TP
+.B \-\-font_cursive
+Family name of the cursive font.
+.TP
+.B \-\-font_fantasy
+Family name of the fantasy font.
+.TP
+.B \-\-accept_language
+Languages to accept.
+.TP
+.B \-\-accept_charset
+Character set to accept
+.TP
+.B \-\-memory_cache_size
+Maximum memory cache size.
+.TP
+.B \-\-disc_cache_age
+Maximum disc cache size.
+.TP
+.B \-\-block_advertisements
+Boolean to enable ad blocking.
+.TP
+.B \-\-send_referer
+Boolean controlling whether referer data should be sent
+.TP
+.B \-\-animate_images
+Boolean controlling whether images should be animated.
+.TP
+.B \-\-expire_url
+expire url
+.TP
+.B \-\-font_default
+Default font.
+.TP
+.B \-\-ca_bundle
+ca bundle
+.TP
+.B \-\-ca_path
+ca path
+.TP
+.B \-\-cookie_file
+cookie file
+.TP
+.B \-\-cookie_jar
+cookie jar
+.TP
+.B \-\-homepage_url
+homepage url
+.TP
+.B \-\-search_url_bar
+search url bar
+.TP
+.B \-\-search_provider
+search provider
+.TP
+.B \-\-url_suggestion
+url suggestion
+.TP
+.B \-\-window_x
+The X co-ordinate of the initial window.
+.TP
+.B \-\-window_y
+The Y co-ordinate of the initial window.
+.TP
+.B \-\-window_width
+The width of the initial window.
+.TP
+.B \-\-window_height
+The height of the initial window.
+.TP
+.B \-\-toolbar_status_size
+toolbar status size
+.TP
+.B \-\-scale
+Initial scale factor.
+.TP
+.B \-\-incremental_reflow
+Boolean controlling whether incremental reflow is performed.
+.TP
+.B \-\-min_reflow_period
+Minimum time between incremental reflows
+.TP
+.B \-\-core_select_menu
+core select menu
+.TP
+.B \-\-max_fetchers
+max fetchers
+.TP
+.B \-\-max_fetchers_per_host
+max fetchers per host
+.TP
+.B \-\-max_cached_fetch_handles
+max cached fetch handles
+.TP
+.B \-\-suppress_curl_debug
+suppress curl debug
+.TP
+.B \-\-target_blank
+target blank
+.TP
+.B \-\-button_2_tab
+button 2 tab
+.TP
+.B \-\-margin_top
+margin top
+.TP
+.B \-\-margin_bottom
+margin bottom
+.TP
+.B \-\-margin_left
+margin left
+.TP
+.B \-\-margin_right
+margin right
+.TP
+.B \-\-export_scale
+export scale
+.TP
+.B \-\-suppress_images
+suppress images
+.TP
+.B \-\-remove_backgrounds
+remove backgrounds
+.TP
+.B \-\-enable_loosening
+enable loosening
+.TP
+.B \-\-enable_PDF_compression
+enable PDF compression
+.TP
+.B \-\-enable_PDF_password
+enable_PDF_password
+.TP
+.B \-\-gui_colour_bg_1
+gui colour bg_1
+.TP
+.B \-\-gui_colour_fg_1
+gui colour fg_1
+.TP
+.B \-\-gui_colour_fg_2
+gui colour fg_2
+.TP
+.B \-\-sys_colour_ActiveBorder
+Override CSS sys_colour_ActiveBorder colour.
+.TP
+.B \-\-sys_colour_ActiveCaption
+Override CSS sys_colour_ActiveCaption colour.
+.TP
+.B \-\-sys_colour_AppWorkspace
+Override CSS sys_colour_AppWorkspace colour.
+.TP
+.B \-\-sys_colour_Background
+Override CSS sys_colour_Background colour.
+.TP
+.B \-\-sys_colour_ButtonFace
+Override CSS sys_colour_ButtonFace colour.
+.TP
+.B \-\-sys_colour_ButtonHighlight
+Override CSS sys_colour_ButtonHighlight colour.
+.TP
+.B \-\-sys_colour_ButtonShadow
+Override CSS sys_colour_ButtonShadow colour.
+.TP
+.B \-\-sys_colour_ButtonText
+Override CSS sys_colour_ButtonText colour.
+.TP
+.B \-\-sys_colour_CaptionText
+Override CSS sys_colour_CaptionText colour.
+.TP
+.B \-\-sys_colour_GrayText
+Override CSS sys_colour_GrayText colour.
+.TP
+.B \-\-sys_colour_Highlight
+Override CSS sys_colour_Highlight colour.
+.TP
+.B \-\-sys_colour_HighlightText
+Override CSS sys_colour_HighlightText colour.
+.TP
+.B \-\-sys_colour_InactiveBorder
+Override CSS sys_colour_InactiveBorder colour.
+.TP
+.B \-\-sys_colour_InactiveCaption
+Override CSS sys_colour_InactiveCaption colour.
+.TP
+.B \-\-sys_colour_InactiveCaptionText
+Override CSS sys_colour_InactiveCaptionText colour.
+.TP
+.B \-\-sys_colour_InfoBackground
+Override CSS sys_colour_InfoBackground colour.
+.TP
+.B \-\-sys_colour_InfoText
+Override CSS sys_colour_InfoText colour.
+.TP
+.B \-\-sys_colour_Menu
+Override CSS sys_colour_Menu colour.
+.TP
+.B \-\-sys_colour_MenuText
+Override CSS sys_colour_MenuText colour.
+.TP
+.B \-\-sys_colour_Scrollbar
+Override CSS sys_colour_Scrollbar colour.
+.TP
+.B \-\-sys_colour_ThreeDDarkShadow
+Override CSS sys_colour_ThreeDDarkShadow colour.
+.TP
+.B \-\-sys_colour_ThreeDFace
+Override CSS sys_colour_ThreeDFace colour.
+.TP
+.B \-\-sys_colour_ThreeDHighlight
+Override CSS sys_colour_ThreeDHighlight colour.
+.TP
+.B \-\-sys_colour_ThreeDLightShadow
+Override CSS sys_colour_ThreeDLightShadow colour.
+.TP
+.B \-\-sys_colour_ThreeDShadow
+Override CSS sys_colour_ThreeDShadow colour.
+.TP
+.B \-\-sys_colour_Window
+Override CSS sys_colour_Window colour.
+.TP
+.B \-\-sys_colour_WindowFrame
+Override CSS sys_colour_WindowFrame colour.
+.TP
+.B \-\-sys_colour_WindowText
+Override CSS sys_colour_WindowText colour.
+.TP
+.B \-\-downloads_clear
+downloads clear
+.TP
+.B \-\-request_overwrite
+request overwrite
+.TP
+.B \-\-downloads_directory
+downloads directory
+.TP
+.B \-\-url_file
+url file
+.TP
+.B \-\-show_single_tab
+Force tabs to always be show.
+.TP
+.B \-\-button_type
+button type
+.TP
+.B \-\-disable_popups
+disable popups
+.TP
+.B \-\-history_age
+history age
+.TP
+.B \-\-hover_urls
+hover urls
+.TP
+.B \-\-focus_new
+focus new
+.TP
+.B \-\-new_blank
+new blank
+.TP
+.B \-\-hotlist_path
+hotlist path
+.TP
+.B \-\-source_tab
+source tab
+.TP
+.B \-\-current_theme
+current theme
+.SH AUTHOR
+netsurf-fb was written by the netsurf developers.
+.PP
+This manual page was written by Vincent Sanders <vince@debian.org>,
+for the Debian project (and may be used by others).

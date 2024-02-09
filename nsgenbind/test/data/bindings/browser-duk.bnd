@@ -1,0 +1,189 @@
+/* Binding for browser using ductape and libdom
+ *
+ * Copyright 2015 Vincent Sanders <vince@netsurf-browser.org>
+ *
+ * This file is part of NetSurf, http://www.netsurf-browser.org/
+ *
+ * Released under the terms of the MIT License,
+ *         http://www.opensource.org/licenses/mit-license
+ */
+
+binding duk_libdom {
+	webidl "dom.idl";
+	webidl "html.idl";
+	webidl "uievents.idl";
+	webidl "urlutils.idl";
+	webidl "console.idl";
+
+	preface
+%{
+/* DukTape JavaScript bindings for NetSurf browser
+ *
+ * Copyright 2015 Vincent Sanders <vince@netsurf-browser.org>
+ * This file is part of NetSurf, http://www.netsurf-browser.org/
+ * Released under the terms of the MIT License,
+ *        http://www.opensource.org/licenses/mit-license
+ */
+%};
+
+	prologue %{
+/* binding prologue */
+		%};
+
+	epilogue %{
+/* binding epilogue */
+		%};
+
+	postface %{
+/* binding postface */
+		%};	
+};
+
+class empty_class {
+};
+
+
+#include "HTMLUnknownElement.bnd"
+
+/* specialisations of html_element */
+init HTMLFontElement(struct dom_html_element *html_font_element::html_element);
+init HTMLDirectoryElement(struct dom_html_element *html_directory_element::html_element);
+init HTMLFrameElement(struct dom_html_element *html_frame_element::html_element);
+init HTMLFrameSetElement(struct dom_html_element *html_frame_set_element::html_element);
+init HTMLMarqueeElement(struct dom_html_element *html_marquee_element::html_element);
+init HTMLAppletElement(struct dom_html_element *html_applet_element::html_element);
+init HTMLCanvasElement(struct dom_html_element *html_canvas_element::html_element);
+init HTMLTemplateElement(struct dom_html_element *html_template_element::html_element);
+init HTMLScriptElement(struct dom_html_element *html_script_element::html_element);
+init HTMLDialogElement(struct dom_html_element *html_dialog_element::html_element);
+init HTMLMenuItemElement(struct dom_html_element *html_menu_item_element::html_element);
+init HTMLMenuElement(struct dom_html_element *html_menu_element::html_element);
+init HTMLDetailsElement(struct dom_html_element *html_details_element::html_element);
+init HTMLLegendElement(struct dom_html_element *html_legend_element::html_element);
+init HTMLFieldSetElement(struct dom_html_element *html_field_set_element::html_element);
+init HTMLMeterElement(struct dom_html_element *html_meter_element::html_element);
+init HTMLProgressElement(struct dom_html_element *html_progress_element::html_element);
+init HTMLOutputElement(struct dom_html_element *html_output_element::html_element);
+init HTMLKeygenElement(struct dom_html_element *html_keygen_element::html_element);
+init HTMLTextAreaElement(struct dom_html_element *html_text_area_element::html_element);
+init HTMLOptionElement(struct dom_html_element *html_option_element::html_element);
+init HTMLOptGroupElement(struct dom_html_element *html_opt_group_element::html_element);
+init HTMLDataListElement(struct dom_html_element *html_data_list_element::html_element);
+init HTMLSelectElement(struct dom_html_element *html_select_element::html_element);
+init HTMLButtonElement(struct dom_html_element *html_button_element::html_element);
+init HTMLInputElement(struct dom_html_element *html_input_element::html_element);
+init HTMLLabelElement(struct dom_html_element *html_label_element::html_element);
+init HTMLFormElement(struct dom_html_element *html_form_element::html_element);
+init HTMLTableCellElement(struct dom_html_element *html_table_cell_element::html_element);
+init HTMLTableRowElement(struct dom_html_element *html_table_row_element::html_element);
+init HTMLTableSectionElement(struct dom_html_element *html_table_section_element::html_element);
+init HTMLTableColElement(struct dom_html_element *html_table_col_element::html_element);
+init HTMLTableCaptionElement(struct dom_html_element *html_table_caption_element::html_element);
+init HTMLTableElement(struct dom_html_element *html_table_element::html_element);
+init HTMLAreaElement(struct dom_html_element *html_area_element::html_element);
+init HTMLMapElement(struct dom_html_element *html_map_element::html_element);
+init HTMLMediaElement(struct dom_html_element *html_media_element::html_element);
+init HTMLTrackElement(struct dom_html_element *html_track_element::html_element);
+init HTMLParamElement(struct dom_html_element *html_param_element::html_element);
+init HTMLObjectElement(struct dom_html_element *html_object_element::html_element);
+init HTMLEmbedElement(struct dom_html_element *html_embed_element::html_element);
+init HTMLIFrameElement(struct dom_html_element *html_i_frame_element::html_element);
+init HTMLImageElement(struct dom_html_element *html_image_element::html_element);
+init HTMLSourceElement(struct dom_html_element *html_source_element::html_element);
+init HTMLPictureElement(struct dom_html_element *html_picture_element::html_element);
+init HTMLModElement(struct dom_html_element *html_mod_element::html_element);
+init HTMLBRElement(struct dom_html_element *html_br_element::html_element);
+init HTMLSpanElement(struct dom_html_element *html_span_element::html_element);
+init HTMLTimeElement(struct dom_html_element *html_time_element::html_element);
+init HTMLDataElement(struct dom_html_element *html_data_element::html_element);
+init HTMLAnchorElement(struct dom_html_element *html_anchor_element::html_element);
+init HTMLDivElement(struct dom_html_element *html_div_element::html_element);
+init HTMLDListElement(struct dom_html_element *html_d_list_element::html_element);
+init HTMLLIElement(struct dom_html_element *html_li_element::html_element);
+init HTMLUListElement(struct dom_html_element *html_u_list_element::html_element);
+init HTMLOListElement(struct dom_html_element *html_o_list_element::html_element);
+init HTMLQuoteElement(struct dom_html_element *html_quote_element::html_element);
+init HTMLPreElement(struct dom_html_element *html_pre_element::html_element);
+init HTMLHRElement(struct dom_html_element *html_hr_element::html_element);
+init HTMLParagraphElement(struct dom_html_element *html_paragraph_element::html_element);
+init HTMLHeadingElement(struct dom_html_element *html_heading_element::html_element);
+init HTMLBodyElement(struct dom_html_element *html_body_element::html_element);
+init HTMLStyleElement(struct dom_html_element *html_style_element::html_element);
+init HTMLMetaElement(struct dom_html_element *html_meta_element::html_element);
+init HTMLLinkElement(struct dom_html_element *html_link_element::html_element);
+init HTMLBaseElement(struct dom_html_element *html_base_element::html_element);
+init HTMLTitleElement(struct dom_html_element *html_title_element::html_element);
+init HTMLHeadElement(struct dom_html_element *html_head_element::html_element);
+init HTMLHtmlElement(struct dom_html_element *html_html_element::html_element);
+
+/* specialisations of HTMLTableCellElement */
+init HTMLTableHeaderCellElement(struct dom_html_element *html_table_header_cell_element::html_table_cell_element);
+init HTMLTableDataCellElement(struct dom_html_element *html_table_data_cell_element::html_table_cell_element);
+
+/* specialisations of html_media_element */
+init HTMLAudioElement(struct dom_html_element *html_audio_element::html_media_element);
+init HTMLVideoElement(struct dom_html_element *html_video_element::html_media_element);
+
+init HTMLElement(struct dom_html_element *html_element::element);
+
+init Text(struct dom_node_text *text::character_data);
+init Comment(struct dom_node_comment *comment::character_data);
+init ProcessingInstruction(struct dom_node_text *text::character_data);
+
+init XMLDocument(struct dom_document * document);
+
+init Element(struct dom_element *element::node);
+init CharacterData(struct dom_node_character_data *character_data::node);
+init DocumentFragment(struct dom_document *document::node);
+init DocumentType(struct dom_document *document::node);
+init Document(struct dom_document *document::node);
+
+class Node {
+	private dom_node *node;
+};
+
+init Node(struct dom_node *node)
+%{
+	priv->node = node;
+	dom_node_ref(node);
+%}
+
+fini Node()
+%{
+	dom_node_unref(priv->node);
+%}
+
+method Node::appendChild()
+%{
+	if (!dukky_instanceof(ctx, PROTO_NAME(NODE))) return 0;
+
+	DUKKY_SAFE_GET_ANOTHER(other,node,0);
+
+	dom_exception err;
+	dom_node *spare;
+
+	err = dom_node_append_child(priv->node, other->node, &spare);
+	if (err != DOM_NO_ERR) return 0;
+	dom_node_unref(spare);
+%}
+
+getter Node::textContent()
+%{
+	dom_exception exc;
+	dom_string *content;
+
+	exc = dom_node_get_text_content(priv->node, &content);
+	if (exc != DOM_NO_ERR) {
+		return 0;
+	}
+
+	if (content != NULL) {
+		duk_push_lstring(ctx, dom_string_data(content), dom_string_length(content));
+		dom_string_unref(content);
+		return 1;
+	}
+%}
+
+setter Node::textContent()
+%{
+%}

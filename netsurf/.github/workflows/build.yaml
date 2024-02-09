@@ -1,0 +1,111 @@
+name: "Linux Build"
+
+on: [push]
+
+jobs:
+  linux:
+    name: '${{ matrix.os }}: ${{ matrix.compiler.vendor }}'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-20.04
+        compiler:
+          # The NetSurf build system can't find LLVM AR (it looks for it
+          # in /usr/lib instead of /usr/bin:
+          #     `make: /usr/lib/llvm-ar: No such file or directory`).
+          # So we need to make it explicit for llvm.
+          - { vendor: gnu,  CC: gcc }
+          - { vendor: llvm, CC: clang, AR: llvm-ar }
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: apt-get install packages
+      run: sudo apt-get update -qq &&
+           sudo apt-get install --no-install-recommends -y
+               bison
+               build-essential
+               ccache
+               check
+               clang
+               flex
+               git
+               gperf
+               libcurl4-openssl-dev
+               libgtk-3-dev
+               libhtml-parser-perl
+               libjpeg-dev
+               libpng-dev
+               librsvg2-dev
+               llvm
+               pkg-config
+               wbritish # Needed for `/usr/share/dict/words`, used by test
+
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.compiler.vendor }}
+        max-size: 128M
+
+    - name: Build and install project libs
+      env:
+        CC: ${{ matrix.compiler.CC }}
+        CXX: ${{ matrix.compiler.CXX }}
+      run: |
+          export TARGET_WORKSPACE="$(pwd)/projects"
+          source docs/env.sh
+          ns-clone -d -s
+          ns-make-tools install
+          ns-make-libs install
+
+    - name: Disable -Werror
+      # We can remove this step if we ever move to GitHub properly.
+      run: |
+          find . -type f -name Makefile | xargs sed -i 's/-Werror//'
+
+    - name: Unit Tests
+      # Fails when built with clang:
+      #  test/corestrings.c:58:F:corestrings:corestrings_test:486:
+      #  Assertion 'ires == NSERROR_NOMEM' failed: ires == 0, NSERROR_NOMEM == 2
+      # Looks like `malloc_limit()` not working.
+      if: ${{ matrix.compiler.vendor != 'llvm' }}
+      env:
+        CC: ${{ matrix.compiler.CC }}
+        CXX: ${{ matrix.compiler.CXX }}
+      run: |
+          export TARGET_WORKSPACE="$(pwd)/projects"
+          source docs/env.sh
+          make test
+
+    - name: Build NetSurf GTK
+      env:
+        CC: ${{ matrix.compiler.CC }}
+        CXX: ${{ matrix.compiler.CXX }}
+      run: |
+          export TARGET_WORKSPACE="$(pwd)/projects"
+          source docs/env.sh
+          make -j"$(nproc)" TARGET=gtk
+
+    - name: Build NetSurf Monkey
+      env:
+        CC: ${{ matrix.compiler.CC }}
+        CXX: ${{ matrix.compiler.CXX }}
+      run: |
+          export TARGET_WORKSPACE="$(pwd)/projects"
+          source docs/env.sh
+          make -j"$(nproc)" TARGET=monkey
+
+    - name: Build NetSurf Framebuffer
+      env:
+        CC: ${{ matrix.compiler.CC }}
+        CXX: ${{ matrix.compiler.CXX }}
+      run: |
+          export TARGET_WORKSPACE="$(pwd)/projects"
+          source docs/env.sh
+          make -j"$(nproc)" TARGET=framebuffer

@@ -1,0 +1,52 @@
+NetSurf
+=======
+
+This is a development build of NetSurf, an open source web browser.
+
+The latest version of NetSurf is available from:
+
+   https://www.netsurf-browser.org/
+
+
+Installation
+------------
+
+Installation is a three step process:
+
+   1.  Use the Boot Merge facility provided by Configure to merge
+       the supplied !Boot directory with the one on your system.
+
+       If there is no !Boot merge facility on your system, simply
+       drag the supplied !Boot over your existing boot structure.
+
+   2.  Use the System Merge facility provided by Configure to merge
+       the supplied !System directory with the one on your system.
+
+   3.  Drag the !NetSurf application directory to a place on your
+       hard disc.
+
+Double click on !NetSurf in your chosen location to launch NetSurf.
+
+
+Note   NetSurf requires WindowManager 3.80 or later. This comes
+       with RISC OS 4 and above. RISC OS 3 users should install
+       the Universal Boot Sequence from:
+       http://www.riscos.com/ftp_space/generic/uniboot/ or,
+       alternatively, use the HardDisc4 and associated System
+       resources provided by RISC OS Open:
+       https://www.riscosopen.org/content/downloads/common
+
+Note   RISC OS 3.1 and earlier are not supported.
+
+
+Licences
+--------
+
+NetSurf is provided under the GPL, as well as several other licences
+for different components it uses.  Visit NetSurf's about:licence URL
+for details.
+
+
+The !Boot and !System directories contain items provided produced
+by third parties. Their licences, associated documentation, and
+origin are provided in the 3rd Party directory.

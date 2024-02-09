@@ -1,0 +1,19 @@
+# -*- mode: makefile-gmake -*-
+##
+## atari target tool setup
+##
+
+ifeq ($(HOST),atari)
+  PKG_CONFIG := pkg-config
+else
+  ifeq ($(HOST),mint)
+    PKG_CONFIG := pkg-config
+  else
+    GCCSDK_INSTALL_ENV ?= /opt/netsurf/m68k-atari-mint/env
+    GCCSDK_INSTALL_CROSSBIN ?= /opt/netsurf/m68k-atari-mint/cross/bin
+
+    CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+
+    PKG_CONFIG := PKG_CONFIG_LIBDIR="$(GCCSDK_INSTALL_ENV)/lib/pkgconfig" pkg-config
+  endif
+endif

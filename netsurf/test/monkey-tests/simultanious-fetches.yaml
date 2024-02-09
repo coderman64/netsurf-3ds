@@ -1,0 +1,35 @@
+title: simultanious page fetches
+group: real-world
+steps:
+- action: launch
+  language: en
+- action: window-new
+  tag: win1
+- action: window-new
+  tag: win2
+- action: window-new
+  tag: win3
+- action: window-new
+  tag: win4
+- action: navigate
+  window: win1
+  url: http://www.bbc.co.uk/news
+- action: navigate
+  window: win2
+  url: http://www.amazon.co.uk/
+- action: navigate
+  window: win3
+  url: http://www.theregister.co.uk/
+- action: navigate
+  window: win4
+  url: http://www.arstechnica.co.uk/
+- action: block
+  conditions:
+  - window: "*all*"
+    status: complete
+- action: window-close
+  window: win1
+- action: window-close
+  window: win2
+- action: quit
+

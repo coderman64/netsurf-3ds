@@ -1,0 +1,19 @@
+# -*- mode: makefile-gmake -*-
+##
+## windows (win32) target tool setup
+##
+
+ifneq ($(HOST),windows)
+  # Set Mingw defaults
+  GCCSDK_INSTALL_ENV ?= /opt/netsurf/i686-w64-mingw32/env
+  GCCSDK_INSTALL_CROSSBIN ?= /opt/netsurf/i686-w64-mingw32/cross/bin
+
+  CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+  WINDRES := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*windres)
+
+  PKG_CONFIG := PKG_CONFIG_LIBDIR="$(GCCSDK_INSTALL_ENV)/lib/pkgconfig" pkg-config
+else
+  # Building on Windows
+  CC := gcc
+  PKG_CONFIG := pkg-config
+endif

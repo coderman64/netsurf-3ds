@@ -1,0 +1,28 @@
+title: run inserted-script test in JS enabled browser
+group: basic
+steps:
+- action: launch
+  args:
+  - "--enable_javascript=1"
+- action: window-new
+  tag: win1
+- action: clear-log
+  window: win1
+- action: navigate
+  window: win1
+  url: about:blank
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: js-exec
+  window: win1
+  cmd: location.assign("file:///home/dsilvers/dev-netsurf/workspace/netsurf/test/js/inserted-script.html")
+- action: block
+  conditions:
+  - window: win1
+    status: complete
+- action: wait-log
+  window: win1
+  substring: deferred
+- action: quit

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JavaScript mandelbrot set</title>
+<style>pre {font-size:8pt;}</style>
+</head>
+<body>
+<h1>JavaScript generated mandelbrot set</h1>
+<noscript><p>Javascript is disabled</p></noscript>
+<script>
+function show_mandelbrot()
+{
+    var gradation = " .,:;=|i+IhHOE#$ ";
+    document.writeln("<pre>");
+    for(i = -1.2; i <= 1.2; i += 0.04) {
+        for(r = -2; r <= 1; r += 0.02) {
+            var zr = r;
+            var zi = i;
+            var n = 0;
+            for(; n < 16; n++) {
+                var zr2 = zr * zr;
+                var zi2 = zi * zi;
+                if((zr2 + zi2) > 4) {
+                    break;
+                }
+                zi = 2 * zr * zi + i;
+                zr = zr2 - zi2 + r;
+            }
+            document.write(gradation.charAt(n));
+        }
+        document.write("\n");
+    }
+    document.writeln("</pre>");
+    document.close();
+}
+show_mandelbrot();
+</script>
+</body>
+</html>

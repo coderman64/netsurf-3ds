@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>JS Mandelbrot</title>
+        <script src="https://nerget.com/mandelbrot.js"></script>
+        <script>
+        var drawn = false;
+        var dimension = 2;
+        var cx = -dimension / 2 + 0.5;
+        var cy = -dimension / 2;
+        
+        function log(msg) {
+            document.getElementById("log").innerHTML += msg + "<br/>";
+        }
+        
+        function draw() {
+            var forceSlowPath = document.getElementById('forceSlowPath').checked;
+            drawMandelbrot(document.getElementById('canvas').getContext('2d'), 200, 200, 
+                           cx + dimension / 2, cy + dimension / 2, dimension, 500, forceSlowPath);
+            drawn = true;
+        }
+        
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" width="200" height="200" style="border: 1px solid black;"></canvas>
+        <br />
+        <input id="forceSlowPath" type="checkbox">Use slow path.</input> <br />
+        <a href="javascript:draw()">Start</a>
+        <div id="log"></div>
+    </body>
+</html>

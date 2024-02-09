@@ -1,0 +1,79 @@
+#data
+* { fill-opacity: inherit; }
+#errors
+#expected
+| *
+|  fill-opacity: inherit
+#reset
+
+#data
+* { fill-opacity: revert; }
+#errors
+#expected
+| *
+|  fill-opacity: revert
+#reset
+
+#data
+* { fill-opacity: 0.867; }
+#errors
+#expected
+| *
+|  fill-opacity: 0.867
+#reset
+
+#data
+* { fill-opacity: -0.5; }
+#errors
+#expected
+| *
+|  fill-opacity: 0
+#reset
+
+#data
+* { fill-opacity: 5; }
+#errors
+#expected
+| *
+|  fill-opacity: 1
+#reset
+
+#data
+* { stroke-opacity: inherit; }
+#errors
+#expected
+| *
+|  stroke-opacity: inherit
+#reset
+
+#data
+* { stroke-opacity: revert; }
+#errors
+#expected
+| *
+|  stroke-opacity: revert
+#reset
+
+#data
+* { stroke-opacity: 0.00000; }
+#errors
+#expected
+| *
+|  stroke-opacity: 0
+#reset
+
+#data
+* { stroke-opacity: -0.5; }
+#errors
+#expected
+| *
+|  stroke-opacity: 0
+#reset
+
+#data
+* { stroke-opacity: 5; }
+#errors
+#expected
+| *
+|  stroke-opacity: 1
+#reset

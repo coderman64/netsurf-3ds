@@ -1,0 +1,9 @@
+Set Cache$ForceVars 1
+Run <Obey$Dir>.!Boot
+Unset Cache$ForceVars
+
+RMEnsure SysLog 0.17 IfThere <SysLog$Dir>.!Run Then Run <SysLog$Dir>.!Run
+RMEnsure SysLog 0.17 Set Cache$SysLogMissing "True"
+
+Wimpslot -min 128k -max 128k
+Run <Cache$AppDir>.!RunImage

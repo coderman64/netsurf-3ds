@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkWindow" id="wndHistory">
+    <property name="type">GTK_WINDOW_POPUP</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">NetSurf Local History</property>
+    <property name="window_position">center</property>
+    <property name="default_width">20</property>
+    <property name="default_height">20</property>
+    <property name="type_hint">utility</property>
+    <property name="decorated">False</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkScrolledWindow" id="HistoryScrolled">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkViewport" id="HistoryViewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <object class="GtkDrawingArea" id="HistoryDrawingArea">
+                    <property name="visible">True</property>
+                    <property name="app_paintable">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="events">GDK_EXPOSURE_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

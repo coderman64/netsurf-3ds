@@ -1,0 +1,100 @@
+# -*- mode: makefile-gmake -*-
+##
+## RISC OS target tool setup
+##
+
+ifeq ($(HOST),riscos)
+  # Build for RO on RO
+  GCCSDK_INSTALL_ENV := <NSLibs$$Dir>
+  CCRES := ccres
+  TPLEXT :=
+  MAKERUN := makerun
+  SQUEEZE := squeeze
+  RUNEXT :=
+  CC := gcc
+  CXX := g++
+  EXEEXT :=
+  PKG_CONFIG :=
+  ZIP := zip
+  SED :=
+else
+  # Cross-build for RO
+  # Four options are available:
+  #   a. GCCSDK 3.4.6 - AOF                        (machine: arm-unknown-riscos)
+  #   b. GCCSDK 4     - ELF                        (machine: arm-unknown-riscos)
+  #   c. GCCSDK 8+    - ELF, using soft-float EABI (machine: arm-riscos-gnueabi)
+  #   d. GCCSDK 8+    - ELF, using hard-float EABI (machine: arm-riscos-gnueabihf)
+  # GCCSDK 3.4.6 and 4 are distinguished by GCCSDK 3.4.6 binary names
+  # not having the machine prefix (e.g. gcc), whereas GCCSDK 4 binaries
+  # do (e.g. arm-unknown-riscos-gcc).
+
+  # Search for the toolchain install locations if we haven't been told
+  # The search order prefers GCCSDK 3.4.6/4 over 8+ and soft-float over hard.
+  ifeq ($(origin GCCSDK_INSTALL_ENV),undefined)
+    ifneq ($(realpath /opt/netsurf/arm-unknown-riscos/env),)
+      GCCSDK_INSTALL_ENV := /opt/netsurf/arm-unknown-riscos/env
+    else
+      ifneq ($(realpath /opt/netsurf/arm-riscos-gnueabi/env),)
+        GCCSDK_INSTALL_ENV := /opt/netsurf/arm-riscos-gnueabi/env
+      else
+        ifneq ($(realpath /opt/netsurf/arm-riscos-gnueabihf/env),)
+          GCCSDK_INSTALL_ENV := /opt/netsurf/arm-riscos-gnueabihf/env
+        else
+          # No NetSurf-specific toolchain found: try the "normal" GCCSDK path
+          GCCSDK_INSTALL_ENV := /home/riscos/env
+        endif
+      endif
+    endif
+  endif
+
+  ifeq ($(origin GCCSDK_INSTALL_CROSSBIN),undefined)
+    ifneq ($(realpath /opt/netsurf/arm-unknown-riscos/cross/bin),)
+      GCCSDK_INSTALL_CROSSBIN := /opt/netsurf/arm-unknown-riscos/cross/bin
+    else
+      ifneq ($(realpath /opt/netsurf/arm-riscos-gnueabi/cross/bin),)
+        GCCSDK_INSTALL_CROSSBIN := /opt/netsurf/arm-riscos-gnueabi/cross/bin
+      else
+        ifneq ($(realpath /opt/netsurf/arm-riscos-gnueabihf/cross/bin),)
+          GCCSDK_INSTALL_CROSSBIN := /opt/netsurf/arm-riscos-gnueabihf/cross/bin
+        else
+          # No NetSurf-specific toolchain found: try the "normal" GCCSDK path
+          GCCSDK_INSTALL_CROSSBIN := /home/riscos/cross/bin
+        endif
+      endif
+    endif
+  endif
+
+  CCRES := $(GCCSDK_INSTALL_CROSSBIN)/ccres
+  TPLEXT := ,fec
+  MAKERUN := $(GCCSDK_INSTALL_CROSSBIN)/makerun
+  SQUEEZE := $(GCCSDK_INSTALL_CROSSBIN)/squeeze
+  RUNEXT := ,feb
+  CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+
+  # Work out what kind of toolchain we're dealing with
+  ifneq (,$(findstring arm-unknown-riscos-gcc,$(CC)))
+    # GCCSDK 4
+    SUBTARGET := -elf
+    EXEEXT := ,e1f
+    ELF2AIF := $(GCCSDK_INSTALL_CROSSBIN)/elf2aif
+  else
+   ifneq (,$(findstring arm-riscos-gnueabi,$(CC)))
+     # GCCSDK 8+
+     SUBTARGET := -elfeabi
+     ifneq (,$(findstring gnueabihf,$(CC)))
+       SUBTARGET := -elfeabihf
+     endif
+     EXEEXT := ,e1f
+     ELF2AIF := $(GCCSDK_INSTALL_CROSSBIN)/elf2aif -e
+   else
+     # GCCSDK 3.4.6
+     SUBTARGET := -aof
+     EXEEXT := ,ff8
+   endif
+  endif
+
+  CXX := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
+  PKG_CONFIG = PKG_CONFIG_LIBDIR="$(PREFIX)/lib/pkgconfig:$(GCCSDK_INSTALL_ENV)/lib/pkgconfig:$(GCCSDK_INSTALL_ENV)/share/pkgconfig" pkg-config
+  ZIP := $(GCCSDK_INSTALL_CROSSBIN)/zip
+  SED := sed
+endif

@@ -1,0 +1,15 @@
+<svg s="0" viewBox="0 0 0 0">
+0<defs>
+0<linearGradient id="0" grntTransform="0">
+0<stop stop-color="0" offset="0"/>
+0<stop stop-color="0" offqet="0"/>
+0</linearGradient>
+0<linearGradient id="pyBlue" gradientTransform="rotate(45)">
+0<stop stop-color="#000" offset="1"/>0
+0<stop stop-color="#000" offset="0"/>
+0</linearGradient>
+0</defs>0
+0<path d="M0,0c0-7,0-10,20-10c0,0,20,0-10,12l-24,0c-8,0-10,0-10,15l0,10l-9,0,,,0" fill="url(#pyBlue)"/>
+0<pith d="0"/>0
+0<circle r="4" cx="0" cy="0" fill="#000"/>
+0<circle r="4" cx="0" cy="0" fill="#000"/>0</svg>

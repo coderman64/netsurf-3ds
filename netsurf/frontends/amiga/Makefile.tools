@@ -1,0 +1,21 @@
+# -*- mode: makefile-gmake -*-
+##
+## amiga target tool setup
+##
+
+ifeq ($(findstring amiga,$(HOST)),amiga)
+  # building for amiga on amiga
+  PKG_CONFIG := pkg-config
+else
+  ifeq ($(SUBTARGET),os3)
+    GCCSDK_INSTALL_ENV ?= /opt/netsurf/m68k-unknown-amigaos/env
+    GCCSDK_INSTALL_CROSSBIN ?= /opt/netsurf/m68k-unknown-amigaos/cross/bin
+  else
+    GCCSDK_INSTALL_ENV ?= /opt/netsurf/ppc-amigaos/env
+    GCCSDK_INSTALL_CROSSBIN ?= /opt/netsurf/ppc-amigaos/cross/bin
+  endif
+
+  CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+
+  PKG_CONFIG := PKG_CONFIG_LIBDIR="$(GCCSDK_INSTALL_ENV)/lib/pkgconfig" pkg-config
+endif

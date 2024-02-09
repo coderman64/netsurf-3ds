@@ -1,0 +1,14 @@
+<html>
+<head>
+<title>alert based onload (from body IDL attribute) example</title>
+
+</head>
+
+<body>
+  <h1>Just look at the log</h1>
+  <noscript><p>Javascript is disabled</p></noscript>
+  <script type="text/javascript">
+    document.body.onload = function() { alert("onload event from IDL attribute"); };
+  </script>
+</body>
+</html>

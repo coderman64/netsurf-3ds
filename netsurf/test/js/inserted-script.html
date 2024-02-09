@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Inserted script test</title>
+    <script>
+      /* After one second, insert an inline script element */
+      setTimeout(function() {
+      var div = document.createElement("DIV");
+      var script = document.createElement("SCRIPT");
+      var textnode = document.createTextNode("console.log(\"Dynamism\");");
+      script.appendChild(textnode);
+      div.appendChild(script);
+      document.body.appendChild(div);
+      }, 1000);
+      /* After two seconds, insert a script element for immediate fetch */
+      setTimeout(function() {
+      var script = document.createElement("SCRIPT");
+      script.setAttribute("src", "inserted-script.js");
+      document.body.appendChild(script);
+      }, 2000);
+      /* After three seconds, insert a script element for async fetch */
+      setTimeout(function() {
+      var script = document.createElement("SCRIPT");
+      script.setAttribute("src", "inserted-script-async.js");
+      script.setAttribute("async", "");
+      document.body.appendChild(script);
+      }, 3000);
+      /* After four seconds, insert a script element for deferred fetch */
+      setTimeout(function() {
+      var script = document.createElement("SCRIPT");
+      script.setAttribute("src", "inserted-script-defer.js");
+      script.setAttribute("defer", "");
+      document.body.appendChild(script);
+      }, 4000);
+    </script>
+  </head>
+  <body>
+    Check the log
+  </body>
+</html>

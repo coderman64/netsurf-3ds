@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="foo">
+      <stop stop-color="#69f" offset="0"/>
+      <stop stop-color="#468" offset="1"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#foo)" stroke='url(#bar)' d='M10 10 H 90 V 90 H 10 Z' />
+</svg>
+

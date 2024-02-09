@@ -1,0 +1,143 @@
+#!/usr/bin/python3
+
+'''
+NetSurf automated test runner
+
+This script retrives a test plan from the NetSurf infrastructure and
+  executes it using the monkey frontend
+'''
+
+# If you have any poo, fling it now!
+
+import sys
+import getopt
+import multiprocessing as mp
+from urllib import request, parse
+from io import StringIO
+import yaml
+import monkey_driver as driver
+
+# Otherwise let's begin...
+
+BASE_PATH = "https://test.netsurf-browser.org/cgi-bin/monkey-index.cgi"
+MONKEY_PATH = "./nsmonkey"
+
+mp.set_start_method('fork')
+
+def decode_trace_line(l):
+    from re import findall, match
+    from subprocess import getstatusoutput
+
+    caps = findall(r'./nsmonkey\(\+(0x[0-9a-f]+)\)', l);
+    if not caps:
+        return l
+
+    exitcode, output = getstatusoutput(
+        "addr2line -e {} -a -p -f -C {} 2>/dev/null".format(
+            MONKEY_PATH, caps[0]))
+    if exitcode != 0:
+        return './nsmonkey(+{})'.format(caps[0])
+
+    m = match(r'0x(.+): (.+) at (.+):(.+)', output)
+
+    return '{}:{}({})[0x{}]'.format(
+        m.group(3), m.group(4), m.group(2), m.group(1))
+
+def decode_trace(s):
+    return "\n".join(decode_trace_line(l) for l in s.split("\n"))
+
+def child_run_test(verbose, parts):
+    outcapture = StringIO()
+    errcapture = StringIO()
+    oldout = sys.stdout
+    olderr = sys.stderr
+    sys.stdout = outcapture
+    sys.stderr = errcapture
+    try:
+        driver.run_preloaded_test(MONKEY_PATH, parts)
+    except:
+        sys.stdout = oldout
+        sys.stderr = olderr
+        print("FAIL:")
+        print("STDOUT:\n{}\n".format(outcapture.getvalue()))
+        print("STDERR:\n{}\n".format(decode_trace(errcapture.getvalue())))
+        print("RERAISE:")
+        raise
+    else:
+        sys.stdout = oldout
+        sys.stderr = olderr
+        if verbose:
+            print("STDOUT:\n{}\n".format(outcapture.getvalue()))
+
+def run_test(verbose, parts):
+    p = mp.Process(target=child_run_test, args=(verbose, parts, ))
+    p.start()
+    p.join()
+    return p.exitcode
+
+def print_usage():
+    print('Usage:')
+    print('  ' + sys.argv[0] + ' [-v] [-h] [-d <division>] [-g group]')
+
+def parse_argv(argv):
+    verbose = False
+    division = None
+    group = None
+    try:
+        opts, args = getopt.getopt(argv, "hvd:g:", [])
+    except getopt.GetoptError:
+        print_usage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print_usage()
+            sys.exit()
+        elif opt in ("-v", "--verbose"):
+            verbose = True
+        elif opt == '-d':
+            division = arg
+        elif opt == '-g':
+            group = arg
+
+    return verbose, division, group
+
+def main():
+    verbose, division, group = parse_argv(sys.argv[1:])
+
+    print("Fetching tests...")
+    data_dict = {}
+    if division is not None:
+        data_dict['division'] = division
+    if group is not None:
+        data_dict['group'] = group
+
+    data = parse.urlencode(data_dict).encode()
+    req = request.Request(BASE_PATH, data=data)
+    index = request.urlopen(req)
+    index = index.read()
+
+    print("Parsing tests...")
+    test_set = yaml.load_all(index, Loader=yaml.SafeLoader)
+
+    print("Running tests...")
+    ret = 0
+    for test in test_set:
+        if test["kind"] == 'group':
+            print("Start group: {}".format(test["group"]))
+            print("  [ {} ]".format(test["description"]))
+        elif test["kind"] == 'test':
+            print("  => Run test: {}".format(test["filename"]))
+            ret = run_test(verbose, test["content"])
+            if ret != 0:
+                break
+
+    if ret != 0:
+        print("FAIL")
+        sys.exit(1)
+    else:
+        print("PASS")
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

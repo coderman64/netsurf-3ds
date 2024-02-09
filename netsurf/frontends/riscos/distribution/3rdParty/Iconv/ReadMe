@@ -1,0 +1,28 @@
+What is Iconv?
+==============
+
+Iconv is a module which provides character set conversion akin to that provided
+by the C iconv() function.
+
+Iconv Installation instructions
+===============================
+
+To install the Iconv module, simply use the System merge utility provided by 
+Configure to merge the !System directory provided with the one on your system.
+
+Use the Boot merge facility in Configure to merge the provided !Boot directory
+with the one on your system. If there is no !Boot merge facility provided on
+your system, simply drag the !Boot directory over your existing boot structure.
+
+Further documentation can be found in the "doc" directory.
+
+Note for developers:
+~~~~~~~~~~~~~~~~~~~~
+The "stubs" directory contains source for a set of C stubs. 
+See the ReadMe file in that directory for further information.
+
+Licence
+=======
+
+Please see the COPYING file for full licensing information. No part of the
+test suite is included in this binary distribution.

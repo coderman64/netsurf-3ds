@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/netsurf">
+    <file>cookies.ui</file>
+    <file>downloads.ui</file>
+    <file>globalhistory.ui</file>
+    <file>hotlist.ui</file>
+    <file>localhistory.ui</file>
+    <file>netsurf.ui</file>
+    <file>options.ui</file>
+    <file>pageinfo.ui</file>
+    <file>password.ui</file>
+    <file>tabcontents.ui</file>
+    <file>toolbar.ui</file>
+    <file>viewdata.ui</file>
+    <file>warning.ui</file>
+  </gresource>
+</gresources>

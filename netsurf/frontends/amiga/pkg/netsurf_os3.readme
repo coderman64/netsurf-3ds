@@ -1,0 +1,28 @@
+Short:        Fast CSS capable web browser
+Uploader:     chris@unsatisfactorysoftware.co.uk (Chris Young)
+Author:       NetSurf contributors (OS4 port by Chris Young)
+Type:         comm/www
+Version:      3.11 BETA
+Requires:     dev/misc/guigfxlib.lha util/libs/AmiSSL-4.3.lha
+Architecture: m68k-amigaos >= 3.5.0
+
+This is NetSurf 3.11 BETA for AmigaOS 3.
+It is built off of the OS4 (Reaction) frontend.
+
+Requirements are AmigaOS 3.5 or 3.9, 32MB RAM.
+
+THIS IS EARLY BETA QUALITY SOFTWARE FOR TESTING ONLY.
+ALL USE IS AT YOUR OWN RISK.  IT *WILL* CRASH!
+
+Please report bugs to chris@unsatisfactorysoftware.co.uk,
+or on the amigans.net/amiga.org forums.
+
+See http://www.netsurf-browser.org for more information about
+NetSurf.
+
+This software is licensed under the GPL, and the sources are
+available from http://www.netsurf-browser.org.  A copy can
+also be obtained directly from the maintainer of this port,
+chris@unsatisfactorysoftware.co.uk, in the event that the
+website is unavailable.
+

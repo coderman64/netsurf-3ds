@@ -1,0 +1,122 @@
+# -*- mode: makefile-gmake -*-
+##
+## determine the HOST TARGET and SUBTARGET
+##
+
+# Determine host type
+# NOTE: HOST determination on RISC OS could fail because of missing bug fixes
+#	in UnixLib which only got addressed in UnixLib 5 / GCCSDK 4.
+#	When you don't have 'uname' available, you will see:
+#	  File 'uname' not found
+#	When you do and using a 'uname' compiled with a buggy UnixLib, you
+#	will see the following printed on screen:
+#	  RISC OS
+#	In both cases HOST make variable is empty and we recover from that by
+#	assuming we're building on RISC OS.
+#	In case you don't see anything printed (including the warning), you
+#	have an up-to-date RISC OS build system. ;-)
+HOST := $(shell uname -s)
+
+# Sanitise host
+# TODO: Ideally, we want the equivalent of s/[^A-Za-z0-9]/_/g here
+HOST := $(subst .,_,$(subst -,_,$(subst /,_,$(HOST))))
+
+ifeq ($(HOST),)
+  HOST := riscos
+  $(warning Build platform determination failed but that's a known problem for RISC OS so we're assuming a native RISC OS build.)
+else
+  ifeq ($(HOST),RISC OS)
+    # Fixup uname -s returning "RISC OS"
+    HOST := riscos
+  endif
+endif
+ifeq ($(HOST),riscos)
+  # Build happening on RO platform, default target is RO backend
+  ifeq ($(TARGET),)
+    TARGET := riscos
+  endif
+endif
+
+ifeq ($(HOST),BeOS)
+  HOST := beos
+endif
+ifeq ($(HOST),Haiku)
+  # Haiku implements the BeOS API
+  HOST := beos
+endif
+ifeq ($(HOST),beos)
+    # Build happening on BeOS platform, default target is BeOS backend
+    ifeq ($(TARGET),)
+      TARGET := beos
+    endif
+    ifeq ($(TARGET),haiku)
+      override TARGET := beos
+    endif
+endif
+
+ifeq ($(HOST),AmigaOS)
+  HOST := amiga
+  ifeq ($(TARGET),)
+    TARGET := amiga
+  endif
+endif
+
+ifeq ($(HOST),FreeMiNT)
+  HOST := mint
+endif
+ifeq ($(HOST),mint)
+  ifeq ($(TARGET),)
+    TARGET := atari
+  endif
+endif
+
+ifeq ($(findstring MINGW,$(HOST)),MINGW)
+  # MSYS' uname reports the likes of "MINGW32_NT-6.0"
+  HOST := windows
+endif
+ifeq ($(HOST),windows)
+  ifeq ($(TARGET),)
+    TARGET := windows
+  endif
+endif
+
+# Setup (sub)targets
+
+# empty default sub target
+SUBTARGET=
+
+# Default target is GTK 3 backend
+ifeq ($(TARGET),)
+  override TARGET := gtk
+  SUBTARGET = 3
+else
+  ifeq ($(TARGET),gtk)
+    # unspecified gtk is gtk3
+    SUBTARGET = 3
+  else
+    ifeq ($(TARGET),gtk3)
+      # gtk3 is gtk target with subtarget of 3
+      override TARGET := gtk
+      SUBTARGET = 3
+    else
+      ifeq ($(TARGET),gtk2)
+        # gtk2 is gtk target with subtarget of 2
+        override TARGET := gtk
+        SUBTARGET = 2
+      else
+        ifeq ($(TARGET),amigaos3)
+          override TARGET := amiga
+          SUBTARGET = os3
+        endif
+      endif
+    endif
+  endif
+endif
+
+# valid values for the TARGET
+VLDTARGET := amiga atari beos framebuffer gtk monkey riscos windows
+
+# Check for valid TARGET
+ifeq ($(filter $(VLDTARGET),$(TARGET)),)
+  $(error Unknown TARGET "$(TARGET)", Must be one of $(VLDTARGET))
+endif

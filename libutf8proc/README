@@ -1,0 +1,15 @@
+libutf8proc
+===========
+
+This is the Public software group utf8proc library [1] repackaged as a
+conveniance library for NetSurf. Previously this library was simply
+copied into the NetSurf sources.
+
+This takes the unicode 11 capable version 2.2.0 of the library and
+converts it to the NetSurf build system which adds the generation of a
+pkg-config file. There are no code changes from upstream.
+
+All the Makefiles and changes are licenced as per the utf8proc
+source using the MIT "expat" licence.
+
+[1] https://github.com/JuliaStrings/utf8proc

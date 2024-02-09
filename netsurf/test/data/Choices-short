@@ -1,0 +1,17 @@
+font_sans:Sans
+font_serif:Serif
+font_mono:Monospace
+font_cursive:Serif
+font_fantasy:Serif
+accept_language:en
+enable_javascript:1
+ca_path:/etc/ssl/certs
+cookie_file:/home/vince/.netsurf/Cookies
+cookie_jar:/home/vince/.netsurf/Cookies
+homepage_url:about:welcome
+core_select_menu:1
+downloads_directory:/home/vince
+url_file:/home/vince/.netsurf/URLs
+show_single_tab:1
+button_type:1
+hotlist_path:/home/vince/.netsurf/Hotlist

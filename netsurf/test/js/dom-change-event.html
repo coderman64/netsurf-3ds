@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>DOM Change event handling</title>
+    <script type="text/javascript">
+      document.addEventListener("DOMNodeInserted",
+      function(ev) {
+      console.log("\n\nHELLO WORLD!\n\n");
+      console.log(ev);
+      console.log("\n\n");
+      }, false);
+      console.log("Moooo!");
+    </script>
+  </head>
+  <body>
+    <div>I got inserted</div>
+  </body>
+</html>

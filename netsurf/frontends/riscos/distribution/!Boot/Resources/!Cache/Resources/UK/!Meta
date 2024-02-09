@@ -1,0 +1,9 @@
+# Meta file for Cache
+Help:<CacheAppRes$Dir>.Help
+Version:1.13
+Web:http://www.snowstone.org.uk/riscos/
+Title:Cache
+Publisher:Adam Richardson
+Description:Cache provides a central location for semi-permanent data on your system.
+Email:riscos@snowstone.org.uk
+

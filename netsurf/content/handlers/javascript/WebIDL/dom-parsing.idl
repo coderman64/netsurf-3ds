@@ -1,0 +1,35 @@
+// Retrived from http://www.w3.org/TR/DOM-Parsing/
+// Wed Nov  4 15:39:43 GMT 2015
+// Manually extracted IDL
+
+enum SupportedType {
+  "text/html",
+  "text/xml",
+  "application/xml",
+  "application/xhtml+xml",
+  "image/svg+xml"
+};
+
+[Constructor]
+interface DOMParser {
+  [NewObject]
+    Document parseFromString (DOMString str, SupportedType type);
+};
+
+[Constructor]
+interface XMLSerializer {
+  DOMString serializeToString (Node root);
+};
+
+partial interface Element {
+  [TreatNullAs=EmptyString]
+    attribute DOMString innerHTML;
+  [TreatNullAs=EmptyString]
+    attribute DOMString outerHTML;
+  void insertAdjacentHTML (DOMString position, DOMString text);
+};
+
+partial interface Range {
+  [NewObject]
+    DocumentFragment createContextualFragment (DOMString fragment);
+};

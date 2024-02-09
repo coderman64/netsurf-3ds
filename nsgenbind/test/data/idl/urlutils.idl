@@ -1,0 +1,65 @@
+// Retrived from https://url.spec.whatwg.org
+// Tue Aug 11 12:11:31 BST 2015
+// Removed duplicate IDL from appendix
+
+[Constructor(USVString url, optional USVString base),
+ Exposed=(Window,Worker)]
+interface URL {
+  static USVString domainToASCII(USVString domain);
+  static USVString domainToUnicode(USVString domain);
+};
+URL implements URLUtils;
+URL implements URLUtilsSearchParams;
+
+[NoInterfaceObject,
+ Exposed=(Window,Worker)]
+interface URLUtils {
+  stringifier attribute USVString href;
+  readonly attribute USVString origin;
+
+           attribute USVString protocol;
+           attribute USVString username;
+           attribute USVString password;
+           attribute USVString host;
+           attribute USVString hostname;
+           attribute USVString port;
+           attribute USVString pathname;
+           attribute USVString search;
+           attribute USVString hash;
+};
+
+[NoInterfaceObject,
+ Exposed=(Window, Worker)]
+interface URLUtilsSearchParams {
+           attribute URLSearchParams searchParams;
+};
+
+[NoInterfaceObject,
+ Exposed=(Window,Worker)]
+interface URLUtilsReadOnly {
+  stringifier readonly attribute USVString href;
+  readonly attribute USVString origin;
+
+  readonly attribute USVString protocol;
+  readonly attribute USVString host;
+  readonly attribute USVString hostname;
+  readonly attribute USVString port;
+  readonly attribute USVString pathname;
+  readonly attribute USVString search;
+  readonly attribute USVString hash;
+};
+
+[Constructor(optional (USVString or URLSearchParams) init = ""),
+ Exposed=(Window,Worker)]
+interface URLSearchParams {
+  void append(USVString name, USVString value);
+  void delete(USVString name);
+  USVString? get(USVString name);
+  sequence<USVString> getAll(USVString name);
+  boolean has(USVString name);
+  void set(USVString name, USVString value);
+  iterable<USVString, USVString>;
+  stringifier;
+};
+
+

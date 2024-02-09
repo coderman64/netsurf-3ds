@@ -1,0 +1,15 @@
+<svg xmlns="00000000000000000000000000" id="0" viewBox="0 0 1 1">
+0<defs>
+0<linearGradient href="0" x1=".085" y1=".085" x2=".915" y2=".915" id="Open0earchg">
+0<stop offset="0" stop-color="#000000" y="0"/>
+0<stop offset=".5" stop-color="#000000" y="0"/>
+0<stop offset="1" stop-color="#000000" y="0"/>
+0</linearGradient>
+0</defs>
+0<g transform="scale(9)">
+0<rect width="0" height="0" r="0" r0="0" x="0" y="0" fill="#000000"/>
+0<rect width="0" height="0" r0="0" ry="0" x="0" y="0" fill="#000000"/>
+0<rect width="236" height="236" r0="0" ry="0" x="0" y="0" fill="url(#Open0earchg)"/>
+0<path fill="none" stroke="#000" stroke-width="6" d="M0 0A0 0 0 0 0 0,0A0 0 0 0 0 0 00z" transform="matrix(0,0,0,6,0,0)"/>
+0<rect fill="#000" stroke="none" width="0" height="0" x="0" y="0" transform="matrix(0..0.0,7,0,0)"/>
+0</g>0</svg>

@@ -1,0 +1,79 @@
+NetSurf public suffix list handling
+===================================
+
+library to generate static code representation of the Public suffix list
+
+Public suffix list
+------------------
+
+The public suffix list is a database of top level domain names [1].
+The database allows an application to determine if if a domain
+name requires an additional label to be valid.
+
+Uses
+----
+
+The principle use in a web browser is to restrict supercookies being
+set [2] although it can also serve secondary purposes in the UI such
+as domain highlighting.
+
+Implementation
+--------------
+
+This implementation uses a directly mapped tree to allow for a
+relatively compact representation (~70k compiled vs ~185k source) to
+determine if a given hostname is a public suffix. There is no
+allocation and the data tables all reside in read only data section
+and cannot be updated after compilation.
+
+There is a single API nspsl_getpublicsuffix() which will return the
+public suffix of a hostname if it was valid or NULL if not. The
+hostname passed must be normalised (i.e. lower case and domain labels
+in punycode)
+
+The data tables are staticly generated from a given input with the
+genpubsuffix.pl perl program. This program takes a downloaded suffix
+database and generates a file the main library lookup code directly
+includes.
+
+The generated psl.inc file and the public suffix list used to generate
+it are included in the source release as a conveniance but can be
+regenerated simply by deleting the src/public_suffix_list.dat file and
+making any target.
+
+If you wish to update the public suffix list data file then the build
+files will run some perl not normally needed during a build.  This
+perl script depends on libidna-punycode-perl and libtie-ixhash-perl.
+
+Other libraries
+---------------
+
+This library was created for a very limited purpose in NetSurf and is
+therefore possibly not useful as a generic solution. Other C libraries
+might be more apropriate:
+
+- Registered domain libs
+
+  Small C library which builds a pre-processed database into dynamic
+  memory. Similar tree based lookup to nspsl. Not been updated for a
+  while
+
+  https://github.com/usrflo/registered-domain-libs/
+
+- libpsl
+
+  has a very compact data representation (~35k vs nspsl ~70k) using
+  DAFSA taken from the chromium project. Can load (preprocessed)
+  database files at runtime as well as using a compile time builtin
+  set.
+
+  Can be compiled with runtime IDNA support. Directly uses the PSL git
+  repo as a submodule so PSL database always up to date.
+
+  If the 0.14 release was more readily available in distribution
+  packages NetSurf would use this in preference to nspsl
+
+  https://github.com/rockdaboot/libpsl
+
+[1] https://publicsuffix.org
+[2] https://en.wikipedia.org/wiki/HTTP_cookie#Supercookie

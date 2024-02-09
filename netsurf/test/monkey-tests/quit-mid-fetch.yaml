@@ -1,0 +1,22 @@
+title: quitting mid-fetch
+group: cleanup
+steps:
+- action: repeat
+  min: 0
+  step: 50
+  tag: sleepytimer
+  steps:
+  - action: launch
+  - action: window-new
+    tag: win1
+  - action: navigate
+    window: win1
+    url: http://www.bbc.co.uk/news
+  - action: sleep-ms
+    time: sleepytimer
+    conditions:
+    - window: win1
+      status: complete
+    breaks: sleepytimer
+  - action: quit
+

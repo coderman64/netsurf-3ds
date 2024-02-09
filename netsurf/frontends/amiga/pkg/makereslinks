@@ -1,0 +1,28 @@
+; Create Resources dir to allow NetSurf to run from build tree
+
+failat 50
+makedir Resources
+cd Resources
+makelink AdBlock.css /resources/adblock.css soft
+makelink default.css /amiga/resources/default.css soft
+makelink ca-bundle /resources/ca-bundle soft
+makelink de /resources/de soft
+makelink nsdefault.css /resources/default.css soft
+makelink favicon.png /amiga/resources/favicon.png soft
+makelink Resource.map /amiga/resources/Resource.map soft
+makelink en /resources/en soft
+makelink fr /resources/fr soft
+makelink internal.css /resources/internal.css soft
+makelink it /resources/it soft
+makelink LangNames /amiga/resources/LangNames soft
+makelink netsurf.png /resources/netsurf.png soft
+makelink nl /resources/nl soft
+makelink Pointers /amiga/resources/Pointers soft
+makelink quirks.css /resources/quirks.css soft
+makelink SearchEngines /amiga/resources/SearchEngines soft
+makelink splash.png /amiga/resources/splash.png soft
+makelink Themes /amiga/resources/Themes soft
+makelink mimetypes /amiga/resources/mimetypes soft
+
+/
+makelink amiga/resources/nsdefault.css //resources/default.css soft

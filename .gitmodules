@@ -1,0 +1,57 @@
+[submodule "netsurf"]
+	path = netsurf
+	url = git://git.netsurf-browser.org/netsurf.git
+[submodule "buildsystem"]
+	path = buildsystem
+	url = git://git.netsurf-browser.org/buildsystem.git
+[submodule "libcss"]
+	path = libcss
+	url = git://git.netsurf-browser.org/libcss.git
+[submodule "libdom"]
+	path = libdom
+	url = git://git.netsurf-browser.org/libdom.git
+[submodule "libhubbub"]
+	path = libhubbub
+	url = git://git.netsurf-browser.org/libhubbub.git
+[submodule "libnsbmp"]
+	path = libnsbmp
+	url = git://git.netsurf-browser.org/libnsbmp.git
+[submodule "libnsfb"]
+	path = libnsfb
+	url = git://git.netsurf-browser.org/libnsfb.git
+[submodule "libnsgif"]
+	path = libnsgif
+	url = git://git.netsurf-browser.org/libnsgif.git
+[submodule "libparserutils"]
+	path = libparserutils
+	url = git://git.netsurf-browser.org/libparserutils.git
+[submodule "libpencil"]
+	path = libpencil
+	url = git://git.netsurf-browser.org/libpencil.git
+[submodule "librosprite"]
+	path = librosprite
+	url = git://git.netsurf-browser.org/librosprite.git
+[submodule "librufl"]
+	path = librufl
+	url = git://git.netsurf-browser.org/librufl.git
+[submodule "libsvgtiny"]
+	path = libsvgtiny
+	url = git://git.netsurf-browser.org/libsvgtiny.git
+[submodule "libwapcaplet"]
+	path = libwapcaplet
+	url = git://git.netsurf-browser.org/libwapcaplet.git
+[submodule "nsgenbind"]
+	path = nsgenbind
+	url = git://git.netsurf-browser.org/nsgenbind.git
+[submodule "libnsutils"]
+	path = libnsutils
+	url = git://git.netsurf-browser.org/libnsutils.git/
+[submodule "libutf8proc"]
+	path = libutf8proc
+	url = git://git.netsurf-browser.org/libutf8proc.git/
+[submodule "libnspsl"]
+	path = libnspsl
+	url = git://git.netsurf-browser.org/libnspsl.git
+[submodule "libnslog"]
+	path = libnslog
+	url = git://git.netsurf-browser.org/libnslog.git

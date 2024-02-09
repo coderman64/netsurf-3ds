@@ -1,0 +1,46 @@
+# ----------------------------------------------------------------------------
+# Amiga-specific options
+# ----------------------------------------------------------------------------
+
+# Force using glibc internal iconv implementation instead of external libiconv
+# Valid options: YES, NO
+NETSURF_USE_LIBICONV_PLUG := NO
+
+# Use AmiSSL for secure connections.
+# Either this or NETSURF_USE_OPENSSL should be specified, not both.
+# libcurl must have been built against the same library.
+# Valid options: YES, NO
+NETSURF_USE_AMISSL := NO
+
+# Enable NetSurf's use of librosprite for displaying RISC OS Sprites
+# Valid options: YES, NO, AUTO
+NETSURF_USE_ROSPRITE := NO
+
+# Enable NetSurf to display Amiga icons
+# Valid options: YES, NO                 (recommended)
+NETSURF_USE_AMIGA_ICON := YES
+
+# Enable NetSurf's use of DataTypes for unknown filetypes
+# Valid options: YES, NO
+NETSURF_USE_AMIGA_DATATYPES := YES
+
+# Enable NetSurf's use of libsvgtiny for displaying SVGs
+# Valid options: YES, NO
+NETSURF_USE_NSSVG := YES
+
+# Enable building the source object cache filesystem based backing store.
+# implementation.
+# Valid options: YES, NO
+NETSURF_FS_BACKING_STORE := YES
+
+# Optimisation levels
+CFLAGS += -fomit-frame-pointer
+
+# Target-specific
+ifeq ($(SUBTARGET),os3)
+  NETSURF_USE_OPENSSL := NO
+  NETSURF_USE_AMISSL := YES
+else
+  CFLAGS += -gstabs
+endif
+
