@@ -29,9 +29,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifdef WITH_CURL
+// #ifdef WITH_CURL
 #include <curl/curl.h>
-#endif
+// #endif
 
 #include "utils/ascii.h"
 #include "utils/errors.h"
@@ -183,7 +183,7 @@ nserror nsc_snptimet(const char *str, size_t size, time_t *timep)
 }
 
 
-#ifndef WITH_CURL
+#if  !defined(WITH_CURL) && defined(THIS_DOESNT_EXIST)
 
 
 /**

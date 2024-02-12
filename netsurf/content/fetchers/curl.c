@@ -30,6 +30,11 @@
 /* must come first to ensure winsock2.h vs windows.h ordering issues */
 #include "utils/inet.h"
 
+#include <sys/unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <malloc.h>
 #include <assert.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -41,6 +46,7 @@
 
 #include <libwapcaplet/libwapcaplet.h>
 #include <nsutils/time.h>
+#include <3ds.h>
 
 #include "utils/corestrings.h"
 #include "utils/hashmap.h"
@@ -304,6 +310,14 @@ static char fetch_proxy_userpwd[100];
 /** Interlock to prevent initiation during callbacks */
 static bool inside_curl = false;
 
+// static u32 *SOC_buffer = NULL;
+
+// #define SOC_ALIGN       0x1000
+// #define SOC_BUFFERSIZE  0x100000
+
+// void failExit(const char *fmt);
+
+// void socShutdown(void);
 
 /**
  * Initialise a cURL fetcher.
@@ -313,8 +327,36 @@ static bool fetch_curl_initialise(lwc_string *scheme)
 	NSLOG(netsurf, INFO, "Initialise cURL fetcher for %s",
 	      lwc_string_data(scheme));
 	curl_fetchers_registered++;
+
+	// // initialize 3DS socket service
+	// // from 3ds socket example:
+	// // https://github.com/devkitPro/3ds-examples/blob/master/network/sockets/source/sockets.c#L70-L84
+	// int ret;
+
+	// // allocate buffer for SOC service
+	// SOC_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
+
+	// if(SOC_buffer == NULL) {
+	// 	NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! memalign: failed to allocate");
+	// }
+
+	// // Now intialise soc:u service
+	// if (R_FAILED(ret = socInit(SOC_buffer, SOC_BUFFERSIZE))) {
+	// 	NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! socInit: 0x%08X", (unsigned int)ret);
+	// 	NSLOG(netsurf,ERROR,"%d %d %d %d", R_LEVEL(ret), R_SUMMARY(ret),R_MODULE(ret),R_DESCRIPTION(ret));
+	// }
+
+	// // register socShutdown to run at exit
+	// atexit(socShutdown);
+
 	return true; /* Always succeeds */
 }
+
+// void socShutdown(void) {
+// //---------------------------------------------------------------------------------
+// 	printf("waiting for socExit...\n");
+// 	socExit();
+// }
 
 
 /**

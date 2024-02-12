@@ -26,6 +26,7 @@
 
 #include "utils/config.h"
 
+#include "nslog/nslog.h"
 #include <stdlib.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -370,6 +371,8 @@ fetch_file_process_aborted:
 		return;
 	}
 
+	NSLOG(netsurf, INFO, "FETCH FILE FROM PATH: %s", ctx->path);
+
 	infile = fopen(ctx->path, "rb");
 	if (infile == NULL) {
 		/* process errors as appropriate */
@@ -405,12 +408,14 @@ fetch_file_process_aborted:
 	/* content type */
 	if (fetch_file_send_header(ctx, "Content-Type: %s", 
 				   guit->fetch->filetype(ctx->path))) {
+		NSLOG(netsurf, INFO, "CONTENT TYPE FAILED!!!", ctx->path);
 		goto fetch_file_process_aborted;
 	}
 
 	/* content length */
 	if (fetch_file_send_header(ctx, "Content-Length: %" PRIsizet,
 				   fdstat->st_size)) {
+		NSLOG(netsurf, INFO, "CONTENT LENGTH FAILED!!!", ctx->path);
 		goto fetch_file_process_aborted;
 	}
 

@@ -54,7 +54,30 @@ static nsurl *get_resource_url(const char *path)
 	if (strcmp(path, "favicon.ico") == 0)
 		path = "favicon.png";
 
-	netsurf_path_to_nsurl(filepath_sfind(respaths, buf, path), &url);
+	char* foundURL = filepath_sfind(respaths, buf, path);
+
+	int respathc = 0;
+
+	while (respaths[respathc] != NULL) {
+		NSLOG(netsurf,INFO,"respath %d > %s",respathc,respaths[respathc]);
+
+		respathc++;
+	}
+	// foundURL += 5;
+	if(foundURL != NULL && strncmp(foundURL,"sdmc:",5) == 0){
+		NSLOG(netsurf,INFO,"SDMC FOUND, REMOVING...");
+		foundURL += 5;
+	}
+
+	NSLOG(netsurf,INFO,"FOUNDURL IS: %s",foundURL);
+
+	netsurf_path_to_nsurl(foundURL, &url);
+	if(url != NULL){
+		NSLOG(netsurf,INFO,"PATH FOR %s IS %s",path,foundURL);
+	}
+	else {
+		NSLOG(netsurf,INFO,"PATH FOR %s IS NULL",path);
+	}
 
 	return url;
 }

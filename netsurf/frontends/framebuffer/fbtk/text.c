@@ -18,6 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "3ds/applets/swkbd.h"
+#include "nslog/nslog.h"
+#include <3ds.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,6 +31,7 @@
 #include <libnsfb_event.h>
 
 #include "utils/log.h"
+#include "utils/utils.h"
 #include "netsurf/browser_window.h"
 #include "netsurf/plotters.h"
 
@@ -508,7 +512,38 @@ text_input_click(fbtk_widget_t *widget, fbtk_callback_info *cbi)
 			widget->height - border - border,
 			fb_text_input_remove_caret_cb);
 
-	fbtk_request_redraw(widget);
+	fbtk_request_redraw(widget); // FB_TEXTWIDGET
+
+#ifdef __3DS__
+	if(cbi->event->type == NSFB_EVENT_KEY_UP){
+
+		static SwkbdState swkbd;
+		static char mybuf[1000];
+		static SwkbdStatusData swkbdStatus;
+		static SwkbdLearningData swkbdLearning;
+		SwkbdButton button = SWKBD_BUTTON_NONE;
+
+		swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 2, -1);
+		swkbdSetInitialText(&swkbd, widget->u.text.text);
+		swkbdSetHintText(&swkbd, "Enter web address here");
+		swkbdSetButton(&swkbd, SWKBD_BUTTON_LEFT, "Cancel", false);
+		// swkbdSetButton(&swkbd, SWKBD_BUTTON_MIDDLE, "~Middle~", true);
+		swkbdSetButton(&swkbd, SWKBD_BUTTON_RIGHT, "Go!", true);
+		static bool reload = false;
+		swkbdSetStatusData(&swkbd, &swkbdStatus, reload, true);
+		swkbdSetLearningData(&swkbd, &swkbdLearning, reload, true);
+		reload = true;
+		button = swkbdInputText(&swkbd, mybuf, sizeof(mybuf));
+
+		if(button == SWKBD_BUTTON_RIGHT){
+			NSLOG(netsurf,INFO, "TEXT ENTRY RESULT: %d %s", button,mybuf);
+			widget->u.text.text = strdup(mybuf);
+			widget->u.text.len = strlen(mybuf);
+			widget->u.text.idx = widget->u.text.len;
+			widget->u.text.enter(widget->u.text.pw, widget->u.text.text);
+		}
+	}
+#endif
 
 	return 0;
 }

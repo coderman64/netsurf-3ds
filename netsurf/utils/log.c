@@ -235,7 +235,7 @@ nserror nslog_init(nslog_ensure_t *ensure, int *pargc, char **argv)
 		}
 	} else {
 		/* default is logging to stderr */
-		logfile = stderr;
+		logfile = fopen("/nsfb.log", "a+");
 	}
 
 	/* ensure output file handle is correctly configured */

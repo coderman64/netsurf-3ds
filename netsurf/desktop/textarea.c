@@ -25,6 +25,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <3ds.h>
 
 #include "utils/log.h"
 #include "utils/utf8.h"
@@ -3120,6 +3121,46 @@ textarea_mouse_status textarea_mouse_action(struct textarea *ta,
 			textarea_clear_selection(ta);
 		}
 		status |= TEXTAREA_MOUSE_USED;
+
+		//SWKBD TEST HERE
+
+		// #ifdef __3DS__
+
+		static SwkbdState swkbd;
+		static char mybuf[1000];
+		static SwkbdStatusData swkbdStatus;
+		static SwkbdLearningData swkbdLearning;
+		SwkbdButton button = SWKBD_BUTTON_NONE;
+
+		swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 2, -1);
+		swkbdSetInitialText(&swkbd, ta->text.data);
+		swkbdSetHintText(&swkbd, "Enter web address here");
+		swkbdSetButton(&swkbd, SWKBD_BUTTON_LEFT, "Cancel", false);
+		// swkbdSetButton(&swkbd, SWKBD_BUTTON_MIDDLE, "~Middle~", true);
+		swkbdSetButton(&swkbd, SWKBD_BUTTON_RIGHT, "Go!", true);
+		static bool reload = false;
+		swkbdSetStatusData(&swkbd, &swkbdStatus, reload, true);
+		swkbdSetLearningData(&swkbd, &swkbdLearning, reload, true);
+		reload = true;
+		button = swkbdInputText(&swkbd, mybuf, sizeof(mybuf));
+
+		if(button == SWKBD_BUTTON_RIGHT){
+			NSLOG(netsurf,INFO, "TEXT ENTRY RESULT: %d %s", button,mybuf);
+
+			int byte_delta;
+			rect r;
+			
+			textarea_replace_text(ta,
+					0, ta->text.len, mybuf,
+					strlen(mybuf), false, &byte_delta, &r);
+
+			// struct textarea_msg rdw_msg;
+			// rdw_msg.ta = ta;
+			// rdw_msg.type = TEXTAREA_MSG_REDRAW_REQUEST;
+			// rdw_msg.data.redraw = r;
+			// ta->callback(ta->data, &rdw_msg);
+		}
+// #endif
 
 	} else if (mouse & BROWSER_MOUSE_PRESS_2) {
 		b_off = textarea_get_b_off_xy(ta, x, y, true);

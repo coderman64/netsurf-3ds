@@ -30,9 +30,9 @@ endif
 
 CFLAGS := -D_BSD_SOURCE -D_DEFAULT_SOURCE \
 	-I$(CURDIR)/include/ -I$(CURDIR)/src \
-	-I/opt/devkitpro/portlibs/3ds/include \
-	-I/opt/devkitpro/libctru/include \
-  -I/opt/devkitpro/devkitARM/arm-none-eabi/include/ \
+	-I$(DEVKITPRO)/portlibs/3ds/include \
+	-I$(DEVKITPRO)/libctru/include \
+  -I$(DEVKITPRO)/devkitARM/arm-none-eabi/include/ \
   -D__3DS__ -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft\
 	$(WARNFLAGS) $(CFLAGS) 
 

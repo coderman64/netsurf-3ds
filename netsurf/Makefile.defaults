@@ -46,7 +46,7 @@ NETSURF_USE_BMP := AUTO
 
 # Enable NetSurf's use of libnsgif for displaying GIFs
 # Valid options: YES, NO, AUTO				  (highly recommended)
-NETSURF_USE_GIF := AUTO
+NETSURF_USE_GIF := YES
 
 # Enable NetSurf's use of libjpeg for displaying JPEGs
 # Valid options: YES, NO				  (highly recommended)
@@ -59,7 +59,7 @@ NETSURF_USE_JPEGXL := NO
 
 # Enable NetSurf's use of libpng for displaying PNGs.
 # Valid options: YES, NO, AUTO	                          (highly recommended)
-NETSURF_USE_PNG := AUTO
+NETSURF_USE_PNG := YES
 
 # Enable NetSurf's use of gstreamer for displaying videos
 # Valid options: YES, NO
@@ -91,7 +91,7 @@ NETSURF_USE_NSLOG := YES
 # Valid options are: DEEPDEBUG, DEBUG, VERBOSE, INFO, WARNING, ERROR, CRITICAL
 NETSURF_LOG_LEVEL := VERBOSE
 # The log filter set during log initialisation before options are available
-NETSURF_BUILTIN_LOG_FILTER := "(level:DEBUG || cat:jserrors)"
+NETSURF_BUILTIN_LOG_FILTER := "(level:VERBOSE || cat:jserrors)"
 # The log filter set during log initialisation before options are available
 # if the logging level is set to verbose
 NETSURF_BUILTIN_VERBOSE_FILTER := "(level:VERBOSE || cat:jserrors)"
@@ -119,7 +119,6 @@ NETSURF_UA_FORMAT_STRING := "Mozilla/5.0 (%s) NetSurf/%d.%d"
 # home page, and it can be changed by editing the end of gui_init2() in
 # riscos/gui.c
 NETSURF_HOMEPAGE := "about:welcome"
-# NETSURF_HOMEPAGE := "http://74.125.138.103/"
 # NETSURF_HOMEPAGE := "https://lite.duckduckgo.com/lite"
 
 # Enable building the source object cache filesystem based backing store.

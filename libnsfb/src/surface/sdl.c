@@ -18,6 +18,7 @@
 #include "libnsfb_plot.h"
 #include "libnsfb_plot_util.h"
 
+#include "malloc.h"
 #include "nsfb.h"
 #include "surface.h"
 #include "palette.h"
@@ -448,6 +449,15 @@ static int sdl_set_geometry(nsfb_t *nsfb, int width, int height,
     return 0;
 }
 
+static u32 *SOC_buffer = NULL;
+
+#define SOC_ALIGN       0x1000
+#define SOC_BUFFERSIZE  0x100000
+
+void failExit(const char *fmt);
+
+void socShutdown(void);
+
 static int sdl_initialise(nsfb_t *nsfb)
 {
     SDL_Surface *sdl_screen;
@@ -460,6 +470,7 @@ static int sdl_initialise(nsfb_t *nsfb)
     /* sanity checked depth. */
     if ((nsfb->bpp != 32) && (nsfb->bpp != 16) && (nsfb->bpp != 8))
         return -1;
+
 
     /* initialise SDL library */
     if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0 ) {
@@ -477,6 +488,30 @@ static int sdl_initialise(nsfb_t *nsfb)
         fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
         return -1;
     }
+
+    // initialize 3DS socket service
+	// from 3ds socket example:
+	// https://github.com/devkitPro/3ds-examples/blob/master/network/sockets/source/sockets.c#L70-L84
+	
+    int ret;
+
+	// allocate buffer for SOC service
+	SOC_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
+
+	if(SOC_buffer == NULL) {
+        fprintf(stderr,"FAILED TO INIT 3DS SOCKET SERVICE!");
+		//NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! memalign: failed to allocate");
+	}
+
+	// Now intialise soc:u service
+	if (R_FAILED(ret = socInit(SOC_buffer, SOC_BUFFERSIZE))) {
+        fprintf(stderr,"FAILED TO INIT 3DS SOCKET SERVICE! socInit");
+		// NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! socInit: 0x%08X", (unsigned int)ret);
+		// NSLOG(netsurf,ERROR,"%d %d %d %d", R_LEVEL(ret), R_SUMMARY(ret),R_MODULE(ret),R_DESCRIPTION(ret));
+	}
+
+	// register socShutdown to run at exit
+	atexit(socShutdown);
 
     /* find out what pixel format we got */
     sdl_fmt = sdl_screen->format;
@@ -518,6 +553,12 @@ static int sdl_initialise(nsfb_t *nsfb)
     SDL_EnableKeyRepeat(300, 50);
 
     return 0;
+}
+
+void socShutdown(void) {
+//---------------------------------------------------------------------------------
+	printf("waiting for socExit...\n");
+	socExit();
 }
 
 static int sdl_finalise(nsfb_t *nsfb)
