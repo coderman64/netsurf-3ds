@@ -7,12 +7,16 @@
  */
 
 #include <3ds.h>
+#include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
 #include <SDL/SDL.h>
 
+#include "3ds/os.h"
 #include "3ds/services/gsplcd.h"
+#include "SDL/SDL_timer.h"
+#include "SDL/SDL_video.h"
 #include "libnsfb.h"
 #include "libnsfb_event.h"
 #include "libnsfb_plot.h"
@@ -351,6 +355,39 @@ enum nsfb_key_code_e sdl_nsfb_map[] = {
     NSFB_KEY_UNDO,
 };
 
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+
+
+Uint32 last_update = 0;
+nsfb_bbox_t updaterect = {-1,-1,-1,-1};
+
+void SDL_ShouldUpdate(SDL_Surface* sdl_screen,Sint32 x, Sint32 y, Uint32 w, Uint32 h){
+
+    if(updaterect.x0 == -1){
+        updaterect.x0 = x;
+        updaterect.x1 = x+w;
+        updaterect.y0 = y;
+        updaterect.y1 = y+h;
+    }
+
+    updaterect.x0 = min(updaterect.x0,x);
+    updaterect.y0 = min(updaterect.y0,y);
+    updaterect.x1 = max(updaterect.x1,(Sint32)(x+w));
+    updaterect.y1 = max(updaterect.y1,(Sint32)(y+h));
+
+
+    if(updaterect.x0 != -1 && (SDL_GetTicks()-last_update > 16 || SDL_GetTicks() < last_update)){
+        SDL_UpdateRect(sdl_screen,
+                    updaterect.x0,
+                    updaterect.y0,
+                    updaterect.x1 - updaterect.x0,
+                    updaterect.y1 - updaterect.y0);
+        updaterect.x0 = -1;
+        last_update = SDL_GetTicks();
+    }
+}
+
 
 static void
 set_palette(nsfb_t *nsfb)
@@ -410,7 +447,9 @@ sdlcopy(nsfb_t *nsfb, nsfb_bbox_t *srcbox, nsfb_bbox_t *dstbox)
         nsfb_cursor_plot(nsfb, cursor);
     }
 
-    SDL_UpdateRect(sdl_screen, dst.x, dst.y, dst.w, dst.h);
+
+    SDL_ShouldUpdate(sdl_screen, dst.x, dst.y, dst.w, dst.h);
+    // SDL_UpdateRect(sdl_screen, dst.x, dst.y, dst.w, dst.h);
 
     return true;
 
@@ -590,7 +629,7 @@ static bool sdl_input(nsfb_t *nsfb, nsfb_event_t *event, int timeout)
     SDL_Event sdlevent;
 
     nsfb = nsfb; /* unused */
-
+    
     if (timeout == 0) {
         got_event = SDL_PollEvent(&sdlevent);
     } else {
@@ -720,6 +759,7 @@ static int sdl_claim(nsfb_t *nsfb, nsfb_bbox_t *box)
     return 0;
 }
 
+
 static int
 sdl_cursor(nsfb_t *nsfb, struct nsfb_cursor_s *cursor)
 {
@@ -747,12 +787,11 @@ sdl_cursor(nsfb_t *nsfb, struct nsfb_cursor_s *cursor)
         nsfb_cursor_clear(nsfb, cursor);
 
         nsfb_cursor_plot(nsfb, cursor);
-
-        SDL_UpdateRect(sdl_screen,
-                       redraw.x0,
-                       redraw.y0,
-                       redraw.x1 - redraw.x0,
-                       redraw.y1 - redraw.y0);
+        SDL_ShouldUpdate(sdl_screen,
+                    redraw.x0,
+                    redraw.y0,
+                    redraw.x1 - redraw.x0,
+                    redraw.y1 - redraw.y0);
 
 
     }
@@ -770,11 +809,16 @@ static int sdl_update(nsfb_t *nsfb, nsfb_bbox_t *box)
         nsfb_cursor_plot(nsfb, cursor);
     }
 
-    SDL_UpdateRect(sdl_screen,
+    SDL_ShouldUpdate(sdl_screen,
                    box->x0,
                    box->y0,
                    box->x1 - box->x0,
                    box->y1 - box->y0);
+    // SDL_UpdateRect(sdl_screen,
+    //                box->x0,
+    //                box->y0,
+    //                box->x1 - box->x0,
+    //                box->y1 - box->y0);
 
     return 0;
 }

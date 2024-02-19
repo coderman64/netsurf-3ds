@@ -34,6 +34,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "curl/curl.h"
+#include "mbedtls/x509.h"
 #include <malloc.h>
 #include <assert.h>
 #include <errno.h>
@@ -67,7 +69,10 @@
 #include "content/fetchers/curl.h"
 #include "content/urldb.h"
 
+#ifdef __3DS__
 #undef WITH_OPENSSL
+#define WITH_MBEDTLS
+#endif
 
 /**
  * maximum number of progress notifications per second
@@ -127,12 +132,57 @@ static void ns_X509_free(X509 *cert)
 
 #else /* WITH_OPENSSL */
 
+#if defined(__3DS__) && defined(WITH_MBEDTLS)
+
+#include <mbedtls/net.h>
+#include <mbedtls/ssl.h>
+#include <mbedtls/entropy.h>
+#include <mbedtls/ctr_drbg.h>
+#include <mbedtls/debug.h>
+
+#include <mbedtls/x509_crt.h>
+
+
+
+/* OpenSSL 1.0.x to 1.1.0 certificate reference counting changed
+ * LibreSSL declares its OpenSSL version as 2.1 but only supports the old way
+ */
+
+typedef struct {
+	mbedtls_x509_crt *cert;
+	int references;
+} ns_X509;
+
+static int ns_X509_up_ref(ns_X509 *cert)
+{
+	cert->references++;
+	return 1;
+}
+
+static void ns_X509_free(ns_X509 *cert)
+{
+	cert->references--;
+	if (cert->references == 0) {
+		// X509_free(cert);
+		mbedtls_x509_crt_free(cert->cert);
+	}
+}
+// #else
+// #define ns_X509_up_ref X509_up_ref
+// #define ns_X509_free X509_free
+// #endif
+
+#else
+
 typedef char X509;
+typedef char ns_X509;
 
 static void ns_X509_free(X509 *cert)
 {
 	free(cert);
 }
+
+#endif
 
 #endif /* WITH_OPENSSL */
 
@@ -226,7 +276,7 @@ static hashmap_t *curl_fetch_ssl_hashmap = NULL;
 
 /** SSL certificate info */
 struct cert_info {
-	X509 *cert;		/**< Pointer to certificate */
+	mbedtls_x509_crt *cert;		/**< Pointer to certificate */
 	long err;		/**< OpenSSL error code */
 };
 
@@ -328,35 +378,8 @@ static bool fetch_curl_initialise(lwc_string *scheme)
 	      lwc_string_data(scheme));
 	curl_fetchers_registered++;
 
-	// // initialize 3DS socket service
-	// // from 3ds socket example:
-	// // https://github.com/devkitPro/3ds-examples/blob/master/network/sockets/source/sockets.c#L70-L84
-	// int ret;
-
-	// // allocate buffer for SOC service
-	// SOC_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
-
-	// if(SOC_buffer == NULL) {
-	// 	NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! memalign: failed to allocate");
-	// }
-
-	// // Now intialise soc:u service
-	// if (R_FAILED(ret = socInit(SOC_buffer, SOC_BUFFERSIZE))) {
-	// 	NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! socInit: 0x%08X", (unsigned int)ret);
-	// 	NSLOG(netsurf,ERROR,"%d %d %d %d", R_LEVEL(ret), R_SUMMARY(ret),R_MODULE(ret),R_DESCRIPTION(ret));
-	// }
-
-	// // register socShutdown to run at exit
-	// atexit(socShutdown);
-
 	return true; /* Always succeeds */
 }
-
-// void socShutdown(void) {
-// //---------------------------------------------------------------------------------
-// 	printf("waiting for socExit...\n");
-// 	socExit();
-// }
 
 
 /**
@@ -893,8 +916,298 @@ fetch_curl_sslctxfun(CURL *curl_handle, void *_sslctx, void *parm)
 }
 
 
-#endif /* WITH_OPENSSL */
+#else /* WITH_OPENSSL */
 
+#if defined(__3DS__) && defined(WITH_MBEDTLS)
+
+/**
+ * Retrieve the ssl cert chain for the fetch, creating a blank one if needed
+ */
+static struct cert_chain *
+fetch_curl_get_cached_chain(struct curl_fetch_info *f)
+{
+	struct cert_chain *chain;
+
+	chain = hashmap_lookup(curl_fetch_ssl_hashmap, f->url);
+	if (chain == NULL) {
+		chain = hashmap_insert(curl_fetch_ssl_hashmap, f->url);
+	}
+
+	return chain;
+}
+/**
+ * Report the certificate information in the fetch to the users
+ */
+static void
+fetch_curl_store_certs_in_cache(struct curl_fetch_info *f)
+{
+	size_t depth;
+	// BIO *mem;
+	// BUF_MEM *buf[MAX_CERT_DEPTH];
+	struct cert_chain chain, *cached_chain;
+	struct cert_info *certs;
+
+	memset(&chain, 0, sizeof(chain));
+
+	certs = f->cert_data;
+	chain.depth = f->cert_depth + 1; /* 0 indexed certificate depth */
+
+	for (depth = 0; depth < chain.depth; depth++) {
+		if (certs[depth].cert == NULL) {
+			/* This certificate is missing, skip it */
+			chain.certs[depth].err = SSL_CERT_ERR_CERT_MISSING;
+			continue;
+		}
+
+		/* error code (if any) */
+		switch (certs[depth].err) {
+		case 0:
+			chain.certs[depth].err = SSL_CERT_ERR_OK;
+			break;
+
+		// case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
+		// 	/* fallthrough */
+		// case X509_V_ERR_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY:
+		// 	chain.certs[depth].err = SSL_CERT_ERR_BAD_ISSUER;
+		// 	break;
+
+		// case X509_V_ERR_UNABLE_TO_DECRYPT_CERT_SIGNATURE:
+		// 	/* fallthrough */
+		// case X509_V_ERR_UNABLE_TO_DECRYPT_CRL_SIGNATURE:
+		// 	/* fallthrough */
+		// case X509_V_ERR_CERT_SIGNATURE_FAILURE:
+		// 	/* fallthrough */
+		// case X509_V_ERR_CRL_SIGNATURE_FAILURE:
+		// 	chain.certs[depth].err = SSL_CERT_ERR_BAD_SIG;
+		// 	break;
+
+		// case X509_V_ERR_CERT_NOT_YET_VALID:
+			/* fallthrough */
+		case MBEDTLS_X509_BADCERT_FUTURE: 
+			chain.certs[depth].err = SSL_CERT_ERR_TOO_YOUNG;
+			break;
+
+		// case X509_V_ERR_CERT_HAS_EXPIRED:
+			/* fallthrough */
+		case MBEDTLS_X509_BADCERT_EXPIRED: 
+			chain.certs[depth].err = SSL_CERT_ERR_TOO_OLD;
+			break;
+
+		// case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+		// 	chain.certs[depth].err = SSL_CERT_ERR_SELF_SIGNED;
+		// 	break;
+
+		// case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
+			// chain.certs[depth].err = SSL_CERT_ERR_CHAIN_SELF_SIGNED;
+			// break;
+
+		case MBEDTLS_X509_BADCERT_REVOKED: 
+			chain.certs[depth].err = SSL_CERT_ERR_REVOKED;
+			break;
+
+		// case X509_V_ERR_HOSTNAME_MISMATCH:
+		case MBEDTLS_X509_BADCERT_CN_MISMATCH:
+			chain.certs[depth].err = SSL_CERT_ERR_HOSTNAME_MISMATCH;
+			break;
+
+		default:
+			chain.certs[depth].err = SSL_CERT_ERR_UNKNOWN;
+			break;
+		}
+
+		/*
+		 * get certificate in Distinguished Encoding Rules (DER) format.
+		 */
+		// mem = BIO_new(BIO_s_mem());
+		// i2d_X509_bio(mem, certs[depth].cert);
+		// BIO_get_mem_ptr(mem, &buf[depth]);
+		// (void) BIO_set_close(mem, BIO_NOCLOSE);
+		// BIO_free(mem);
+
+		chain.certs[depth].der = (uint8_t *)certs[depth].cert->raw.p;
+		chain.certs[depth].der_length = certs[depth].cert->raw.len;
+	}
+
+	/* Now dup that chain into the cache */
+	cached_chain = fetch_curl_get_cached_chain(f);
+	if (cert_chain_dup_into(&chain, cached_chain) != NSERROR_OK) {
+		/* Something went wrong storing the chain, give up */
+		hashmap_remove(curl_fetch_ssl_hashmap, f->url);
+	}
+
+	/* release the openssl memory buffer */
+	for (depth = 0; depth < chain.depth; depth++) {
+		if (chain.certs[depth].err == SSL_CERT_ERR_CERT_MISSING) {
+			continue;
+		}
+	}
+}
+
+/**
+ * OpenSSL Certificate verification callback
+ *
+ * Called for each certificate in a chain being verified. OpenSSL
+ * calls this in deepest first order from the certificate authority to
+ * the peer certificate at position 0.
+ *
+ * Each certificate is stored in the fetch context the first time it
+ * is presented. If an error is encountered it is only returned for
+ * the peer certificate at position 0 allowing the enumeration of the
+ * entire chain not stopping early at the depth of the erroring
+ * certificate.
+ *
+ * \param verify_ok 0 if the caller has already determined the chain
+ *                   has errors else 1
+ * \param x509_ctx certificate context being verified
+ * \return 1 to indicate verification should continue and 0 to indicate
+ *          verification should stop.
+ */
+static int
+// fetch_curl_verify_callback(int verify_ok, X509_STORE_CTX *x509_ctx)
+fetch_curl_verify_callback(void *parameter, mbedtls_x509_crt *crt, int depth, uint32_t* flags)
+{
+
+	int verify_ok = 0;
+	struct curl_fetch_info *fetch;
+
+	fetch = parameter;
+
+	/* certificate chain is excessively deep so fail verification */
+	if (depth >= MAX_CERT_DEPTH) {
+		fetch->cert_data[depth].err = MBEDTLS_ERR_X509_FATAL_ERROR;
+		fetch_curl_store_certs_in_cache(fetch);
+		return MBEDTLS_ERR_X509_FATAL_ERROR;
+	}
+
+	/* record the max depth */
+	if (depth > fetch->cert_depth) {
+		fetch->cert_depth = depth;
+	}
+
+	/* save the certificate by incrementing the reference count and
+	 * keeping a pointer.
+	 */
+	if (!fetch->cert_data[depth].cert) {
+
+		mbedtls_x509_crt tmp;
+		mbedtls_x509_crt_init(&tmp);
+		mbedtls_x509_crt_parse_der(&tmp,crt->raw.p,crt->raw.len);
+		fetch->cert_data[depth].cert = tmp.next;
+		fetch->cert_data[depth].err = *flags;
+	}
+
+	/* allow certificate chain to be completed */
+	if (depth > 0) {
+		verify_ok = 0;
+	} else {
+		/* search for deeper certificates in the chain with errors */
+		for (depth = fetch->cert_depth; depth > 0; depth--) {
+			if (fetch->cert_data[depth].err != 0) {
+				/* error in previous certificate so fail verification */
+				verify_ok = fetch->cert_data[depth].err;
+				// X509_STORE_CTX_set_error(x509_ctx, fetch->cert_data[depth].err);
+			}
+		}
+	}
+
+	if(crt->next == NULL){
+		fetch_curl_store_certs_in_cache(fetch);
+	}
+
+	return verify_ok;
+}
+
+
+/**
+ * OpenSSL certificate chain verification callback
+ *
+ * Verifies certificate chain by calling standard implementation after
+ * setting up context for the certificate callback.
+ *
+ * \param x509_ctx The certificate store to validate
+ * \param parm The fetch context.
+ * \return 1 to indicate verification success and 0 to indicate verification failure.
+ */
+// static int fetch_curl_cert_verify_callback(X509_STORE_CTX *x509_ctx, void *parm)
+// {
+// 	struct curl_fetch_info *f = (struct curl_fetch_info *) parm;
+// 	int ok;
+// 	X509_VERIFY_PARAM *vparam;
+
+// 	/* Configure the verification parameters to include hostname */
+// 	vparam = X509_STORE_CTX_get0_param(x509_ctx);
+// 	X509_VERIFY_PARAM_set_hostflags(vparam, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
+
+// 	ok = X509_VERIFY_PARAM_set1_host(vparam,
+// 					 lwc_string_data(f->host),
+// 					 lwc_string_length(f->host));
+
+// 	/* Store fetch struct in context for verify callback */
+// 	if (ok) {
+// 		ok = X509_STORE_CTX_set_app_data(x509_ctx, parm);
+// 	}
+
+// 	/* verify the certificate chain using standard call */
+// 	if (ok) {
+// 		ok = X509_verify_cert(x509_ctx);
+// 	}
+
+// 	fetch_curl_store_certs_in_cache(f);
+
+// 	return ok;
+// }
+
+
+/**
+ * cURL SSL setup callback
+ *
+ * \param curl_handle The curl handle to perform the ssl operation on.
+ * \param _sslctx The ssl context.
+ * \param parm The callback context.
+ * \return A curl result code.
+ */
+static CURLcode
+fetch_curl_sslctxfun(CURL *curl_handle, void *_sslctx, void *parm)
+{
+	struct curl_fetch_info *f = (struct curl_fetch_info *) parm;
+	mbedtls_ssl_config *sslctx = _sslctx;
+	// long options = SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 |
+	// 		SSL_OP_NO_TLSv1 | SSL_OP_NO_TLSv1_1;
+
+	/* set verify callback for each certificate in chain */
+	// SSL_CTX_set_verify(sslctx, SSL_VERIFY_PEER, fetch_curl_verify_callback);
+	mbedtls_ssl_conf_verify(sslctx,fetch_curl_verify_callback,parm);
+
+	/* set callback used to verify certificate chain */
+	// SSL_CTX_set_cert_verify_callback(sslctx,
+	// 				 fetch_curl_cert_verify_callback,
+	// 				 parm);
+
+
+	if (f->downgrade_tls) {
+		/* Disable TLS 1.3 if the server can't cope with it */
+#ifdef SSL_OP_NO_TLSv1_3
+		options |= SSL_OP_NO_TLSv1_3;
+#endif
+#ifdef SSL_MODE_SEND_FALLBACK_SCSV
+		/* Ensure server rejects the connection if downgraded too far */
+		SSL_CTX_set_mode(sslctx, SSL_MODE_SEND_FALLBACK_SCSV);
+#endif
+	}
+
+	// SSL_CTX_set_options(sslctx, options);
+
+	mbedtls_ssl_conf_min_version(sslctx, MBEDTLS_SSL_MAJOR_VERSION_3, MBEDTLS_SSL_MINOR_VERSION_2);
+
+#ifdef SSL_OP_NO_TICKET
+	SSL_CTX_clear_options(sslctx, SSL_OP_NO_TICKET);
+#endif
+
+	return CURLE_OK;
+}
+
+#endif
+#endif /* WITH_MBEDTLS */
 
 /**
  * Report the certificate information in the fetch to the users
@@ -1293,6 +1606,12 @@ static CURLcode fetch_curl_set_options(struct curl_fetch_info *f)
 		/* Disable certificate verification */
 		SETOPT(CURLOPT_SSL_VERIFYPEER, 0L);
 		SETOPT(CURLOPT_SSL_VERIFYHOST, 0L);
+
+		// for mbedtls usage
+		SETOPT(CURLOPT_SSL_CTX_FUNCTION, NULL);
+		SETOPT(CURLOPT_SSL_CTX_DATA, NULL);
+
+
 		if (curl_with_openssl) {
 			SETOPT(CURLOPT_SSL_CTX_FUNCTION, NULL);
 			SETOPT(CURLOPT_SSL_CTX_DATA, NULL);
@@ -1301,6 +1620,11 @@ static CURLcode fetch_curl_set_options(struct curl_fetch_info *f)
 		/* do verification */
 		SETOPT(CURLOPT_SSL_VERIFYPEER, 1L);
 		SETOPT(CURLOPT_SSL_VERIFYHOST, 2L);
+
+		// for mbedtls usage
+		SETOPT(CURLOPT_SSL_CTX_FUNCTION,fetch_curl_sslctxfun);
+		SETOPT(CURLOPT_SSL_CTX_DATA, f);
+
 #ifdef WITH_OPENSSL
 		if (curl_with_openssl) {
 			SETOPT(CURLOPT_SSL_CTX_FUNCTION, fetch_curl_sslctxfun);
@@ -2135,6 +2459,20 @@ nserror fetch_curl_register(void)
 #endif
 		SETOPT(CURLOPT_SSL_CIPHER_LIST, CIPHER_LIST);
 	}
+
+	// for MBEDTLS
+	/* only set the cipher list with openssl otherwise the
+		*  fetch fails with "Unknown cipher in list"
+		*/
+#if LIBCURL_VERSION_NUM >= 0x073d00
+	/* Need libcurl 7.61.0 or later built against OpenSSL with
+		* TLS1.3 support */
+	code = curl_easy_setopt(fetch_blank_curl,
+			CURLOPT_TLS13_CIPHERS, CIPHER_SUITES);
+	if (code != CURLE_OK && code != CURLE_NOT_BUILT_IN)
+		goto curl_easy_setopt_failed;
+#endif
+	SETOPT(CURLOPT_SSL_CIPHER_LIST, CIPHER_LIST);
 
 	NSLOG(netsurf, INFO, "cURL %slinked against openssl",
 	      curl_with_openssl ? "" : "not ");

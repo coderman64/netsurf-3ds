@@ -4,7 +4,7 @@
 ##
 
 ifeq ($(origin GCCSDK_INSTALL_ENV),undefined)
-  PKG_CONFIG := PKG_CONFIG_LIBDIR="$(DEVKITPRO)/portlibs/3ds/lib/pkgconfig" pkg-config
+  PKG_CONFIG := PKG_CONFIG_LIBDIR="/home/coderman64/Projects/3ds/netsurf3ds/sdl3ds/lib/pkgconfig:$(DEVKITPRO)/portlibs/3ds/lib/pkgconfig" pkg-config
 else
   PKG_CONFIG := PKG_CONFIG_LIBDIR="$(GCCSDK_INSTALL_ENV)/lib/pkgconfig" pkg-config                
 endif

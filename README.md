@@ -1,38 +1,21 @@
-NetSurf source -- Web Browser and all associated support libraries
-==================================================================
+# Netsurf 3DS
 
-Overview
---------
+Homebrew 3DS port of the lightweight [NetSurf web browser](https://www.netsurf-browser.org/).
 
-NetSurf is a compact graphical web browser which aims for HTML5, CSS
-and JavaScript support.
+## What it can do:
+- browse to http-only websites
+- search on Google
+- browse the SD card and open local text, html, and png files (go to file:///)
+- most web 1.0 stuff
 
-This complete source package contains all the required NetSurf
-support libraries to build the browser.
+## Known issues
+- SSL implementation is currently broken (i.e. no HTTPS pages).
+- The screen only seems to refresh when you interact with it.
+- No proper system to download things to SD card.
+- some things (e.g. larger images) distort while scrolling.
+- Occasionally crashes (should be mostly fixed)
 
-Binaries
---------
-
-The NetSurf project provide binary builds for releases for several
-platforms form the website and have packaged the browser in several
-distributions. This option may be more suitable for some users than
-compiling from source.
-
-Compilation
------------
-
-A simple "make" is sufficient to compile the browser with the
-default gtk toolkit selection.
-
-It depends upon the host system having a suitable toolchain for
-compiling c programs installed along with GNU make, zlib, flex,
-bison and lipjpeg
-
-In addition to the core library dependencies it is strongly
-recommended libcurl, openssl and libpng libraries are present or the
-browser will not have HTTP fetches, HTTPS fetches and PNG graphics
-support respectively.
-
-There are multiple GUI toolkits available which all have additional
-dependencies i.e. gtk browser frontend requires the gtk development
-libraries.
+## What it will probably never do:
+- Play HTML5/WebGL games
+- Play videos/YouTube
+- load complex Web 2.0 applications like Google Docs or Twitter

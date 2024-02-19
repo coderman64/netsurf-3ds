@@ -3,3 +3,8 @@ compile_commands.json
 
 
 .cache/
+
+# experimental CIA builds (not currently supported)
+netsurf/nsfb.cfa 
+netsurf/nsfb.cia
+netsurf/nsfb.cxi 

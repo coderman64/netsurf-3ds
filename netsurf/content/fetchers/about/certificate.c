@@ -21,6 +21,7 @@
  * content generator for the about scheme certificate page
  */
 
+#include "mbedtls/x509_crl.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -1118,12 +1119,185 @@ convert_chain_to_cert_info(const struct cert_chain *chain,
 }
 
 #else
+
+#include <mbedtls/x509_crt.h>
+
+static nserror
+der_to_certinfo(const uint8_t *der,
+		size_t der_length,
+		struct ns_cert_info *info)
+{
+	// BIO *mem;
+	// BUF_MEM *buf;
+	// const ASN1_INTEGER *asn1_num;
+	// BIGNUM *bignum;
+	mbedtls_x509_crt *cert;		/**< Pointer to certificate */
+
+	if (der == NULL) {
+		return NSERROR_OK;
+	}
+
+	mbedtls_x509_crt tmp;
+	mbedtls_x509_crt_init(&tmp);
+	int res = mbedtls_x509_crt_parse_der(&tmp,der,der_length);
+	// cert = d2i_X509(NULL, &der, der_length);
+	cert = tmp.next;
+	if (res != 0) {
+		return NSERROR_INVALID;
+	}
+
+	/*
+	 * get certificate version
+	 *
+	 * \note this is defined by standards (X.509 et al) to be one
+	 *        less than the certificate version.
+	 */
+	info->version = cert->version; // + 1;
+
+	/* not before date */
+	// mem = BIO_new(BIO_s_mem());
+	// ASN1_TIME_print(mem, X509_get_notBefore(cert));
+	// BIO_get_mem_ptr(mem, &buf);
+	// (void) BIO_set_close(mem, BIO_NOCLOSE);
+	// BIO_free(mem);
+	// info->not_before = calloc(1, buf->length + 1);
+	// if (info->not_before != NULL) {
+	// 	memcpy(info->not_before, buf->data, (unsigned)buf->length);
+	// }
+	// BUF_MEM_free(buf);
+
+	info->not_before = NULL;
+
+	/* not after date */
+	// mem = BIO_new(BIO_s_mem());
+	// ASN1_TIME_print(mem,
+	// 		X509_get_notAfter(cert));
+	// BIO_get_mem_ptr(mem, &buf);
+	// (void) BIO_set_close(mem, BIO_NOCLOSE);
+	// BIO_free(mem);
+	// info->not_after = calloc(1, buf->length + 1);
+	// if (info->not_after != NULL) {
+	// 	memcpy(info->not_after, buf->data, (unsigned)buf->length);
+	// }
+	// BUF_MEM_free(buf);
+
+	info->not_after = NULL;
+
+	/* signature type */
+	// info->sig_type = X509_get_signature_type(cert);
+	// info->sig_type = cert->ns_cert_type;
+	info->sig_type = 0x00;
+
+	/* signature algorithm */
+	// int pkey_nid = ns_X509_get_signature_nid(cert);
+	// if (pkey_nid != NID_undef) {
+	// 	const char* sslbuf = OBJ_nid2ln(pkey_nid);
+	// 	if (sslbuf != NULL) {
+	// 		info->sig_algor = strdup(sslbuf);
+	// 	}
+	// }
+
+	info->sig_algor = NULL;
+
+	/* serial number */
+	// asn1_num = X509_get_serialNumber(cert);
+	// if (asn1_num != NULL) {
+	// 	bignum = ASN1_INTEGER_to_BN(asn1_num, NULL);
+	// 	if (bignum != NULL) {
+	// 		char *tmp = BN_bn2hex(bignum);
+	// 		if (tmp != NULL) {
+	// 			info->serialnum = hexdup(tmp);
+	// 			OPENSSL_free(tmp);
+	// 		}
+	// 		BN_free(bignum);
+	// 		bignum = NULL;
+	// 	}
+	// }
+
+	info->serialnum = 0;
+
+	/* fingerprints */
+	// const EVP_MD *digest;
+	// unsigned int dig_len;
+	// unsigned char *buff;
+	// int rc;
+
+	// digest = EVP_sha1();
+	// buff = malloc(EVP_MD_size(digest));
+	// if (buff != NULL) {
+	// 	rc = X509_digest(cert, digest, buff, &dig_len);
+	// 	if ((rc == 1) && (dig_len == (unsigned int)EVP_MD_size(digest))) {
+	// 		info->sha1fingerprint = bindup(buff, dig_len);
+	// 	}
+	// 	free(buff);
+	// }
+	info->sha1fingerprint = NULL;//mbedtls_x509_crt_
+
+	// digest = EVP_sha256();
+	// buff = malloc(EVP_MD_size(digest));
+	// if (buff != NULL) {
+	// 	rc = X509_digest(cert, digest, buff, &dig_len);
+	// 	if ((rc == 1) && (dig_len == (unsigned int)EVP_MD_size(digest))) {
+	// 		info->sha256fingerprint = bindup(buff, dig_len);
+	// 	}
+	// 	free(buff);
+	// }
+	info->sha256fingerprint = NULL;
+
+	/* subject alternative names */
+	// san_to_info(cert, &info->san);
+
+	/* issuer name */
+	// xname_to_info(X509_get_issuer_name(cert), &info->issuer_name);
+
+	// /* subject */
+	// xname_to_info(X509_get_subject_name(cert), &info->subject_name);
+
+	// /* public key */
+	// pkey_to_info(X509_get_pubkey(cert), &info->public_key);
+
+	// X509_free(cert);
+
+	return NSERROR_OK;
+}
+
+/* copy certificate data */
 static nserror
 convert_chain_to_cert_info(const struct cert_chain *chain,
 			   struct ns_cert_info **cert_info_out)
 {
-	return NSERROR_NOT_IMPLEMENTED;
+	struct ns_cert_info *certs;
+	size_t depth;
+	nserror res;
+
+	certs = calloc(chain->depth, sizeof(struct ns_cert_info));
+	if (certs == NULL) {
+		return NSERROR_NOMEM;
+	}
+
+	for (depth = 0; depth < chain->depth;depth++) {
+		res = der_to_certinfo(chain->certs[depth].der,
+				      chain->certs[depth].der_length,
+				      certs + depth);
+		if (res != NSERROR_OK) {
+			free(certs);
+			return res;
+		}
+		certs[depth].err = chain->certs[depth].err;
+	}
+
+	*cert_info_out = certs;
+	return NSERROR_OK;
 }
+
+// #else
+
+// static nserror
+// convert_chain_to_cert_info(const struct cert_chain *chain,
+// 			   struct ns_cert_info **cert_info_out)
+// {
+// 	return NSERROR_NOT_IMPLEMENTED;
+// }
 #endif
 
 

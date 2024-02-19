@@ -90,10 +90,10 @@ NSOPTION_STRING(accept_language, NULL)
 NSOPTION_STRING(accept_charset, NULL)
 
 /** Preferred maximum size of memory cache / bytes. */
-NSOPTION_INTEGER(memory_cache_size, 12 * 1024 * 1024)
+NSOPTION_INTEGER(memory_cache_size, 6 * 1024 * 1024)
 
 /** Preferred location of disc cache, or NULL for system provided location */
-NSOPTION_STRING(disc_cache_path, NULL)
+NSOPTION_STRING(disc_cache_path, "/nscache")
 
 /** Preferred expiry size of disc cache / bytes. */
 NSOPTION_UINT(disc_cache_size, 1024 * 1024 * 1024)
@@ -175,7 +175,7 @@ NSOPTION_INTEGER(window_height, 0)
 NSOPTION_INTEGER(toolbar_status_size, 6667)
 
 /** default window scale */
-NSOPTION_INTEGER(scale, 100)
+NSOPTION_INTEGER(scale, 75)
 
 /* Whether to reflow web pages while objects are fetching */
 NSOPTION_BOOL(incremental_reflow, true)
