@@ -17,7 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "3ds/svc.h"
 #include <assert.h>
+
+#include <unistd.h>
 
 #include <ft2build.h>
 #include FT_CACHE_H
@@ -35,6 +38,8 @@
 #include "framebuffer/gui.h"
 #include "framebuffer/font.h"
 #include "framebuffer/findfile.h"
+
+#include "css/utils.h"
 
 /* glyph cache minimum size */
 #define CACHE_MIN_SIZE (100 * 1024)
@@ -88,6 +93,11 @@ ft_face_requester(FTC_FaceID face_id,
         fb_faceid_t *fb_face = (fb_faceid_t *)face_id;
         int cidx;
 
+        if(access(fb_face->fontfile, F_OK) != 0){
+                NSLOG(netsurf, INFO, "Could not find font, file %s doesn't exist",fb_face->fontfile);
+                return 1;
+        }
+
         error = FT_New_Face(library, fb_face->fontfile, fb_face->index, face); 
         if (error) {
                 NSLOG(netsurf, INFO, "Could not find font (code %d)", error);
@@ -107,6 +117,7 @@ ft_face_requester(FTC_FaceID face_id,
                 }
         }
         NSLOG(netsurf, INFO, "Loaded face from %s", fb_face->fontfile);
+        
 
         return error;
 }
@@ -130,6 +141,7 @@ fb_new_face(const char *option, const char *resname, const char *fontname)
 		filepath_sfind(respaths, buf, fontname);
                 newf->fontfile = strdup(buf);
         }
+        NSLOG(netsurf,INFO,"Looking for font in %s",newf->fontfile);
 
         error = FTC_Manager_LookupFace(ft_cmanager, (FTC_FaceID)newf, &aface);
         if (error) {
@@ -139,6 +151,7 @@ fb_new_face(const char *option, const char *resname, const char *fontname)
                 free(newf);
                 newf = NULL;
         }
+        NSLOG(netsurf,INFO,"done!");
 
         return newf;
 }
@@ -309,6 +322,8 @@ bool fb_font_init(void)
         else
                 ft_load_type = 0;
         
+        svcSleepThread(1000);
+
         return true;
 }
 
@@ -406,6 +421,7 @@ FT_Glyph fb_getglyph(const plot_font_style_t *fstyle, uint32_t ucs4)
         FT_Glyph glyph;
         FT_Error error;
         fb_faceid_t *fb_face; 
+        FTC_ImageTypeRec trec; 
 
         fb_fill_scalar(fstyle, &srec);
 
@@ -413,7 +429,8 @@ FT_Glyph fb_getglyph(const plot_font_style_t *fstyle, uint32_t ucs4)
 
         glyph_index = FTC_CMapCache_Lookup(ft_cmap_cache, srec.face_id,
 			fb_face->cidx, ucs4);
-
+        
+        // 3DS has problem here...
         error = FTC_ImageCache_LookupScaler(ft_image_cache, 
                                             &srec, 
                                             FT_LOAD_RENDER | 
@@ -422,6 +439,24 @@ FT_Glyph fb_getglyph(const plot_font_style_t *fstyle, uint32_t ucs4)
                                             glyph_index, 
                                             &glyph, 
                                             NULL);
+
+	// trec.face_id = srec.face_id;
+	// if (srec.pixel) {
+	// 	trec.width = srec.width;
+	// 	trec.height = srec.height;
+	// } else {
+	// 	/* Convert from 1/64 pts to pixels */
+	// 	trec.width = srec.width * nscss_screen_dpi / 64 / srec.x_res;
+	// 	trec.height = srec.height * nscss_screen_dpi / 64 / srec.y_res;
+	// }
+	// trec.flags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | ft_load_type;
+
+	// error = FTC_ImageCache_Lookup(ft_image_cache,
+	// 			      &trec,
+	// 			      glyph_index,
+	// 			      &glyph,
+	// 			      NULL);
+
 	if (error != 0)
 		return NULL;
 

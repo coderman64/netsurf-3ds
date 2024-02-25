@@ -627,6 +627,11 @@ static void framebuffer_run(void)
 		 */
 		if (fbtk_get_redraw_pending(fbtk))
 			timeout = 0;
+	
+		// timeout = min(timeout,20);
+		timeout = 0;
+
+		// printf("TIMEOUT: %d\n",timeout);
 
 		if (fbtk_event(fbtk, &event, timeout)) {
 			if ((event.type == NSFB_EVENT_CONTROL) &&

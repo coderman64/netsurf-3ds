@@ -13,6 +13,9 @@ Homebrew 3DS port of the lightweight [NetSurf web browser](https://www.netsurf-b
 - The screen only seems to refresh when you interact with it.
 - No proper system to download things to SD card.
 - some things (e.g. larger images) distort while scrolling.
+- Only one very chonky font.
+- JavaScript support is disabled in the build process
+- Support for several media types is disabled. (SVG, WebP)
 - Occasionally crashes (should be mostly fixed)
 
 ## What it will probably never do:

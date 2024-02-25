@@ -3134,10 +3134,10 @@ textarea_mouse_status textarea_mouse_action(struct textarea *ta,
 
 		swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 2, -1);
 		swkbdSetInitialText(&swkbd, ta->text.data);
-		swkbdSetHintText(&swkbd, "Enter web address here");
+		swkbdSetHintText(&swkbd, "Fill in-page text entry here");
 		swkbdSetButton(&swkbd, SWKBD_BUTTON_LEFT, "Cancel", false);
 		// swkbdSetButton(&swkbd, SWKBD_BUTTON_MIDDLE, "~Middle~", true);
-		swkbdSetButton(&swkbd, SWKBD_BUTTON_RIGHT, "Go!", true);
+		swkbdSetButton(&swkbd, SWKBD_BUTTON_RIGHT, "Accept", true);
 		static bool reload = false;
 		swkbdSetStatusData(&swkbd, &swkbdStatus, reload, true);
 		swkbdSetLearningData(&swkbd, &swkbdLearning, reload, true);

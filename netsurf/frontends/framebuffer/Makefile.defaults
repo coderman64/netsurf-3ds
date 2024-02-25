@@ -34,8 +34,11 @@ NETSURF_FB_FONT_SERIF := DejaVuSerif.ttf
 NETSURF_FB_FONT_SERIF_BOLD := DejaVuSerif-Bold.ttf
 NETSURF_FB_FONT_MONOSPACE := DejaVuSansMono.ttf
 NETSURF_FB_FONT_MONOSPACE_BOLD := DejaVuSansMono-Bold.ttf
-NETSURF_FB_FONT_CURSIVE := Comic_Sans_MS.ttf
-NETSURF_FB_FONT_FANTASY := Impact.ttf
+# NETSURF_FB_FONT_CURSIVE := Comic_Sans_MS.ttf
+# NETSURF_FB_FONT_FANTASY := Impact.ttf
+NETSURF_FB_FONT_CURSIVE := DejaVuSansMono.ttf
+NETSURF_FB_FONT_FANTASY := DejaVuSansMono.ttf
+
 
 # Default binary install path
 NETSURF_FRAMEBUFFER_BIN := $(PREFIX)/bin
@@ -47,5 +50,6 @@ NETSURF_FRAMEBUFFER_RESOURCES := $(PREFIX)/share/netsurf
 NETSURF_FB_RESPATH := $${HOME}/.netsurf/:$${NETSURFRES}:$(NETSURF_FRAMEBUFFER_RESOURCES):./frontends/framebuffer/res
 
 # freetype compiled in font serch path
-NETSURF_FB_FONTPATH := /usr/share/fonts/truetype/dejavu:/usr/share/fonts/truetype/msttcorefonts
+NETSURF_FB_FONTPATH := /share/netsurf
+# /usr/share/fonts/truetype/dejavu:/usr/share/fonts/truetype/msttcorefonts
 

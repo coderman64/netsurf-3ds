@@ -90,7 +90,7 @@ NSOPTION_STRING(accept_language, NULL)
 NSOPTION_STRING(accept_charset, NULL)
 
 /** Preferred maximum size of memory cache / bytes. */
-NSOPTION_INTEGER(memory_cache_size, 6 * 1024 * 1024)
+NSOPTION_INTEGER(memory_cache_size, 12 * 1024 * 1024)
 
 /** Preferred location of disc cache, or NULL for system provided location */
 NSOPTION_STRING(disc_cache_path, "/nscache")
@@ -136,7 +136,7 @@ NSOPTION_INTEGER(expire_url, 28)
 NSOPTION_INTEGER(font_default, PLOT_FONT_FAMILY_SANS_SERIF)
 
 /** ca-bundle location */
-NSOPTION_STRING(ca_bundle, NULL)
+NSOPTION_STRING(ca_bundle, "/share/netsurf/ca-bundle")
 
 /** ca-path location */
 NSOPTION_STRING(ca_path, NULL)

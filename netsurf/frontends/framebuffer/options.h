@@ -26,7 +26,7 @@
 /***** surface options *****/
 
 NSOPTION_INTEGER(fb_depth, 32)
-NSOPTION_INTEGER(fb_refresh, 70)
+NSOPTION_INTEGER(fb_refresh, 60)
 NSOPTION_STRING(fb_device, NULL)
 NSOPTION_STRING(fb_input_devpath, NULL)
 NSOPTION_STRING(fb_input_glob, NULL)
@@ -45,9 +45,10 @@ NSOPTION_BOOL(fb_osk, false)
 /***** font options *****/
 
 /** render all fonts monochrome */
-NSOPTION_BOOL(fb_font_monochrome, false)
+NSOPTION_BOOL(fb_font_monochrome, true)
 /** size of font glyph cache in kilobytes. */
 NSOPTION_INTEGER(fb_font_cachesize, 2048)
+// 2048
 
 /* Font face paths. These are treated as absolute paths if they start
  * with a / otherwise the compile time resource path is searched. 
@@ -60,8 +61,8 @@ NSOPTION_STRING(fb_face_serif, NULL)
 NSOPTION_STRING(fb_face_serif_bold, NULL)
 NSOPTION_STRING(fb_face_monospace, NULL)
 NSOPTION_STRING(fb_face_monospace_bold, NULL)
-NSOPTION_STRING(fb_face_cursive, NULL)
-NSOPTION_STRING(fb_face_fantasy, NULL)
+NSOPTION_STRING(fb_face_cursive, "/share/netsurf/DejaVuSerifCondensed.ttf")
+NSOPTION_STRING(fb_face_fantasy, "/share/netsurf/DejaVuSansCondensed.ttf")
 
 /*
  * Local Variables:

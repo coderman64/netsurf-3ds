@@ -2339,9 +2339,10 @@ nserror fetch_curl_register(void)
 	/* version 7.56.0 can select which SSL backend to use */
 	CURLsslset setres;
 
-	setres = curl_global_sslset(CURLSSLBACKEND_OPENSSL, NULL, NULL);
+	setres = curl_global_sslset(CURLSSLBACKEND_MBEDTLS, NULL, NULL);
 	if (setres == CURLSSLSET_OK) {
-		curl_with_openssl = true;
+		// curl_with_openssl = true;
+		curl_with_openssl = false;
 	} else {
 		curl_with_openssl = false;
 	}
@@ -2420,7 +2421,8 @@ nserror fetch_curl_register(void)
 	SETOPT(CURLOPT_LOW_SPEED_TIME, 180L);
 	SETOPT(CURLOPT_NOSIGNAL, 1L);
 	SETOPT(CURLOPT_CONNECTTIMEOUT, nsoption_uint(curl_fetch_timeout));
-
+	NSLOG(netsurf, INFO, "ca_bundle: '%s'",
+		      nsoption_charp(ca_bundle));
 	if (nsoption_charp(ca_bundle) &&
 	    strcmp(nsoption_charp(ca_bundle), "")) {
 		NSLOG(netsurf, INFO, "ca_bundle: '%s'",

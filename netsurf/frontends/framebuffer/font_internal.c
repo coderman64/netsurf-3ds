@@ -443,27 +443,27 @@ fb_font_split(const plot_font_style_t *fstyle,
 
         *actual_x = 0;
         while (nxtchr < length) {
-		uint32_t ucs4;
+			uint32_t ucs4;
 
-                if (string[nxtchr] == ' ') {
-                        last_space_x = *actual_x;
-                        last_space_idx = nxtchr;
-                }
+			if (string[nxtchr] == ' ') {
+					last_space_x = *actual_x;
+					last_space_idx = nxtchr;
+			}
 
-		ucs4 = utf8_to_ucs4(string + nxtchr, length - nxtchr);
-		if (codepoint_displayable(ucs4)) {
-			*actual_x += width;
-		}
+			ucs4 = utf8_to_ucs4(string + nxtchr, length - nxtchr);
+			if (codepoint_displayable(ucs4)) {
+				*actual_x += width;
+			}
 
-                if (*actual_x > x && last_space_idx != 0) {
-                        /* string has exceeded available width and we've
-                         * found a space; return previous space */
-                        *actual_x = last_space_x;
-                        *char_offset = last_space_idx;
-                        return NSERROR_OK;
-                }
+			if (*actual_x > x && last_space_idx != 0) {
+					/* string has exceeded available width and we've
+						* found a space; return previous space */
+					*actual_x = last_space_x;
+					*char_offset = last_space_idx;
+					return NSERROR_OK;
+			}
 
-                nxtchr = utf8_next(string, length, nxtchr);
+			nxtchr = utf8_next(string, length, nxtchr);
         }
 
         *char_offset = nxtchr;

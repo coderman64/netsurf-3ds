@@ -15,6 +15,7 @@
 
 #include "3ds/os.h"
 #include "3ds/services/gsplcd.h"
+#include "SDL/SDL_events.h"
 #include "SDL/SDL_timer.h"
 #include "SDL/SDL_video.h"
 #include "libnsfb.h"
@@ -376,6 +377,9 @@ void SDL_ShouldUpdate(SDL_Surface* sdl_screen,Sint32 x, Sint32 y, Uint32 w, Uint
     updaterect.x1 = max(updaterect.x1,(Sint32)(x+w));
     updaterect.y1 = max(updaterect.y1,(Sint32)(y+h));
 
+    if(SDL_GetTicks()-last_update < 16){
+        SDL_Delay(max(16-(SDL_GetTicks()-last_update),0));
+    }
 
     if(updaterect.x0 != -1 && (SDL_GetTicks()-last_update > 16 || SDL_GetTicks() < last_update)){
         SDL_UpdateRect(sdl_screen,
@@ -539,14 +543,11 @@ static int sdl_initialise(nsfb_t *nsfb)
 
 	if(SOC_buffer == NULL) {
         fprintf(stderr,"FAILED TO INIT 3DS SOCKET SERVICE!");
-		//NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! memalign: failed to allocate");
 	}
 
 	// Now intialise soc:u service
 	if (R_FAILED(ret = socInit(SOC_buffer, SOC_BUFFERSIZE))) {
         fprintf(stderr,"FAILED TO INIT 3DS SOCKET SERVICE! socInit");
-		// NSLOG(netsurf,ERROR,"FAILED TO INITIALIZE 3DS SOCKET SERVICE! socInit: 0x%08X", (unsigned int)ret);
-		// NSLOG(netsurf,ERROR,"%d %d %d %d", R_LEVEL(ret), R_SUMMARY(ret),R_MODULE(ret),R_DESCRIPTION(ret));
 	}
 
 	// register socShutdown to run at exit
@@ -631,6 +632,7 @@ static bool sdl_input(nsfb_t *nsfb, nsfb_event_t *event, int timeout)
     nsfb = nsfb; /* unused */
     
     if (timeout == 0) {
+        SDL_Delay(0);
         got_event = SDL_PollEvent(&sdlevent);
     } else {
         if (timeout > 0) {
@@ -646,6 +648,14 @@ static bool sdl_input(nsfb_t *nsfb, nsfb_event_t *event, int timeout)
         } else {
 	    got_event = SDL_WaitEvent(&sdlevent);
         }
+    }
+
+    u32 k = hidKeysDown();
+
+    if(k & KEY_START){
+        event->type = NSFB_EVENT_CONTROL;
+        event->value.controlcode = NSFB_CONTROL_QUIT;
+        return true;
     }
 
     /* Do nothing if there was no event */

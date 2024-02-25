@@ -38,7 +38,7 @@ NETSURF_USE_CURL := YES
 # Enable NetSurf's use of openssl for processing certificates
 # Valid options: YES, NO, AUTO
 NETSURF_USE_OPENSSL := NO
-#AUTO
+# openSSL is not supported on the 3DS
 
 # Enable NetSurf's use of libnsbmp for displaying BMPs and ICOs
 # Valid options: YES, NO, AUTO
@@ -91,7 +91,7 @@ NETSURF_USE_NSLOG := YES
 # Valid options are: DEEPDEBUG, DEBUG, VERBOSE, INFO, WARNING, ERROR, CRITICAL
 NETSURF_LOG_LEVEL := VERBOSE
 # The log filter set during log initialisation before options are available
-NETSURF_BUILTIN_LOG_FILTER := "(level:VERBOSE || cat:jserrors)"
+NETSURF_BUILTIN_LOG_FILTER := "(level:WARNING || cat:jserrors)"
 # The log filter set during log initialisation before options are available
 # if the logging level is set to verbose
 NETSURF_BUILTIN_VERBOSE_FILTER := "(level:VERBOSE || cat:jserrors)"
