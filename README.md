@@ -1,10 +1,10 @@
 # Netsurf 3DS
 
-Homebrew 3DS port of the lightweight [NetSurf web browser](https://www.netsurf-browser.org/).
+Work in progress homebrew 3DS port of the lightweight [NetSurf web browser](https://www.netsurf-browser.org/).
 
 # Installing 
 
-If you want to try it out in its current state, you can find the latest version as a 3DSX file on the [releases page](). You will also need to download the resources.zip package, and extract the contents it to `/share/netsurf` on your 3DS's SD card. **NetSurf will not run properly without the resources**.
+If you want to try it out in its current state, you can find the latest version as a 3DSX file on the [releases page](https://github.com/coderman64/netsurf-3ds/releases). You will also need to download the resources.zip package, and extract the contents it to `/share/netsurf` on your 3DS's SD card. **NetSurf will not run properly without the resources**.
 
 ## Why not use the default web browser?
 
@@ -68,4 +68,4 @@ Ensure your environment has the `DEVKITARM` and `DEVKITPRO` variables set, and t
 
 ## Special thanks
 
-Thanks to the [NetSurf developers](https://www.netsurf-browser.org/) for making such an awesome lightweight and portable browser! Also thanks to [DevKitPro]() for making the 3DS homebrew toolchain and library ports.
+Thanks to the [NetSurf developers](https://www.netsurf-browser.org/) for making such an awesome lightweight and portable browser! Also thanks to [DevKitPro](https://devkitpro.org/) for making the 3DS homebrew toolchain and library ports.
