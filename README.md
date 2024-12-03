@@ -4,7 +4,7 @@ Work in progress homebrew 3DS port of the lightweight [NetSurf web browser](http
 
 # Installing 
 
-If you want to try it out in its current state, you can find the latest version as a 3DSX file on the [releases page](https://github.com/coderman64/netsurf-3ds/releases). You will also need to download the resources.zip package, and extract the contents it to `/share/netsurf` on your 3DS's SD card. **NetSurf will not run properly without the resources**.
+If you want to try it out in its current state, you can find the latest version as a 3DSX file on the [releases page](https://github.com/coderman64/netsurf-3ds/releases). You will also need to download the resources.zip package, and extract the contents it to `sd:/share/netsurf` on your 3DS's SD card root. **NetSurf will not run properly without the resources**.
 
 ## Why not use the default web browser?
 
