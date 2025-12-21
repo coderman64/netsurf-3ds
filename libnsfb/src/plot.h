@@ -46,7 +46,7 @@
         #error "Endian determination failed"
     #endif
 #else
-    #include <endian.h>
+    #include <machine/endian.h>
     #if defined(__BYTE_ORDER__)
         #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             #define NSFB_BE_BYTE_ORDER

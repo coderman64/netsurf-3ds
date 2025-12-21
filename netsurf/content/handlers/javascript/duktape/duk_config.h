@@ -609,7 +609,7 @@
 #define DUK_USE_DATE_TZO_GMTIME_R
 #define DUK_USE_DATE_PRS_STRPTIME
 #define DUK_USE_DATE_FMT_STRFTIME
-#include <endian.h>
+#include <machine/endian.h>
 #include <sys/param.h>
 #include <sys/time.h>
 #include <time.h>
@@ -671,7 +671,7 @@
 #if defined(DUK_F_BCC)
 /* no endian.h */
 #else
-#include <endian.h>
+#include <machine/endian.h>
 #endif  /* DUK_F_BCC */
 #include <sys/param.h>
 #include <sys/time.h>
@@ -702,7 +702,7 @@
 #if defined(DUK_F_BCC)
 /* no endian.h or stdint.h */
 #else
-#include <endian.h>
+#include <machine/endian.h>
 #include <stdint.h>
 #endif  /* DUK_F_BCC */
 #include <sys/param.h>
@@ -737,7 +737,7 @@
 #if defined(DUK_F_BCC)
 /* no endian.h or stdint.h */
 #else
-#include <endian.h>
+#include <machine/endian.h>
 #include <stdint.h>
 #endif  /* DUK_F_BCC */
 #include <sys/param.h>
@@ -813,7 +813,7 @@
 #define DUK_USE_DATE_PRS_STRPTIME
 #define DUK_USE_DATE_FMT_STRFTIME
 #include <sys/types.h>
-#include <endian.h>
+#include <machine/endian.h>
 #include <sys/param.h>
 #include <sys/time.h>
 #include <time.h>
@@ -826,7 +826,7 @@
 #define DUK_USE_DATE_TZO_GMTIME_R
 #define DUK_USE_DATE_FMT_STRFTIME
 #include <sys/types.h>
-#include <endian.h>
+#include <machine/endian.h>
 #include <sys/param.h>
 #include <sys/time.h>
 #include <time.h>
