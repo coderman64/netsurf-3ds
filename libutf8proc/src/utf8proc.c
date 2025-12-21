@@ -480,7 +480,7 @@ UTF8PROC_DLLEXPORT utf8proc_ssize_t utf8proc_decompose_char(utf8proc_int32_t uc,
   if (options & UTF8PROC_CHARBOUND) {
     utf8proc_bool boundary;
     int tbc = property->boundclass;
-    boundary = grapheme_break_extended(*last_boundclass, tbc, last_boundclass);
+    boundary = grapheme_break_extended(*last_boundclass, tbc, (utf8proc_int32_t*)last_boundclass);
     if (boundary) {
       if (bufsize >= 1) dst[0] = -1; /* sentinel value for grapheme break */
       if (bufsize >= 2) dst[1] = uc;

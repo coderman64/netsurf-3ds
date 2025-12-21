@@ -34,11 +34,11 @@ CFLAGS := -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200112L \
 	-I/opt/devkitpro/portlibs/3ds/include \
 	-I/opt/devkitpro/libctru/include \
   -I/opt/devkitpro/devkitARM/arm-none-eabi/include/ \
-  -I/opt/devkitpro/devkitARM/arm-none-eabi/include/machine/ \
   -D__3DS__ -D_3DS -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft\
 	$(WARNFLAGS) $(CFLAGS)
   # -I/home/coderman64/Projects/3ds/netsurf3ds/c3d140/include \
   # -I/home/coderman64/Projects/3ds/netsurf3ds/sdl3ds/include \
+  # -I/opt/devkitpro/devkitARM/arm-none-eabi/include/machine/ \
 
 # CFLAGS += $(shell /home/coderman64/Projects/3ds/netsurf3ds/sdl3ds/bin/sdl-config --cflags)
 # CFLAGS += -L/home/coderman64/Projects/3ds/netsurf3ds/sdl3ds/lib \
