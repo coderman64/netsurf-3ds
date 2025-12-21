@@ -276,7 +276,7 @@ static hashmap_t *curl_fetch_ssl_hashmap = NULL;
 
 /** SSL certificate info */
 struct cert_info {
-	mbedtls_x509_crt *cert;		/**< Pointer to certificate */
+	ns_X509 *cert;		/**< Pointer to certificate */
 	long err;		/**< OpenSSL error code */
 };
 
@@ -1024,8 +1024,8 @@ fetch_curl_store_certs_in_cache(struct curl_fetch_info *f)
 		// (void) BIO_set_close(mem, BIO_NOCLOSE);
 		// BIO_free(mem);
 
-		chain.certs[depth].der = (uint8_t *)certs[depth].cert->raw.p;
-		chain.certs[depth].der_length = certs[depth].cert->raw.len;
+		chain.certs[depth].der = (uint8_t *)certs[depth].cert->cert->raw.p;
+		chain.certs[depth].der_length = certs[depth].cert->cert->raw.len;
 	}
 
 	/* Now dup that chain into the cache */
@@ -1092,7 +1092,10 @@ fetch_curl_verify_callback(void *parameter, mbedtls_x509_crt *crt, int depth, ui
 		mbedtls_x509_crt tmp;
 		mbedtls_x509_crt_init(&tmp);
 		mbedtls_x509_crt_parse_der(&tmp,crt->raw.p,crt->raw.len);
-		fetch->cert_data[depth].cert = tmp.next;
+		ns_X509* cert = malloc(sizeof(ns_X509));
+		cert->references = 1;
+		cert->cert = tmp.next;
+		fetch->cert_data[depth].cert = cert;
 		fetch->cert_data[depth].err = *flags;
 	}
 
