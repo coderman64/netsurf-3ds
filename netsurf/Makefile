@@ -379,7 +379,7 @@ ifeq ($(TARGET),beos)
 	$(Q)$(BEOS_MIMESET) $(EXETARGET)
 endif
 	$(VQ)echo "  MAKE 3DSX: $(EXETARGET).3dsx"
-	$(Q)3dsxtool $(EXETARGET) $(EXETARGET).3dsx --smdh=nsfb.smdh
+	$(Q)3dsxtool $(EXETARGET) $(EXETARGET).3dsx --smdh=nsfb.smdh --romfs=resources
 
 clean-target:
 	$(VQ)echo "   CLEAN: $(EXETARGET)"

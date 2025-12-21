@@ -136,6 +136,12 @@ fb_init_resource_path(const char *resource_path)
 
 	pathv = filepath_path_to_strvec(resource_path);
 
+	int i = 0;
+	while(pathv[i] != NULL && i < 10){
+		NSLOG(netsurf,WARN,"PATH[%d]: %s",i,pathv[i]);
+		i++;
+	}
+
 	langv = get_language_names();
 
 	respath = filepath_generate(pathv, (const char * const *)langv);

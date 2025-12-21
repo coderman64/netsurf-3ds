@@ -55,6 +55,7 @@
 #include "framebuffer/fetch.h"
 #include "framebuffer/bitmap.h"
 #include "framebuffer/local_history.h"
+#include "3ds.h"
 
 
 #define NSFB_TOOLBAR_DEFAULT_LAYOUT "blfsrutc"
@@ -2200,17 +2201,22 @@ main(int argc, char** argv)
 		.layout = framebuffer_layout_table,
 	};
 
-        ret = netsurf_register(&framebuffer_table);
-        if (ret != NSERROR_OK) {
+	ret = netsurf_register(&framebuffer_table);
+	if (ret != NSERROR_OK) {
 		die("NetSurf operation table failed registration");
-        }
+	}
+
+	Result rfsRes = romfsInit();
 
 	respaths = fb_init_resource_path(NETSURF_FB_RESPATH":"NETSURF_FB_FONTPATH);
+
 
 	/* initialise logging. Not fatal if it fails but not much we
 	 * can do about it either.
 	 */
 	nslog_init(nslog_stream_configure, &argc, argv);
+	NSLOG(netsurf,WARN,"RESPATHS[0]: %s",respaths[0]);
+	NSLOG(netsurf,WARN,"NETSURF_FB_RESPATH: %s",NETSURF_FB_RESPATH);
 
 	/* user options setup */
 	ret = nsoption_init(set_defaults, &nsoptions, &nsoptions_default);
@@ -2282,6 +2288,8 @@ main(int argc, char** argv)
 
 	if (fb_font_finalise() == false)
 		NSLOG(netsurf, INFO, "Font finalisation failed.");
+
+	romfsExit();
 
 	/* finalise options */
 	nsoption_finalise(nsoptions, nsoptions_default);
