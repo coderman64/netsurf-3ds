@@ -28,8 +28,8 @@ This is where NetSurf comes in. It is a lightweight, super fast web browser that
 The NetSurf codebase contains some features that don't work yet on 3DS, but might work soon with further porting efforts.
 - Font support (FreeType)
 - super basic JavaScript support (via internal "duktape" library)
-- SVG and WebM support (requires external libraries to be ported first)
-- Webpage zoom (+/-)
+- SVG and WebP support (requires external libraries to be ported first)
+- ~~Webpage zoom (+/-)~~ now supported using R and L shoulder buttons
 
 Here are some things not in the code base, but are planned to be added:
 - Downloading of files to the SD card (perhaps with a "save as" dialog)
@@ -64,7 +64,7 @@ To build, ensure you have the DevKitARM toolchain installed with libctru, citro2
 - 3ds-libiconv
 - 3ds-freetype (for future font support)
 
-Ensure your environment has the `DEVKITARM` and `DEVKITPRO` variables set, and that DevKitARM's `bin` directory is in your `PATH`. You should then be able to build NetSurf with the `make` command. Using multiple jobs (`-j <cpu cores>`) is reccomended to speed up compilation.
+Ensure your environment has the `DEVKITARM` and `DEVKITPRO` variables set, and that DevKitARM's `bin` directory is in your `PATH` (you can probably do this using a command like `source /etc/profile.d/devkit-env.sh`). You should then be able to build NetSurf using the `make` command in the resository root. Using multiple jobs (`-j <number of cpu cores>`) is reccomended to speed up compilation.
 
 ## Special thanks
 
