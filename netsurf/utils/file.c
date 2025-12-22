@@ -152,6 +152,14 @@ static nserror posix_nsurl_to_path(struct nsurl *url, char **path_out)
 		return res;
 	}
 
+	// automatically remove leading '/' if this is a romfs url
+	if(strncmp(path,"/romfs:/",7) == 0){
+		char* oldpath = path;
+		path = malloc(lwc_string_length(urlpath));
+		strncpy(path,oldpath+1,lwc_string_length(urlpath));
+		free(oldpath);
+	}
+
 	*path_out = path;
 
 	return NSERROR_OK;

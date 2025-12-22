@@ -2215,8 +2215,9 @@ main(int argc, char** argv)
 	 * can do about it either.
 	 */
 	nslog_init(nslog_stream_configure, &argc, argv);
-	NSLOG(netsurf,WARN,"RESPATHS[0]: %s",respaths[0]);
-	NSLOG(netsurf,WARN,"NETSURF_FB_RESPATH: %s",NETSURF_FB_RESPATH);
+	if(rfsRes){
+		NSLOG(netsurf,WARN,"ROMFS: %d",rfsRes);
+	}
 
 	/* user options setup */
 	ret = nsoption_init(set_defaults, &nsoptions, &nsoptions_default);
