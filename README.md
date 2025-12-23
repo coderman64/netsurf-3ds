@@ -30,7 +30,7 @@ The NetSurf codebase contains some features that don't work yet on 3DS, but migh
 - Font support (FreeType)
 - super basic JavaScript support (via internal "duktape" library)
 - SVG and WebP support (requires external libraries to be ported first)
-- ~~Webpage zoom (+/-)~~ now supported using R and L shoulder buttons
+- Webpage zoom (+/-)
 
 Here are some things not in the code base, but are planned to be added:
 - Downloading of files to the SD card (perhaps with a "save as" dialog)

@@ -257,6 +257,10 @@ expand_path(const char *path, int pathlen)
 
 	memcpy(exp, path, pathlen);
 	exp[pathlen] = 0;
+	
+	if(strncmp(exp,"romfs;/",6) == 0){
+		strncpy(exp,"romfs:/",6);
+	}
 
 	explen = pathlen;
 
@@ -331,6 +335,7 @@ filepath_path_to_strvec(const char *path)
 
 		if (elen > 1) {
 			/* more than an empty colon */
+
 			strvec[strc] = expand_path(estart, elen);
 			if (strvec[strc] != NULL) {
 				/* successfully expanded an element */

@@ -381,7 +381,7 @@ ifeq ($(TARGET),beos)
 	$(Q)$(BEOS_MIMESET) $(EXETARGET)
 endif
 	$(VQ)echo "  MAKE 3DSX: $(EXETARGET).3dsx"
-	$(Q)3dsxtool $(EXETARGET) $(EXETARGET).3dsx --smdh=nsfb.smdh
+	$(Q)3dsxtool $(EXETARGET) $(EXETARGET).3dsx --smdh=nsfb.smdh --romfs=resources
 ifndef NOCIA
 	$(VQ)echo "  MAKE CIA: $(EXETARGET).cia"
 	$(Q)$(MAKEROM) -f cia -elf $(EXETARGET) -o $(EXETARGET).cia -rsf ./nsfb.rsf -icon nsfb.smdh -banner nsfb.bnr

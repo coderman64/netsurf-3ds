@@ -44,12 +44,14 @@ NETSURF_FB_FONT_FANTASY := DejaVuSansMono.ttf
 NETSURF_FRAMEBUFFER_BIN := $(PREFIX)/bin
 
 # Default resource install path
-NETSURF_FRAMEBUFFER_RESOURCES := $(PREFIX)/share/netsurf
+# NETSURF_FRAMEBUFFER_RESOURCES := $(PREFIX)/share/netsurf
+NETSURF_FRAMEBUFFER_RESOURCES := romfs;/
 
 # Default framebuffer search path
 NETSURF_FB_RESPATH := $${HOME}/.netsurf/:$${NETSURFRES}:$(NETSURF_FRAMEBUFFER_RESOURCES):./frontends/framebuffer/res
 
 # freetype compiled in font serch path
-NETSURF_FB_FONTPATH := /share/netsurf
+# NETSURF_FB_FONTPATH := /share/netsurf
+NETSURF_FB_FONTPATH := romfs;/
 # /usr/share/fonts/truetype/dejavu:/usr/share/fonts/truetype/msttcorefonts
 
