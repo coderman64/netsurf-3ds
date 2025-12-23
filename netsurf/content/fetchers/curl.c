@@ -71,7 +71,7 @@
 
 #ifdef __3DS__
 #undef WITH_OPENSSL
-#define WITH_MBEDTLS
+// #define WITH_MBEDTLS
 #endif
 
 /**
@@ -1624,9 +1624,11 @@ static CURLcode fetch_curl_set_options(struct curl_fetch_info *f)
 		SETOPT(CURLOPT_SSL_VERIFYPEER, 1L);
 		SETOPT(CURLOPT_SSL_VERIFYHOST, 2L);
 
+#ifdef WITH_MBEDTLS
 		// for mbedtls usage
 		SETOPT(CURLOPT_SSL_CTX_FUNCTION,fetch_curl_sslctxfun);
 		SETOPT(CURLOPT_SSL_CTX_DATA, f);
+#endif
 
 #ifdef WITH_OPENSSL
 		if (curl_with_openssl) {
