@@ -56,6 +56,8 @@ VQ=@
 
 # Override this only if the host compiler is called something different
 BUILD_CC := $(DEVKITARM)/bin/arm-none-eabi-gcc 
+
+MAKEROM := makerom
 #cc
 BUILD_CFLAGS = -g -W -Wall -Wundef -Wpointer-arith -Wcast-align \
 	-Wwrite-strings -Wmissing-declarations -Wuninitialized \
@@ -380,11 +382,21 @@ ifeq ($(TARGET),beos)
 endif
 	$(VQ)echo "  MAKE 3DSX: $(EXETARGET).3dsx"
 	$(Q)3dsxtool $(EXETARGET) $(EXETARGET).3dsx --smdh=nsfb.smdh
+ifndef NOCIA
+	$(VQ)echo "  MAKE CIA: $(EXETARGET).cia"
+	$(Q)$(MAKEROM) -f cia -elf $(EXETARGET) -o $(EXETARGET).cia -rsf ./nsfb.rsf -icon nsfb.smdh -banner nsfb.bnr
+	$(VQ)echo "  MAKE HIMEM CIA: $(EXETARGET)_himem.cia"
+	$(Q)$(MAKEROM) -f cia -elf $(EXETARGET) -o $(EXETARGET)_himem.cia -rsf ./nsfb_himem.rsf -icon nsfb_himem.smdh -banner nsfb_himem.bnr
+else
+	$(VQ)echo "  SKIPPING CIA BUILD"
+endif
 
 clean-target:
 	$(VQ)echo "   CLEAN: $(EXETARGET)"
 	$(Q)$(RM) $(EXETARGET)
 	$(Q)$(RM) $(EXETARGET).3dsx
+	$(Q)$(RM) $(EXETARGET).cia
+	$(Q)$(RM) $(EXETARGET)_himem.cia
 CLEANS += clean-target
 
 
