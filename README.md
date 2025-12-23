@@ -22,6 +22,7 @@ This is where NetSurf comes in. It is a lightweight, super fast web browser that
 - browse websites with up to SSL 1.2
 - browse the SD card and open local text, html, and image files (go to file:///)
 - html and css support
+- Use the 80MB HiMem mode through `nsfb_himem.cia`
 
 ## What it might be able to do soon&trade;:
 
@@ -51,7 +52,6 @@ NetSurf is a long way off from a Google Chrome replacement, and (given the proce
 
 # Building 
 
-
 Building only works in Linux at the moment.
 
 To build, ensure you have the DevKitARM toolchain installed with libctru, citro2d, citro3d, etc. You will also need the following libraries:
@@ -64,7 +64,11 @@ To build, ensure you have the DevKitARM toolchain installed with libctru, citro2
 - 3ds-libiconv
 - 3ds-freetype (for future font support)
 
-Ensure your environment has the `DEVKITARM` and `DEVKITPRO` variables set, and that DevKitARM's `bin` directory is in your `PATH` (you can probably do this using a command like `source /etc/profile.d/devkit-env.sh`). You should then be able to build NetSurf using the `make` command in the resository root. Using multiple jobs (`-j <number of cpu cores>`) is reccomended to speed up compilation.
+You will also need `makerom` ([link](https://github.com/3DSGuy/Project_CTR/releases)) in your `PATH` in order to build with CIA support. Set the variable `NOCIA` to prevent CIAs from being built. `3dsxtool` (required for building the 3dsx version) should be included with the 3DS build environment.
+
+Ensure your environment has the `DEVKITARM` and `DEVKITPRO` variables set, and that DevKitARM's `bin` directory is in your `PATH` (you can probably do all of these things using a command like `source /etc/profile.d/devkit-env.sh`). 
+
+You should then be able to build NetSurf using the `make` command in the resository root. Use `make NOCIA=1` to prevent CIAs from being generated. Using multiple jobs (`-j <number of cpu cores>`) is reccomended to speed up compilation.
 
 ## Special thanks
 
