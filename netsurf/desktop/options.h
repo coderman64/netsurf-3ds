@@ -136,7 +136,7 @@ NSOPTION_INTEGER(expire_url, 28)
 NSOPTION_INTEGER(font_default, PLOT_FONT_FAMILY_SANS_SERIF)
 
 /** ca-bundle location */
-NSOPTION_STRING(ca_bundle, "/share/netsurf/ca-bundle")
+NSOPTION_STRING(ca_bundle, "romfs:/ca-bundle")
 
 /** ca-path location */
 NSOPTION_STRING(ca_path, NULL)
